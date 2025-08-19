@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 type FloatLabelInputProps = {
@@ -11,13 +12,14 @@ export default function FloatLabelInput({
   value,
   onChange,
   id,
+  className,
   ...props
 }: FloatLabelInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const shrinkLabel = isFocused || (value && String(value).length > 0);
 
   return (
-    <div className="relative w-full h-13 ">
+    <div className={cn("relative w-full h-13", className)}>
       <div className="absolute w-full  bottom-0 ">
         <label
           htmlFor={id}
