@@ -23,7 +23,7 @@ export default function FloatLabelInput({
       <div className="absolute w-full  bottom-0 ">
         <label
           htmlFor={id}
-          className={`absolute -top-2  text-2xl transition-all duration-200
+          className={`absolute -top-4  text-2xl transition-all duration-200 
           ${shrinkLabel ? "top-[-1.6875rem] text-xl text-gray" : "text-black"}`}
         >
           {label}
@@ -37,6 +37,8 @@ export default function FloatLabelInput({
           onBlur={() => setIsFocused(false)}
           placeholder={label}
           className={`block relative z-2 w-full border-b-[0.09375rem] ${
+            type === "tel" && "font-english-medium"
+          } ${
             shrinkLabel ? "border-primary" : "border-gray"
           }   text-primary  placeholder-transparent focus:outline-none  `}
           {...props}

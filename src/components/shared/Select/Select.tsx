@@ -52,7 +52,7 @@ export default function Select({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-2xl border-b border-gray w-full flex items-center justify-between cursor-pointer"
+        className="text-2xl border-b py-2 border-gray w-full flex items-center justify-between cursor-pointer"
       >
         {options.find((o) => o.value === value)?.label || placeholder}
 
