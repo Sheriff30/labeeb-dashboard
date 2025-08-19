@@ -5,7 +5,11 @@
   --font-arabic-bold: var(--font-labeeb-arabic-bold);
   --font-english-medium: var(--font-labeeb-english-medium);
   --color-primary: #f06827;
+  --color-primary-blue: #1685c6;
+  --color-primary-blue-2: #f0f9ff;
   --color-gray: #939393;
+  --text-white: #ffffff;
+  --color-white-2: #f0f9ff;
   --text-6xl: 64px;
 }
 
@@ -16,4 +20,11 @@ body {
 
 @utility h-screen {
   height: 100dvh;
+}
+
+input[type="checkbox"]:checked {
+  background-image: url("/images/check.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
 }
