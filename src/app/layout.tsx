@@ -9,6 +9,12 @@ const labeebArabicMedium = localFont({
   display: "swap",
 });
 
+const labeebArabicBold = localFont({
+  src: "../../public/fonts/Labeeb-Arabic-Bold.ttf",
+  variable: "--font-labeeb-arabic-bold",
+  display: "swap",
+});
+
 // English font - Medium only
 const labeebEnglishMedium = localFont({
   src: "../../public/fonts/Labeeb-English-Medium.ttf",
@@ -29,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${labeebArabicMedium.variable} ${labeebEnglishMedium.variable} antialiased`}
+        className={`${labeebArabicMedium.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} antialiased`}
       >
         {children}
       </body>

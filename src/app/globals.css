@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
-@theme {
+@theme inline {
   --font-arabic-medium: var(--font-labeeb-arabic-medium);
+  --font-arabic-bold: var(--font-labeeb-arabic-bold);
   --font-english-medium: var(--font-labeeb-english-medium);
+  --color-primary: #f06827;
+  --color-gray: #939393;
+  --text-6xl: 64px;
 }
 
 body {
   font-family: var(--font-labeeb-arabic-medium),
     var(--font-labeeb-english-medium), Arial, Helvetica, sans-serif;
-}
-
-@utility font-english-medium {
-  font-family: var(--font-labeeb-english-medium), Arial, Helvetica, sans-serif;
 }
 
 @utility h-screen {
