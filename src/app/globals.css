@@ -13,3 +13,7 @@ body {
 @utility font-english-medium {
   font-family: var(--font-labeeb-english-medium), Arial, Helvetica, sans-serif;
 }
+
+@utility h-screen {
+  height: 100dvh;
+}
