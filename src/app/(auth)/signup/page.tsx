@@ -7,6 +7,14 @@ import {
   SelectableCheckboxGroup,
   Timer,
 } from "@/components";
+import { FieldInfo } from "@/components/shared/FieldInfo";
+import {
+  CATEGORY_OPTIONS,
+  CITY_OPTIONS,
+  DISTRICT_OPTIONS,
+  SCHOOL_STAGE_OPTIONS,
+} from "@/lib";
+import { validators } from "@/lib/constants/validation";
 import { cn } from "@/lib/utils";
 import { useForm, useField } from "@tanstack/react-form";
 import Link from "next/link";
@@ -50,7 +58,7 @@ export default function Page() {
         otp,
       } = value;
 
-      console.log(
+      console.log("FormData", {
         name,
         city,
         district,
@@ -59,8 +67,9 @@ export default function Page() {
         phoneNumber,
         accountName,
         email,
-        otp
-      );
+      });
+
+      console.log("OTP", otp);
     },
   });
 
@@ -87,16 +96,7 @@ export default function Page() {
         {/* School name */}
         <form.Field
           name="name"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "اسم المدرسة مطلوب"
-                : value.length < 2
-                ? "اسم المدرسة يجب أن يكون على الأقل 2 أحرف"
-                : value.length > 50
-                ? "اسم المدرسة يجب أن يكون على اقل 50 حرف"
-                : undefined,
-          }}
+          validators={validators.length("اسم المدرسة", 2, 50)}
         >
           {(field) => {
             return (
@@ -109,11 +109,7 @@ export default function Page() {
                     minLength={2}
                     maxLength={50}
                   />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>{" "}
               </>
             );
@@ -123,12 +119,7 @@ export default function Page() {
         {/* Group selector */}
 
         <div className="flex gap-15 w-full">
-          <form.Field
-            name="city"
-            validators={{
-              onChange: ({ value }) => (!value ? "المدينة مطلوبة" : undefined),
-            }}
-          >
+          <form.Field name="city" validators={validators.required("المدينة")}>
             {(field) => {
               return (
                 <div className="flex flex-col gap-1 w-full">
@@ -136,30 +127,14 @@ export default function Page() {
                     placeholder="المدينة"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
-                    options={[
-                      { value: "makkah", label: "مكة المكرمة" },
-                      { value: "madinah", label: "المدينة المنورة" },
-                      { value: "riyadh", label: "الرياض" },
-                      { value: "jeddah", label: "جدة" },
-                      { value: "dammam", label: "الدمام" },
-                      { value: "taif", label: "الطائف" },
-                    ]}
+                    options={CITY_OPTIONS}
                   />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>
               );
             }}
           </form.Field>
-          <form.Field
-            name="district"
-            validators={{
-              onChange: ({ value }) => (!value ? "الحي مطلوب" : undefined),
-            }}
-          >
+          <form.Field name="district" validators={validators.required("الحي")}>
             {(field) => {
               return (
                 <div className="flex flex-col gap-1 w-full">
@@ -167,29 +142,14 @@ export default function Page() {
                     placeholder="الحي"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
-                    options={[
-                      { value: "alaziziyah", label: "العزيزية" },
-                      { value: "alsharafiyah", label: "الشرقية" },
-                      { value: "alsalam", label: "السلام" },
-                      { value: "alrawdah", label: "الروضة" },
-                      { value: "alnaseem", label: "النسيم" },
-                    ]}
+                    options={DISTRICT_OPTIONS}
                   />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>
               );
             }}
           </form.Field>
-          <form.Field
-            name="category"
-            validators={{
-              onChange: ({ value }) => (!value ? "الفئة مطلوبة" : undefined),
-            }}
-          >
+          <form.Field name="category" validators={validators.required("الفئة")}>
             {(field) => {
               return (
                 <div className="flex flex-col gap-1 w-full">
@@ -197,17 +157,9 @@ export default function Page() {
                     placeholder="الفئة"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
-                    options={[
-                      { value: "boys", label: "بنين" },
-                      { value: "girls", label: "بنات" },
-                      { value: "both", label: "كلاهم" },
-                    ]}
+                    options={CATEGORY_OPTIONS}
                   />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>
               );
             }}
@@ -217,32 +169,18 @@ export default function Page() {
         {/* School stage */}
         <form.Field
           name="schoolStage"
-          validators={{
-            onChange: ({ value }) =>
-              !value.length || value.length < 1
-                ? "المرحلة الدراسية مطلوبة"
-                : undefined,
-          }}
+          validators={validators.requiredArray("المرحلة الدراسية")}
         >
           {(field) => {
             return (
               <div className="flex flex-col gap-1 w-full">
                 <SelectableCheckboxGroup
-                  options={[
-                    { value: "kindergarten", label: "رياض الأطفال" },
-                    { value: "primary", label: "الابتدائية" },
-                    { value: "middle", label: "الإعدادية" },
-                    { value: "secondary", label: "الثانوية" },
-                  ]}
+                  options={SCHOOL_STAGE_OPTIONS}
                   value={field.state.value}
                   onChange={(val) => field.handleChange(val)}
                   label="المرحلة الدراسية"
                 />
-                {field.state.meta.errors && (
-                  <span className="text-red-500 text-sm">
-                    {field.state.meta.errors}
-                  </span>
-                )}
+                <FieldInfo field={field} />
               </div>
             );
           }}
@@ -250,31 +188,7 @@ export default function Page() {
 
         {/* Group inputs */}
         <div className="flex gap-8 ">
-          <form.Field
-            name="phoneNumber"
-            validators={{
-              onChange: ({ value }) => {
-                if (!value) return "رقم الجوال مطلوب";
-
-                const cleanValue = value.replace(/\s+/g, "");
-
-                // Saudi format: 05XXXXXXXX (10 digits)
-                const saudiRegex = /^05\d{8}$/;
-
-                // International format: +9665XXXXXXXX (13 digits)
-                const intlRegex = /^\+9665\d{8}$/;
-
-                if (
-                  !saudiRegex.test(cleanValue) &&
-                  !intlRegex.test(cleanValue)
-                ) {
-                  return "رقم الجوال غير صالح، اكتبه بصيغة 05XXXXXXXX أو +9665XXXXXXXX";
-                }
-
-                return "";
-              },
-            }}
-          >
+          <form.Field name="phoneNumber" validators={validators.phone()}>
             {(field) => (
               <div className="w-full">
                 <div className="flex flex-col gap-1">
@@ -329,16 +243,7 @@ export default function Page() {
 
           <form.Field
             name="accountName"
-            validators={{
-              onChange: ({ value }) =>
-                !value
-                  ? "اسم مسؤول الحساب مطلوب"
-                  : value.length < 2
-                  ? "اسم مسؤول الحساب يجب أن يكون على الأقل 2 أحرف"
-                  : value.length > 50
-                  ? "اسم مسؤول الحساب يجب أن يكون على اقل 50 حرف"
-                  : undefined,
-            }}
+            validators={validators.required("اسم مسؤول الحساب")}
           >
             {(field) => {
               return (
@@ -364,23 +269,7 @@ export default function Page() {
         </div>
 
         {/* Email  */}
-        <form.Field
-          name="email"
-          validators={{
-            onChange: ({ value }) => {
-              if (!value) return "البريد الإلكتروني مطلوب";
-
-              // Simple email regex pattern
-              const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-              if (!emailPattern.test(value)) {
-                return "البريد الإلكتروني غير صالح";
-              }
-
-              return undefined;
-            },
-          }}
-        >
+        <form.Field name="email" validators={validators.email()}>
           {(field) => {
             return (
               <div className="flex flex-col gap-6 ">
@@ -392,11 +281,7 @@ export default function Page() {
                     type="email"
                     maxLength={254}
                   />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>
               </div>
             );
@@ -443,11 +328,7 @@ export default function Page() {
               return (
                 <div className="flex flex-col gap-1 ">
                   <OtpInput onComplete={field.handleChange} />{" "}
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
+                  <FieldInfo field={field} />
                 </div>
               );
             }}
