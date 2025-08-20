@@ -51,7 +51,10 @@ export default function FloatLabelInput({
           placeholder={label}
           className={`block relative z-2 w-full border-b-[0.09375rem] ${
             type === "tel" && "font-english-light"
-          } ${
+          }
+          ${type === "email" && "font-roboto"}
+          
+          ${
             shrinkLabel ? "border-primary" : "border-gray"
           }   text-primary  placeholder-transparent focus:outline-none $  `}
           {...props}

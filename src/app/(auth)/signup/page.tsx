@@ -1,9 +1,29 @@
 "use client";
-import { FloatLabelInput, Select, SelectableCheckboxGroup } from "@/components";
+import {
+  Button,
+  FloatLabelInput,
+  OtpInput,
+  Select,
+  SelectableCheckboxGroup,
+  Timer,
+} from "@/components";
+import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Page() {
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const handleSendOtp = () => {
+    setIsOtpSent(true);
+    setIsTimerRunning(true);
+  };
+
+  const handleTimerComplete = () => {
+    setIsTimerRunning(false);
+  };
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -14,9 +34,32 @@ export default function Page() {
       phoneNumber: "",
       accountName: "",
       email: "",
+      otp: "",
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      const {
+        name,
+        city,
+        district,
+        category,
+        schoolStage,
+        phoneNumber,
+        accountName,
+        email,
+        otp,
+      } = value;
+
+      console.log(
+        name,
+        city,
+        district,
+        category,
+        schoolStage,
+        phoneNumber,
+        accountName,
+        email,
+        otp
+      );
     },
   });
 
@@ -335,6 +378,8 @@ export default function Page() {
           }}
         >
           {(field) => {
+            const otpDisabled =
+              !field.state.value || !!field.state.meta.errors?.length;
             return (
               <div className="flex flex-col gap-6 ">
                 <div className="flex flex-col gap-1 max-w-[573px]">
@@ -351,12 +396,65 @@ export default function Page() {
                     </span>
                   )}
                 </div>
+                <Button
+                  type="button"
+                  variant="tertiary"
+                  text={isOtpSent ? "إرسال الرمز مرة أخرى" : "إرسال الرمز"}
+                  className="w-fit"
+                  onClick={handleSendOtp}
+                  disabled={otpDisabled || isTimerRunning}
+                />
+                <div
+                  className={cn(
+                    "text-2xl transition-all duration-300",
+                    !isOtpSent
+                      ? "opacity-0 pointer-events-none invisible"
+                      : "opacity-100 pointer-events-auto"
+                  )}
+                >
+                  <p className="text-2xl text-primary mb-[6px]">
+                    ادخل الكود المرسل لك
+                  </p>
+                  <p className="text-gray flex items-center gap-2 mb-[14px]">
+                    <span className="text-gray">لم تستلم الرمز ؟ </span>
+                    <span>إعادة إرسال الرمز </span>
+                    <Timer
+                      onComplete={handleTimerComplete}
+                      isActive={isTimerRunning}
+                    />
+                  </p>
+                  <form.Field
+                    name="otp"
+                    validators={{
+                      onChange: ({ value }) => {
+                        if (!value) return "الكود مطلوب";
+                        if (value.length < 6) {
+                          return "الكود يجب أن يكون 6 أرقام";
+                        }
+                        return undefined;
+                      },
+                    }}
+                  >
+                    {(field) => {
+                      return (
+                        <div className="flex flex-col gap-1 ">
+                          <OtpInput onComplete={field.handleChange} />{" "}
+                          {field.state.meta.errors && (
+                            <span className="text-red-500 text-sm">
+                              {field.state.meta.errors}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    }}
+                  </form.Field>
+                </div>
               </div>
             );
           }}
         </form.Field>
 
-        {/* <button type="submit">Submit</button> */}
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

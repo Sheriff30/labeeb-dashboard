@@ -24,7 +24,8 @@ export default function Select({
   className,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
+  const SELECT_REF = useRef<HTMLDivElement>(null);
+  const SELECTED = options.find((o) => o.value === value)?.label;
 
   const handleSelect = (value: string) => {
     onChange(value);
@@ -34,8 +35,8 @@ export default function Select({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        selectRef.current &&
-        !selectRef.current.contains(event.target as Node)
+        SELECT_REF.current &&
+        !SELECT_REF.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
@@ -48,13 +49,17 @@ export default function Select({
   }, []);
 
   return (
-    <div ref={selectRef} className={cn("relative w-full  ", className)}>
+    <div ref={SELECT_REF} className={cn("relative w-full  ", className)}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-2xl border-b py-2 border-gray w-full flex items-center justify-between cursor-pointer"
+        className={cn(
+          "text-2xl border-b py-2 border-gray w-full flex items-center justify-between cursor-pointer",
+          isOpen || SELECTED ? "border-b-primary" : "border-b-gray",
+          SELECTED && "text-primary"
+        )}
       >
-        {options.find((o) => o.value === value)?.label || placeholder}
+        {SELECTED || placeholder}
 
         <Image
           src="/images/select-arrow.svg"
