@@ -77,7 +77,7 @@ export default function OtpInput({ length = 6, onComplete }: OtpInputProps) {
           onChange={(e) => handleChange(e.target.value, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
           placeholder=" "
-          className="border-[1.5px] font-roboto border-primary  rounded-lg text-center text-primary text-[32px] w-[62px] h-[69px] px-[22px] focus:outline-none placeholder:border-b-primary placeholder:border-b-[1.5px]"
+          className="border-[1.5px] font-roboto border-primary  rounded-lg text-center text-primary text-[32px] w-full  sm:w-[62px] h-[69px] px-2 sm:px-[22px] focus:outline-none placeholder:border-b-primary placeholder:border-b-[1.5px]"
         />
       ))}
     </div>

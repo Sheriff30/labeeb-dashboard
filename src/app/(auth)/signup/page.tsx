@@ -88,7 +88,7 @@ export default function Page() {
       </div>
       {/* Form */}
       <form
-        className="flex flex-col gap-7 max-w-[700px]"
+        className="flex flex-col gap-7  max-w-[700px]"
         onSubmit={(e) => {
           e.preventDefault();
           form.handleSubmit();
@@ -101,7 +101,7 @@ export default function Page() {
         >
           {(field) => {
             return (
-              <FormField field={field} className="max-w-[573px]">
+              <FormField field={field} className="md:max-w-[573px]">
                 <FloatLabelInput
                   label="اسم المدرسة"
                   value={field.state.value}
@@ -116,7 +116,7 @@ export default function Page() {
 
         {/* Group selector */}
 
-        <div className="flex gap-15 w-full">
+        <div className="flex gap-4 md:gap-15 flex-col md:flex-row w-full ">
           <form.Field name="city" validators={validators.required("المدينة")}>
             {(field) => {
               return (
@@ -182,7 +182,7 @@ export default function Page() {
         </form.Field>
 
         {/* Group inputs */}
-        <div className="flex gap-8 ">
+        <div className="flex gap-8 flex-col md:flex-row">
           <form.Field name="phoneNumber" validators={validators.phone()}>
             {(field) => (
               <FormField field={field}>
@@ -273,7 +273,7 @@ export default function Page() {
           )}
         >
           <p className="text-2xl text-primary mb-[6px]">ادخل الكود المرسل لك</p>
-          <p className="text-gray flex items-center gap-2 mb-[14px]">
+          <p className="text-gray flex items-center flex-wrap gap-2 mb-[14px]">
             <span className="text-gray">لم تستلم الرمز ؟ </span>
             <span>إعادة إرسال الرمز </span>
             <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />

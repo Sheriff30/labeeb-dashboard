@@ -39,7 +39,7 @@ export default function SelectableCheckboxGroup({
   };
 
   return (
-    <div className="flex items-center gap-6 text-2xl">
+    <div className="flex md:items-center flex-col md:flex-row gap-6 text-2xl">
       <div className="flex items-center cursor-pointer " onClick={handleToggle}>
         <span
           className={`border-b-[1.5px] py-2  ${
@@ -52,7 +52,7 @@ export default function SelectableCheckboxGroup({
         </span>
       </div>
       {expanded && (
-        <div className="flex gap-6 items-center flex-wrap">
+        <div className="flex gap-6 md:items-center flex-wrap md:flex-row flex-col">
           {options.map((opt) => (
             <label
               key={opt.value}
