@@ -13,9 +13,13 @@ export const validators = {
     onChange: ({ value }: { value: string }) => {
       if (!value) return `${fieldName} مطلوب`;
       if (value.length < min)
-        return `${fieldName} يجب أن يكون على الأقل ${min} أحرف`;
+        return `${fieldName} يجب أن يكون على الأقل ${min} ${
+          fieldName === "الكود" ? "ارقام" : "حرف "
+        }`;
       if (value.length > max)
-        return `${fieldName} يجب أن يكون على اقل ${max} حرف`;
+        return `${fieldName} يجب أن يكون على اقل ${max} ${
+          fieldName === "الكود" ? "ارقام" : "حرف "
+        }`;
       return undefined;
     },
   }),

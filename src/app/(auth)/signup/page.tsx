@@ -100,18 +100,16 @@ export default function Page() {
         >
           {(field) => {
             return (
-              <>
-                <div className="flex flex-col gap-1 max-w-[573px]">
-                  <FloatLabelInput
-                    label="اسم المدرسة"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    minLength={2}
-                    maxLength={50}
-                  />
-                  <FieldInfo field={field} />
-                </div>{" "}
-              </>
+              <div className="flex flex-col gap-1 max-w-[573px]">
+                <FloatLabelInput
+                  label="اسم المدرسة"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  minLength={2}
+                  maxLength={50}
+                />
+                <FieldInfo field={field} />
+              </div>
             );
           }}
         </form.Field>
@@ -205,15 +203,10 @@ export default function Page() {
                     onChange={(e) => {
                       const arabicNums = "٠١٢٣٤٥٦٧٨٩";
                       const englishNums = "0123456789";
-
-                      // حوّل الأرقام العربية → إنجليزية
                       let val = e.target.value.replace(/[٠-٩]/g, (d) => {
                         return englishNums[arabicNums.indexOf(d)];
                       });
-
-                      // خليه يسمح بس بـ أرقام +
                       val = val.replace(/[^0-9+]/g, "");
-
                       field.handleChange(val);
                     }}
                   />
@@ -272,17 +265,15 @@ export default function Page() {
         <form.Field name="email" validators={validators.email()}>
           {(field) => {
             return (
-              <div className="flex flex-col gap-6 ">
-                <div className="flex flex-col gap-1 max-w-[573px]">
-                  <FloatLabelInput
-                    label="البريد الإلكتروني"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    type="email"
-                    maxLength={254}
-                  />
-                  <FieldInfo field={field} />
-                </div>
+              <div className="flex flex-col gap-1 max-w-[573px]">
+                <FloatLabelInput
+                  label="البريد الإلكتروني"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="email"
+                  maxLength={254}
+                />
+                <FieldInfo field={field} />
               </div>
             );
           }}
@@ -312,18 +303,7 @@ export default function Page() {
             <span>إعادة إرسال الرمز </span>
             <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
           </p>
-          <form.Field
-            name="otp"
-            validators={{
-              onChange: ({ value }) => {
-                if (!value) return "الكود مطلوب";
-                if (value.length < 6) {
-                  return "الكود يجب أن يكون 6 أرقام";
-                }
-                return undefined;
-              },
-            }}
-          >
+          <form.Field name="otp" validators={validators.length("الكود", 6, 6)}>
             {(field) => {
               return (
                 <div className="flex flex-col gap-1 ">
