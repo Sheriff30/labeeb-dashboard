@@ -2,6 +2,7 @@
 import {
   Button,
   FloatLabelInput,
+  FormField,
   OtpInput,
   Select,
   SelectableCheckboxGroup,
@@ -100,7 +101,7 @@ export default function Page() {
         >
           {(field) => {
             return (
-              <div className="flex flex-col gap-1 max-w-[573px]">
+              <FormField field={field} className="max-w-[573px]">
                 <FloatLabelInput
                   label="اسم المدرسة"
                   value={field.state.value}
@@ -108,8 +109,7 @@ export default function Page() {
                   minLength={2}
                   maxLength={50}
                 />
-                <FieldInfo field={field} />
-              </div>
+              </FormField>
             );
           }}
         </form.Field>
@@ -120,45 +120,42 @@ export default function Page() {
           <form.Field name="city" validators={validators.required("المدينة")}>
             {(field) => {
               return (
-                <div className="flex flex-col gap-1 w-full">
+                <FormField field={field}>
                   <Select
                     placeholder="المدينة"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
                     options={CITY_OPTIONS}
                   />
-                  <FieldInfo field={field} />
-                </div>
+                </FormField>
               );
             }}
           </form.Field>
           <form.Field name="district" validators={validators.required("الحي")}>
             {(field) => {
               return (
-                <div className="flex flex-col gap-1 w-full">
+                <FormField field={field}>
                   <Select
                     placeholder="الحي"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
                     options={DISTRICT_OPTIONS}
                   />
-                  <FieldInfo field={field} />
-                </div>
+                </FormField>
               );
             }}
           </form.Field>
           <form.Field name="category" validators={validators.required("الفئة")}>
             {(field) => {
               return (
-                <div className="flex flex-col gap-1 w-full">
+                <FormField field={field}>
                   <Select
                     placeholder="الفئة"
                     value={field.state.value}
                     onChange={(val) => field.handleChange(val)}
                     options={CATEGORY_OPTIONS}
                   />
-                  <FieldInfo field={field} />
-                </div>
+                </FormField>
               );
             }}
           </form.Field>
@@ -188,49 +185,28 @@ export default function Page() {
         <div className="flex gap-8 ">
           <form.Field name="phoneNumber" validators={validators.phone()}>
             {(field) => (
-              <div className="w-full">
-                <div className="flex flex-col gap-1">
-                  <FloatLabelInput
-                    value={field.state.value}
-                    label="رقم الجوال"
-                    type="tel"
-                    inputMode="numeric"
-                    pattern="[0-9+]{10,15}"
-                    minLength={10}
-                    maxLength={20}
-                    format="05XXXXXXXX"
-                    formatLang="en"
-                    onChange={(e) => {
-                      const arabicNums = "٠١٢٣٤٥٦٧٨٩";
-                      const englishNums = "0123456789";
-                      let val = e.target.value.replace(/[٠-٩]/g, (d) => {
-                        return englishNums[arabicNums.indexOf(d)];
-                      });
-                      val = val.replace(/[^0-9+]/g, "");
-                      field.handleChange(val);
-                    }}
-                  />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors[0]
-                        ?.split(/(05XXXXXXXX|\+9665XXXXXXXX)/)
-                        .map((part, i) =>
-                          part === "05XXXXXXXX" || part === "+9665XXXXXXXX" ? (
-                            <span
-                              key={i}
-                              className="font-mono text-red-600 "
-                              dir="ltr"
-                            >
-                              {part}
-                            </span>
-                          ) : (
-                            part
-                          )
-                        )}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <FormField field={field}>
+                <FloatLabelInput
+                  value={field.state.value}
+                  label="رقم الجوال"
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9+]{10,15}"
+                  minLength={10}
+                  maxLength={20}
+                  format="05XXXXXXXX"
+                  formatLang="en"
+                  onChange={(e) => {
+                    const arabicNums = "٠١٢٣٤٥٦٧٨٩";
+                    const englishNums = "0123456789";
+                    let val = e.target.value.replace(/[٠-٩]/g, (d) => {
+                      return englishNums[arabicNums.indexOf(d)];
+                    });
+                    val = val.replace(/[^0-9+]/g, "");
+                    field.handleChange(val);
+                  }}
+                />
+              </FormField>
             )}
           </form.Field>
 
@@ -265,7 +241,7 @@ export default function Page() {
         <form.Field name="email" validators={validators.email()}>
           {(field) => {
             return (
-              <div className="flex flex-col gap-1 max-w-[573px]">
+              <FormField field={field} className="max-w-[573px]">
                 <FloatLabelInput
                   label="البريد الإلكتروني"
                   value={field.state.value}
@@ -273,8 +249,7 @@ export default function Page() {
                   type="email"
                   maxLength={254}
                 />
-                <FieldInfo field={field} />
-              </div>
+              </FormField>
             );
           }}
         </form.Field>
@@ -306,10 +281,9 @@ export default function Page() {
           <form.Field name="otp" validators={validators.length("الكود", 6, 6)}>
             {(field) => {
               return (
-                <div className="flex flex-col gap-1 ">
+                <FormField field={field}>
                   <OtpInput onComplete={field.handleChange} />{" "}
-                  <FieldInfo field={field} />
-                </div>
+                </FormField>
               );
             }}
           </form.Field>
