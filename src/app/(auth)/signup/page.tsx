@@ -316,7 +316,47 @@ export default function Page() {
           </form.Field>
         </div>
 
-        <button type="submit">Submit</button>
+        {/* Email */}
+        <form.Field
+          name="email"
+          validators={{
+            onChange: ({ value }) => {
+              if (!value) return "البريد الإلكتروني مطلوب";
+
+              // Simple email regex pattern
+              const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+              if (!emailPattern.test(value)) {
+                return "البريد الإلكتروني غير صالح";
+              }
+
+              return undefined;
+            },
+          }}
+        >
+          {(field) => {
+            return (
+              <div className="flex flex-col gap-6 ">
+                <div className="flex flex-col gap-1 max-w-[573px]">
+                  <FloatLabelInput
+                    label="البريد الإلكتروني"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    type="email"
+                    maxLength={254}
+                  />
+                  {field.state.meta.errors && (
+                    <span className="text-red-500 text-sm">
+                      {field.state.meta.errors}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          }}
+        </form.Field>
+
+        {/* <button type="submit">Submit</button> */}
       </form>
     </div>
   );

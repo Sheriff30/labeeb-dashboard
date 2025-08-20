@@ -67,7 +67,7 @@ export default function Select({
         />
       </button>
       {isOpen && (
-        <ul className="absolute top-full w-full cursor-pointer">
+        <ul className="absolute top-full w-full cursor-pointer z-5">
           {options.map((option) => (
             <li
               key={option.value}
