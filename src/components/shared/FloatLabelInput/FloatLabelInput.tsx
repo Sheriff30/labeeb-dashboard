@@ -4,6 +4,8 @@ import React, { useState } from "react";
 
 type FloatLabelInputProps = {
   label: string;
+  format?: string;
+  formatLang?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export default function FloatLabelInput({
@@ -13,6 +15,8 @@ export default function FloatLabelInput({
   onChange,
   id,
   className,
+  format,
+  formatLang,
   ...props
 }: FloatLabelInputProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -26,7 +30,16 @@ export default function FloatLabelInput({
           className={`absolute -top-4  text-2xl transition-all duration-200 
           ${shrinkLabel ? "top-[-1.6875rem] text-xl text-gray" : "text-black"}`}
         >
-          {label}
+          <span>{label} </span>
+          {format && (
+            <span
+              className={`text-gray text-xl transition-all duration-200 ${
+                shrinkLabel ? "opacity-0" : "opacity-100"
+              } ${formatLang === "en" ? "font-roboto" : ""}  `}
+            >
+              {format}
+            </span>
+          )}
         </label>
         <input
           type={type}
@@ -37,10 +50,10 @@ export default function FloatLabelInput({
           onBlur={() => setIsFocused(false)}
           placeholder={label}
           className={`block relative z-2 w-full border-b-[0.09375rem] ${
-            type === "tel" && "font-english-medium"
+            type === "tel" && "font-english-light"
           } ${
             shrinkLabel ? "border-primary" : "border-gray"
-          }   text-primary  placeholder-transparent focus:outline-none  `}
+          }   text-primary  placeholder-transparent focus:outline-none $  `}
           {...props}
         />{" "}
       </div>

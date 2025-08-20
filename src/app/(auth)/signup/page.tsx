@@ -233,16 +233,27 @@ export default function Page() {
                 <div className="flex flex-col gap-1">
                   <FloatLabelInput
                     value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
                     label="رقم الجوال"
                     type="tel"
-                    pattern="[0-9+ ]{10,15}"
+                    inputMode="numeric"
+                    pattern="[0-9+]{10,15}"
                     minLength={10}
                     maxLength={20}
-                    inputMode="numeric"
-                    onInput={(e) => {
-                      const target = e.target as HTMLInputElement;
-                      target.value = target.value.replace(/[^0-9+ ]/g, "");
+                    format="05XXXXXXXX"
+                    formatLang="en"
+                    onChange={(e) => {
+                      const arabicNums = "٠١٢٣٤٥٦٧٨٩";
+                      const englishNums = "0123456789";
+
+                      // حوّل الأرقام العربية → إنجليزية
+                      let val = e.target.value.replace(/[٠-٩]/g, (d) => {
+                        return englishNums[arabicNums.indexOf(d)];
+                      });
+
+                      // خليه يسمح بس بـ أرقام +
+                      val = val.replace(/[^0-9+]/g, "");
+
+                      field.handleChange(val);
                     }}
                   />
                   {field.state.meta.errors && (
@@ -305,7 +316,7 @@ export default function Page() {
           </form.Field>
         </div>
 
-        <button className="submit">Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

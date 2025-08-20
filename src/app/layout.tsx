@@ -22,6 +22,12 @@ const labeebEnglishMedium = localFont({
   display: "swap",
 });
 
+const labeebEnglishLight = localFont({
+  src: "../../public/fonts/Labeeb-English-Light.ttf",
+  variable: "--font-labeeb-english-light",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Labeeb Dashboard",
   description: "Labeeb Dashboard Application",
@@ -35,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${labeebArabicMedium.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} antialiased`}
+        className={`${labeebArabicMedium.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
       >
         {children}
       </body>
