@@ -47,8 +47,16 @@ export default function Page() {
     },
   });
 
-  const emailField = useField({ name: "email", form });
-  const phoneNumberField = useField({ name: "phoneNumber", form });
+  const emailField = useField({
+    name: "email",
+    form,
+    validators: validators.email(),
+  });
+  const phoneNumberField = useField({
+    name: "phoneNumber",
+    form,
+    validators: validators.phone(),
+  });
 
   const otpDisabled =
     (loginMethod === "email" &&
@@ -105,52 +113,42 @@ export default function Page() {
 
         {/* Email  */}
         {loginMethod === "email" && (
-          <form.Field name="email" validators={validators.email()}>
-            {(field) => {
-              return (
-                <FormField field={field}>
-                  <FloatLabelInput
-                    format="ex@gmail.com"
-                    formatLang="en"
-                    label="البريد الإلكتروني"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    type="email"
-                    maxLength={254}
-                  />
-                </FormField>
-              );
-            }}
-          </form.Field>
+          <FormField field={emailField}>
+            <FloatLabelInput
+              format="ex@gmail.com"
+              formatLang="en"
+              label="البريد الإلكتروني"
+              value={emailField.state.value}
+              onChange={(e) => emailField.handleChange(e.target.value)}
+              type="email"
+              maxLength={254}
+            />
+          </FormField>
         )}
 
         {loginMethod === "phone" && (
-          <form.Field name="phoneNumber" validators={validators.phone()}>
-            {(field) => (
-              <FormField field={field}>
-                <FloatLabelInput
-                  value={field.state.value}
-                  label="رقم الجوال"
-                  type="tel"
-                  inputMode="numeric"
-                  pattern="[0-9+]{10,15}"
-                  minLength={10}
-                  maxLength={20}
-                  format="05XXXXXXXX"
-                  formatLang="en"
-                  onChange={(e) => {
-                    const arabicNums = "٠١٢٣٤٥٦٧٨٩";
-                    const englishNums = "0123456789";
-                    let val = e.target.value.replace(/[٠-٩]/g, (d) => {
-                      return englishNums[arabicNums.indexOf(d)];
-                    });
-                    val = val.replace(/[^0-9+]/g, "");
-                    field.handleChange(val);
-                  }}
-                />
-              </FormField>
-            )}
-          </form.Field>
+          <FormField field={phoneNumberField}>
+            <FloatLabelInput
+              value={phoneNumberField.state.value}
+              label="رقم الجوال"
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9+]{10,15}"
+              minLength={10}
+              maxLength={20}
+              format="05XXXXXXXX"
+              formatLang="en"
+              onChange={(e) => {
+                const arabicNums = "٠١٢٣٤٥٦٧٨٩";
+                const englishNums = "0123456789";
+                let val = e.target.value.replace(/[٠-٩]/g, (d) => {
+                  return englishNums[arabicNums.indexOf(d)];
+                });
+                val = val.replace(/[^0-9+]/g, "");
+                phoneNumberField.handleChange(val);
+              }}
+            />
+          </FormField>
         )}
 
         {/* OTP */}

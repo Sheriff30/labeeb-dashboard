@@ -17,7 +17,7 @@ import {
 } from "@/lib";
 import { validators } from "@/lib/constants/validation";
 import { cn } from "@/lib/utils";
-import { useForm } from "@tanstack/react-form";
+import { useField, useForm } from "@tanstack/react-form";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -73,6 +73,16 @@ export default function Page() {
       console.log("OTP", otp);
     },
   });
+
+  const emailField = useField({
+    name: "email",
+    form,
+    validators: validators.email(),
+  });
+
+  const otpDisabled = Boolean(
+    !emailField.state.value || !!emailField.state.meta.errors?.length
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -238,36 +248,26 @@ export default function Page() {
         </div>
 
         {/* Email  */}
-        <form.Field name="email" validators={validators.email()}>
-          {(field) => {
-            const otpDisabled =
-              !field.state.value || !!field.state.meta.errors?.length;
 
-            return (
-              <div className="flex flex-col gap-7">
-                <FormField field={field} className="max-w-[573px]">
-                  <FloatLabelInput
-                    label="البريد الإلكتروني"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    type="email"
-                    maxLength={254}
-                  />
-                </FormField>
+        <FormField field={emailField} className="max-w-[573px]">
+          <FloatLabelInput
+            label="البريد الإلكتروني"
+            value={emailField.state.value}
+            onChange={(e) => emailField.handleChange(e.target.value)}
+            type="email"
+            maxLength={254}
+          />
+        </FormField>
 
-                {/* OTP */}
-                <Button
-                  type="button"
-                  variant="tertiary"
-                  text={isOtpSent ? "إرسال الرمز مرة أخرى" : "إرسال الرمز"}
-                  className="w-fit"
-                  onClick={handleSendOtp}
-                  disabled={otpDisabled || isTimerRunning}
-                />
-              </div>
-            );
-          }}
-        </form.Field>
+        {/* OTP */}
+        <Button
+          type="button"
+          variant="tertiary"
+          text={isOtpSent ? "إرسال الرمز مرة أخرى" : "إرسال الرمز"}
+          className="w-fit"
+          onClick={handleSendOtp}
+          disabled={otpDisabled || isTimerRunning}
+        />
 
         <div
           className={cn(
