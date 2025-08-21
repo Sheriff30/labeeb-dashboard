@@ -52,10 +52,17 @@ export default function Page() {
     form,
     validators: validators.email(),
   });
+
   const phoneNumberField = useField({
     name: "phoneNumber",
     form,
     validators: validators.phone(),
+  });
+
+  const otpField = useField({
+    name: "otp",
+    form,
+    validators: validators.length("الكود", 6, 6),
   });
 
   const otpDisabled =
@@ -175,15 +182,10 @@ export default function Page() {
             <span>إعادة إرسال الرمز </span>
             <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
           </p>
-          <form.Field name="otp" validators={validators.length("الكود", 6, 6)}>
-            {(field) => {
-              return (
-                <FormField field={field}>
-                  <OtpInput onComplete={field.handleChange} />{" "}
-                </FormField>
-              );
-            }}
-          </form.Field>
+
+          <FormField field={otpField}>
+            <OtpInput onComplete={otpField.handleChange} />{" "}
+          </FormField>
         </div>
 
         <Button type="submit" text="إنشاء حساب" variant="primary" />
