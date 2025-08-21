@@ -89,9 +89,12 @@ export default function Page() {
       {/* Form */}
       <form
         className="flex flex-col gap-7  max-w-[700px]"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          form.handleSubmit();
+          const isValid = await form.validateAllFields("submit");
+          if (isValid) {
+            form.handleSubmit();
+          }
         }}
       >
         {/* School name */}
@@ -290,7 +293,7 @@ export default function Page() {
         </div>
 
         <Button type="submit" text="إنشاء حساب" variant="primary" />
-        <div className="text-2xl">
+        <div className="text-2xl flex items-center gap-1">
           <span>هل يوجد لديك حساب للمدرسة ؟</span>
           <Link href="/login" className="text-primary">
             {" "}

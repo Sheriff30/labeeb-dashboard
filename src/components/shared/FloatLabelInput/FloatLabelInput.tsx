@@ -27,15 +27,19 @@ export default function FloatLabelInput({
       <div className="absolute w-full  bottom-0 ">
         <label
           htmlFor={id}
-          className={`absolute -top-4  text-2xl transition-all duration-200 
-          ${shrinkLabel ? "top-[-1.6875rem] text-xl text-gray" : "text-black"}`}
+          className={cn(
+            "absolute -top-4  text-2xl transition-all duration-200",
+            shrinkLabel ? "top-[-1.6875rem] text-xl text-gray" : "text-black"
+          )}
         >
           <span>{label} </span>
           {format && (
             <span
-              className={`text-gray text-xl transition-all duration-200 ${
-                shrinkLabel ? "opacity-0" : "opacity-100"
-              } ${formatLang === "en" ? "font-roboto" : ""}  `}
+              className={cn(
+                "text-gray text-xl transition-all duration-200",
+                shrinkLabel ? "opacity-0" : "opacity-100",
+                formatLang === "en" ? "font-roboto" : ""
+              )}
             >
               {format}
             </span>
@@ -49,14 +53,13 @@ export default function FloatLabelInput({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={label}
-          className={`block relative z-2 w-full border-b-[0.09375rem] ${
-            type === "tel" && "font-english-light"
-          }
-          ${type === "email" && "font-roboto"}
-          
-          ${
-            shrinkLabel ? "border-primary" : "border-gray"
-          }   text-primary  placeholder-transparent focus:outline-none $  `}
+          className={cn(
+            "block relative z-2 w-full border-b-[0.09375rem]",
+            type === "tel" && "font-english-light",
+            type === "email" && "font-roboto",
+            shrinkLabel ? "border-primary" : "border-gray",
+            "text-primary  placeholder-transparent focus:outline-none"
+          )}
           {...props}
         />{" "}
       </div>
