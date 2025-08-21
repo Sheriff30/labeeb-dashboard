@@ -29,6 +29,13 @@ export default function Page() {
     setIsTimerRunning(false);
   };
 
+  const handleLoginMethodChange = (method: LoginMethod) => {
+    setIsOtpSent(false);
+    setIsTimerRunning(false);
+    setLoginMethod(method);
+    form.reset();
+  };
+
   const form = useForm({
     defaultValues: {
       phoneNumber: "",
@@ -38,10 +45,13 @@ export default function Page() {
     onSubmit: async ({ value }) => {
       const { phoneNumber, email, otp } = value;
 
-      console.log("FormData", {
-        phoneNumber,
-        email,
-      });
+      if (loginMethod === "email") {
+        console.log("Email", email);
+      }
+
+      if (loginMethod === "phone") {
+        console.log("Phone", phoneNumber);
+      }
 
       console.log("OTP", otp);
     },
@@ -50,13 +60,13 @@ export default function Page() {
   const emailField = useField({
     name: "email",
     form,
-    validators: validators.email(),
+    validators: loginMethod === "email" ? validators.email() : undefined,
   });
 
   const phoneNumberField = useField({
     name: "phoneNumber",
     form,
-    validators: validators.phone(),
+    validators: loginMethod === "phone" ? validators.phone() : undefined,
   });
 
   const otpField = useField({
@@ -105,14 +115,14 @@ export default function Page() {
               variant="tertiary"
               text="بريد الكتروني"
               type="button"
-              onClick={() => setLoginMethod("email")}
+              onClick={() => handleLoginMethodChange("email")}
               className={cn(loginMethod === "email" && "bg-navy !text-white")}
             />
             <Button
               variant="tertiary"
               text="رقم الجوال"
               type="button"
-              onClick={() => setLoginMethod("phone")}
+              onClick={() => handleLoginMethodChange("phone")}
               className={cn(loginMethod === "phone" && "bg-navy !text-white")}
             />
           </div>
