@@ -4,7 +4,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib";
-import { Home, Trips } from "@/components/shared";
+import {
+  CancelledTripts,
+  Home,
+  PreviousTripts,
+  ScheduledTripts,
+  Trips,
+} from "@/components/shared";
 
 const SIDEBAR_ITEMS = [
   {
@@ -18,15 +24,18 @@ const SIDEBAR_ITEMS = [
     links: [
       {
         label: "الرحلات المكتملة",
-        href: "/",
+        icon: PreviousTripts,
+        href: "/school/previous-trips",
       },
       {
         label: "الرحلات المجدولة",
-        href: "/",
+        icon: ScheduledTripts,
+        href: "/school/scheduled-trips",
       },
       {
         label: "الرحلات الملغية",
-        href: "/",
+        icon: CancelledTripts,
+        href: "/school/cancelled-trips",
       },
     ],
   },
@@ -81,7 +90,10 @@ export default function RootSidebar() {
               <div
                 className={cn(
                   "flex items-center gap-2 cursor-pointer",
-                  isOpen === item.label && "text-primary-3"
+                  isOpen === item.label && "text-primary-3",
+                  item.links &&
+                    item.links.some((link) => link.href === pathname) &&
+                    "text-primary-3"
                 )}
                 onClick={() =>
                   setIsOpen((prev) => (prev === item.label ? "" : item.label))
@@ -98,8 +110,16 @@ export default function RootSidebar() {
                 )}
               >
                 {item.links?.map((link) => (
-                  <Link key={link.label} href={link.href}>
-                    {link.label}
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={cn(
+                      "flex items-center gap-2 text-2xl py-2 text-gray",
+                      pathname === link.href && "text-primary-3"
+                    )}
+                  >
+                    {link.icon && <link.icon />}
+                    <span>{link.label}</span>
                   </Link>
                 ))}
               </div>
