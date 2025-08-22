@@ -6,3 +6,4 @@ export * from "./OtpInput";
 export * from "./Timer";
 export * from "./FormField";
 export * from "./Icons";
+export * from "./TripsCard";

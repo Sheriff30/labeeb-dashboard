@@ -35,7 +35,7 @@ const SIDEBAR_ITEMS = [
       {
         label: "الرحلات الملغية",
         icon: CancelledTripts,
-        href: "/school/cancelled-trips",
+        href: "/school/canceled-trips",
       },
     ],
   },
