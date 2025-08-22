@@ -9,6 +9,7 @@ import {
   Timer,
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
+import { useModal } from "@/Context";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -19,12 +20,14 @@ import { validators } from "@/lib/constants/validation";
 import { cn } from "@/lib/utils";
 import { useField, useForm } from "@tanstack/react-form";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-
+  const { openModal, closeModal } = useModal();
+  const router = useRouter();
   const handleSendOtp = () => {
     setIsOtpSent(true);
     setIsTimerRunning(true);
@@ -59,7 +62,7 @@ export default function Page() {
         otp,
       } = value;
 
-      console.log("FormData", {
+      const formData = {
         name,
         city,
         district,
@@ -68,9 +71,24 @@ export default function Page() {
         phoneNumber,
         accountName,
         email,
-      });
+      };
 
       console.log("OTP", otp);
+
+      if (formData && otp.length === 6) {
+        form.reset();
+        openModal("SUCCESS", {
+          title:
+            "تم تقديم الطلب بنجاح وسيتم تفعيل حسابكم في مدة أقصاها 24 ساعة",
+          buttonText: " شكراً",
+          onConfirm: () => {
+            router.push("/login");
+            closeModal();
+          },
+        });
+        console.log("FormData", formData);
+        console.log("OTP", otp);
+      }
     },
   });
 
@@ -295,7 +313,7 @@ export default function Page() {
         </div>
 
         <Button type="submit" text="إنشاء حساب" variant="primary" />
-        <div className="text-2xl flex items-center gap-1">
+        <div className="text-2xl flex items-center gap-1 flex-wrap">
           <span>هل يوجد لديك حساب للمدرسة ؟</span>
           <Link href="/login" className="text-primary">
             {" "}

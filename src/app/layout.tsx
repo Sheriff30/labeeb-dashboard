@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ModalProvider } from "@/Context";
+import { ModalRenderer } from "@/components/ui";
 
 // Arabic font - Medium only
 const labeebArabicMedium = localFont({
@@ -43,7 +45,10 @@ export default function RootLayout({
       <body
         className={`${labeebArabicMedium.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
       >
-        {children}
+        <ModalProvider>
+          {children}
+          <ModalRenderer />
+        </ModalProvider>
       </body>
     </html>
   );

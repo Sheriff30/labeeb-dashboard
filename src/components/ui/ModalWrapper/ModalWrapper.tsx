@@ -1,0 +1,22 @@
+"use client";
+import React from "react";
+
+export default function ModalWrapper({
+  children,
+  onClose,
+}: {
+  children: React.ReactNode;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
+
+      {/* Modal Content */}
+      <div className="relative z-10 bg-white p-6 rounded-lg shadow-lg flex gap-3 flex-col max-w-125 w-full  justify-center text-center items-center">
+        {children}
+      </div>
+    </div>
+  );
+}

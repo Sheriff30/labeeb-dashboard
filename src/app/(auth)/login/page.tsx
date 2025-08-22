@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useForm, useField } from "@tanstack/react-form";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type LoginMethod = "email" | "phone";
 
@@ -19,6 +20,7 @@ export default function Page() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("email");
+  const router = useRouter();
 
   const handleSendOtp = () => {
     setIsOtpSent(true);
@@ -47,10 +49,12 @@ export default function Page() {
 
       if (loginMethod === "email") {
         console.log("Email", email);
+        router.push("/");
       }
 
       if (loginMethod === "phone") {
         console.log("Phone", phoneNumber);
+        router.push("/");
       }
 
       console.log("OTP", otp);
@@ -199,7 +203,7 @@ export default function Page() {
         </div>
 
         <Button type="submit" text="إنشاء حساب" variant="primary" />
-        <div className="text-2xl flex items-center gap-1">
+        <div className="text-2xl flex items-center gap-1 flex-wrap">
           <span> لا يوجد حساب للمدرسة؟ </span>{" "}
           <Link href="/signup" className="text-primary">
             {" "}
