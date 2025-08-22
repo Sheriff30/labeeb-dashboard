@@ -49,12 +49,12 @@ export default function Page() {
 
       if (loginMethod === "email") {
         console.log("Email", email);
-        router.push("/");
+        router.push("/school");
       }
 
       if (loginMethod === "phone") {
         console.log("Phone", phoneNumber);
-        router.push("/");
+        router.push("/school");
       }
 
       console.log("OTP", otp);
