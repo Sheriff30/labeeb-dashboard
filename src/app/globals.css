@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-arabic-medium: var(--font-labeeb-arabic-medium);
+  --font-arabic-light: var(--font-labeeb-arabic-light);
   --font-arabic-bold: var(--font-labeeb-arabic-bold);
   --font-english-medium: var(--font-labeeb-english-medium);
   --font-english-light: var(--font-labeeb-english-light);

@@ -10,6 +10,11 @@ const labeebArabicMedium = localFont({
   variable: "--font-labeeb-arabic-medium",
   display: "swap",
 });
+const labeebArabicLight = localFont({
+  src: "../../public/fonts/Labeeb-Arabic-Light.ttf",
+  variable: "--font-labeeb-arabic-light",
+  display: "swap",
+});
 
 const labeebArabicBold = localFont({
   src: "../../public/fonts/Labeeb-Arabic-Bold.ttf",
@@ -43,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${labeebArabicMedium.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
+        className={`${labeebArabicMedium.variable} ${labeebArabicLight.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
       >
         <ModalProvider>
           {children}

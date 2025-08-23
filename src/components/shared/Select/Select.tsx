@@ -15,6 +15,7 @@ type SelectProps = {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  variant?: "primary" | "secondary";
 };
 export default function Select({
   options,
@@ -22,6 +23,7 @@ export default function Select({
   onChange,
   placeholder,
   className,
+  variant = "primary",
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const SELECT_REF = useRef<HTMLDivElement>(null);
@@ -54,9 +56,17 @@ export default function Select({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "text-2xl border-b py-2 border-gray w-full flex items-center justify-between cursor-pointer",
+          "text-2xl w-full flex items-center justify-between cursor-pointer text-gray",
+
+          variant === "secondary" && "border-b-gray",
           isOpen || SELECTED ? "border-b-primary" : "border-b-gray",
-          SELECTED && "text-primary"
+          variant === "primary" && " py-2 border-b   ",
+          SELECTED && variant === "primary" && "text-primary border-b-primary",
+          SELECTED &&
+            variant === "secondary" &&
+            "text-primary-blue !font-arabic-medium !border-primary-blue",
+          variant === "secondary" &&
+            "border-b-gray py-[10px] px-3 border-2 border-gray rounded-[14px] font-arabic-light "
         )}
       >
         {SELECTED || placeholder}

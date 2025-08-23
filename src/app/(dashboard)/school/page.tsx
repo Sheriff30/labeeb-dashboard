@@ -1,4 +1,4 @@
-import { TripsCards } from "@/views/school";
+import { TripsCards, ViewTrips } from "@/views/school";
 import Image from "next/image";
 import React from "react";
 
@@ -13,6 +13,7 @@ export default function page() {
         </div>
       </div>
       <TripsCards />
+      <ViewTrips />
     </div>
   );
 }
