@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+* {
+  border-box: box-sizing;
+}
+
 @theme inline {
   --font-arabic-medium: var(--font-labeeb-arabic-medium);
   --font-arabic-light: var(--font-labeeb-arabic-light);
@@ -39,4 +43,13 @@ input[type="checkbox"]:checked {
 
 @utility font-roboto {
   font-family: "Roboto", sans-serif;
+}
+.destination-swiper .swiper-button-next,
+.destination-swiper .swiper-button-prev {
+  @apply bg-black/10 rounded-full w-8 h-8 shadow-md backdrop-blur-sm text-white;
+}
+
+.destination-swiper .swiper-button-next::after,
+.destination-swiper .swiper-button-prev::after {
+  font-size: 16px;
 }
