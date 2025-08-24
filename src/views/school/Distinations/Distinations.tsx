@@ -23,7 +23,7 @@ export default function Distinations({
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,_378px)] gap-y-8 gap-x-10 overflow-y-auto pb-5 no-scrollbar">
+    <div className="grid grid-cols-3 gap-y-8 gap-x-10 overflow-y-auto pb-5 no-scrollbar">
       {distinations.map((distination) => (
         <DestinationCard key={distination.id} data={distination} />
       ))}

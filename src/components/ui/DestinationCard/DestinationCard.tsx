@@ -28,11 +28,18 @@ export default function DestinationCard({ data }: DestinationCardProps) {
         slidesPerView={1}
         navigation={true}
         loop={true}
-        className="destination-swiper max-w-[354px] rounded-xl mb-2"
+        className="destination-swiper  rounded-xl mb-2"
       >
         {data?.images?.map((image: string, index: number) => (
           <SwiperSlide key={index}>
-            <Image src={image} alt="destination" width={354} height={206} />
+            <div className="relative h-51.5 ">
+              <Image
+                src={image}
+                alt="destination"
+                fill
+                className="object-cover"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
