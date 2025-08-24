@@ -51,5 +51,9 @@ input[type="checkbox"]:checked {
 
 .destination-swiper .swiper-button-next::after,
 .destination-swiper .swiper-button-prev::after {
-  font-size: 16px;
+  @apply text-base;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  @apply hidden;
 }
