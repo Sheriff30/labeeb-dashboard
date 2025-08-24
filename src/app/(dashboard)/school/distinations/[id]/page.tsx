@@ -1,5 +1,4 @@
 import React from "react";
-
 export default function page() {
-  return <div>Scheduled Trips</div>;
+  return <div></div>;
 }

@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "مركز لبيب التعليمي",
+    "type": "ثقافي",
+    "images": [
+      "/images/destination.png",
+      "/images/destination.png",
+      "/images/destination.png"
+    ],
+    "pricePerStudent": 30
+  },
+  {
+    "id": 2,
+    "name": "مدينة الملك عبدالله الرياضية",
+    "type": "ترفيهي",
+    "images": [
+      "/images/destination.png",
+      "/images/destination.png",
+      "/images/destination.png"
+    ],
+    "pricePerStudent": 50
+  },
+  {
+    "id": 3,
+    "name": "متحف الفن الحديث",
+    "type": "ثقافي",
+    "images": [
+      "/images/destination.png",
+      "/images/destination.png",
+      "/images/destination.png"
+    ],
+    "pricePerStudent": 40
+  },
+  {
+    "id": 4,
+    "name": "حديقة الحيوانات",
+    "type": "ترفيهي",
+    "images": [
+      "/images/destination.png",
+      "/images/destination.png",
+      "/images/destination.png"
+    ],
+    "pricePerStudent": 60
+  },
+  {
+    "id": 5,
+    "name": "مركز العلوم والتكنولوجيا",
+    "type": "اخرى",
+    "images": [
+      "/images/destination.png",
+      "/images/destination.png",
+      "/images/destination.png"
+    ],
+    "pricePerStudent": 45
+  }
+]

@@ -1,19 +1,22 @@
 import { DestinationCard } from "@/components";
+import { distination } from "@/types";
 import React from "react";
-
-type distination = {
-  id: number;
-  name: string;
-  type: string;
-  images: string[];
-  pricePerStudent: number;
-};
 
 export default function Distinations({
   distinations,
+  isLoading,
 }: {
   distinations: distination[];
+  isLoading: boolean;
 }) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center text-2xl">
+        جاري تحميل الوجهات...
+      </div>
+    );
+  }
+
   if (!distinations.length) {
     return (
       <div className="flex  justify-center items-center text-2xl">

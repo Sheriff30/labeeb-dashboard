@@ -3,6 +3,9 @@
 import { Input, Select } from "@/components";
 import React, { useState } from "react";
 import { Distinations } from "@/views/school";
+import { axiosInstance } from "@/lib/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import { distination } from "@/types";
 
 const TRIPS_OPTIONS = [
   { label: "ثقافي", value: "ثقافي" },
@@ -10,68 +13,18 @@ const TRIPS_OPTIONS = [
   { label: "اخرى", value: "اخرى" },
   { label: "الكل", value: "الكل" },
 ];
-
+async function getDistinations(): Promise<distination[]> {
+  const { data } = await axiosInstance.get("/distinations");
+  return data;
+}
 export default function ViewTrips() {
+  const { isLoading, data: distinations = [] } = useQuery({
+    queryKey: ["distinations"],
+    queryFn: getDistinations,
+  });
+
   const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
-
-  const distinations = [
-    {
-      id: 1,
-      name: "مركز لبيب التعليمي",
-      type: "ثقافي",
-      images: [
-        "/images/destination.png",
-        "/images/destination.png",
-        "/images/destination.png",
-      ],
-      pricePerStudent: 30,
-    },
-    {
-      id: 2,
-      name: "مدينة الملك عبدالله الرياضية",
-      type: "ترفيهي",
-      images: [
-        "/images/destination.png",
-        "/images/destination.png",
-        "/images/destination.png",
-      ],
-      pricePerStudent: 50,
-    },
-    {
-      id: 3,
-      name: "متحف الفن الحديث",
-      type: "ثقافي",
-      images: [
-        "/images/destination.png",
-        "/images/destination.png",
-        "/images/destination.png",
-      ],
-      pricePerStudent: 40,
-    },
-    {
-      id: 4,
-      name: "حديقة الحيوانات",
-      type: "ترفيهي",
-      images: [
-        "/images/destination.png",
-        "/images/destination.png",
-        "/images/destination.png",
-      ],
-      pricePerStudent: 60,
-    },
-    {
-      id: 5,
-      name: "مركز العلوم والتكنولوجيا",
-      type: "اخرى",
-      images: [
-        "/images/destination.png",
-        "/images/destination.png",
-        "/images/destination.png",
-      ],
-      pricePerStudent: 45,
-    },
-  ];
 
   const filteredDistinations = distinations.filter((distination) => {
     const matchesTripType =
@@ -119,7 +72,7 @@ export default function ViewTrips() {
       </div>
 
       {/* Distination */}
-      <Distinations distinations={filteredDistinations} />
+      <Distinations distinations={filteredDistinations} isLoading={isLoading} />
     </div>
   );
 }

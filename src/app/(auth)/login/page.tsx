@@ -202,12 +202,12 @@ export default function Page() {
           </FormField>
         </div>
 
-        <Button type="submit" text="إنشاء حساب" variant="primary" />
+        <Button type="submit" text="تسجيل دخول" variant="primary" />
         <div className="text-2xl flex items-center gap-1 flex-wrap">
           <span> لا يوجد حساب للمدرسة؟ </span>{" "}
           <Link href="/signup" className="text-primary">
             {" "}
-            إنشاء حساب
+            تسجيل دخول{" "}
           </Link>
         </div>
       </form>
