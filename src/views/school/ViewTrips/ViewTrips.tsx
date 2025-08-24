@@ -3,8 +3,7 @@
 import { Input, Select } from "@/components";
 import React, { useState } from "react";
 import { Distinations } from "@/views/school";
-import { axiosInstance } from "@/lib/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { useDistinations } from "@/hooks/useDistinations";
 import { distination } from "@/types";
 
 const TRIPS_OPTIONS = [
@@ -13,29 +12,24 @@ const TRIPS_OPTIONS = [
   { label: "اخرى", value: "اخرى" },
   { label: "الكل", value: "الكل" },
 ];
-async function getDistinations(): Promise<distination[]> {
-  const { data } = await axiosInstance.get("/distinations");
-  return data;
-}
-export default function ViewTrips() {
-  const { isLoading, data: distinations = [] } = useQuery({
-    queryKey: ["distinations"],
-    queryFn: getDistinations,
-  });
 
+export default function ViewTrips() {
   const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
+  const { data: distinations = [], isLoading } = useDistinations();
 
-  const filteredDistinations = distinations.filter((distination) => {
-    const matchesTripType =
-      selectedTrip === "" ||
-      selectedTrip === "الكل" ||
-      distination.type === selectedTrip;
-    const matchesTripName =
-      tripName === "" ||
-      distination.name.toLowerCase().includes(tripName.toLowerCase());
-    return matchesTripType && matchesTripName;
-  });
+  const filteredDistinations = distinations.filter(
+    (distination: distination) => {
+      const matchesTripType =
+        selectedTrip === "" ||
+        selectedTrip === "الكل" ||
+        distination.type === selectedTrip;
+      const matchesTripName =
+        tripName === "" ||
+        distination.name.toLowerCase().includes(tripName.toLowerCase());
+      return matchesTripType && matchesTripName;
+    }
+  );
 
   return (
     <div className="flex flex-col gap-3 overflow-y-auto ">

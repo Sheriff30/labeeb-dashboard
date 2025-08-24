@@ -1,6 +1,4 @@
 "use client";
-import { axiosInstance } from "@/lib/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,19 +7,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
+import { useDistination } from "@/hooks/useDistinations";
 
 export default function Page() {
-  const { id } = useParams();
+  const params = useParams();
+  const id: string = Array.isArray(params?.id)
+    ? params.id[0]
+    : params?.id ?? "";
 
-  async function getDistination() {
-    const { data } = await axiosInstance.get(`/distinations/${id}`);
-    return data;
-  }
-
-  const { isLoading, data: distination = [] } = useQuery({
-    queryKey: ["distinations", id],
-    queryFn: getDistination,
-  });
+  const { data: distination, isLoading } = useDistination(id);
 
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الوجهة...</div>;
