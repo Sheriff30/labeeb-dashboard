@@ -9,9 +9,19 @@ import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { Button } from "@/components/shared";
 
-export default function DestinationCard({ data }) {
+type DestinationCardProps = {
+  data: {
+    id: number;
+    name: string;
+    type: string;
+    images: string[];
+    pricePerStudent: number;
+  };
+};
+
+export default function DestinationCard({ data }: DestinationCardProps) {
   return (
-    <div className="max-w-[378px] w-full border-[1.5px] border-black/15 rounded-xl p-3">
+    <div className="w-full border-[1.5px] border-black/15 rounded-xl p-3">
       <Swiper
         modules={[Navigation]}
         spaceBetween={30}
@@ -20,36 +30,25 @@ export default function DestinationCard({ data }) {
         loop={true}
         className="destination-swiper max-w-[354px] rounded-xl mb-2"
       >
-        <SwiperSlide>
-          <Image
-            src="/images/destination.png"
-            alt="destination"
-            width={354}
-            height={206}
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Image
-            src="/images/destination.png"
-            alt="destination"
-            width={354}
-            height={206}
-          />
-        </SwiperSlide>
+        {data?.images?.map((image: string, index: number) => (
+          <SwiperSlide key={index}>
+            <Image src={image} alt="destination" width={354} height={206} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <div className="flex justify-between gap-1 mb-[15px]">
-        <div className="text-2xl"> متحف الدينار الاسلامى</div>
-        <div className="text-xl text-primary-blue">ثقافى</div>
+        <div className="text-2xl"> {data?.name}</div>
+        <div className="text-xl text-primary-blue">{data?.type}</div>
       </div>
       <div className="flex gap-1 text-primary-blue items-center ">
         <Button
           text="احجز الان"
           type="button"
           variant="primary"
-          href="/school"
+          href={`/school/trips/${data?.id}`}
         />
         <div className="flex items-center gap-1 text-3xl">
-          <div className="font-arabic-bold">30</div>
+          <div className="font-arabic-bold">{data?.pricePerStudent}</div>
           <Image
             src="/images/currency.svg"
             alt="currency"

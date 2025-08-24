@@ -1,18 +1,88 @@
 "use client";
 
-import { DestinationCard, Input, Select } from "@/components";
+import { Input, Select } from "@/components";
 import React, { useState } from "react";
+import { Distinations } from "@/views/school";
 
 const TRIPS_OPTIONS = [
-  { label: "ثقافية", value: "cultural" },
-  { label: "ترفيهية", value: "entertainment" },
-  { label: "صناعية", value: "health" },
-  { label: "اخرى", value: "other" },
+  { label: "ثقافي", value: "ثقافي" },
+  { label: "ترفيهي", value: "ترفيهي" },
+  { label: "اخرى", value: "اخرى" },
+  { label: "الكل", value: "الكل" },
 ];
 
 export default function ViewTrips() {
-  const [selectedTrip, setSelectedTrip] = useState("all");
+  const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
+
+  const distinations = [
+    {
+      id: 1,
+      name: "مركز لبيب التعليمي",
+      type: "ثقافي",
+      images: [
+        "/images/destination.png",
+        "/images/destination.png",
+        "/images/destination.png",
+      ],
+      pricePerStudent: 30,
+    },
+    {
+      id: 2,
+      name: "مدينة الملك عبدالله الرياضية",
+      type: "ترفيهي",
+      images: [
+        "/images/destination.png",
+        "/images/destination.png",
+        "/images/destination.png",
+      ],
+      pricePerStudent: 50,
+    },
+    {
+      id: 3,
+      name: "متحف الفن الحديث",
+      type: "ثقافي",
+      images: [
+        "/images/destination.png",
+        "/images/destination.png",
+        "/images/destination.png",
+      ],
+      pricePerStudent: 40,
+    },
+    {
+      id: 4,
+      name: "حديقة الحيوانات",
+      type: "ترفيهي",
+      images: [
+        "/images/destination.png",
+        "/images/destination.png",
+        "/images/destination.png",
+      ],
+      pricePerStudent: 60,
+    },
+    {
+      id: 5,
+      name: "مركز العلوم والتكنولوجيا",
+      type: "اخرى",
+      images: [
+        "/images/destination.png",
+        "/images/destination.png",
+        "/images/destination.png",
+      ],
+      pricePerStudent: 45,
+    },
+  ];
+
+  const filteredDistinations = distinations.filter((distination) => {
+    const matchesTripType =
+      selectedTrip === "" ||
+      selectedTrip === "الكل" ||
+      distination.type === selectedTrip;
+    const matchesTripName =
+      tripName === "" ||
+      distination.name.toLowerCase().includes(tripName.toLowerCase());
+    return matchesTripType && matchesTripName;
+  });
 
   return (
     <div className="flex flex-col gap-3 overflow-y-auto ">
@@ -49,9 +119,7 @@ export default function ViewTrips() {
       </div>
 
       {/* Distination */}
-      <div className="grid grid-cols-3 gap-y-8 gap-x-10 overflow-y-auto ">
-        <DestinationCard />
-      </div>
+      <Distinations distinations={filteredDistinations} />
     </div>
   );
 }
