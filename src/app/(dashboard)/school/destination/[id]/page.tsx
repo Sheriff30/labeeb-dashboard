@@ -15,7 +15,7 @@ export default function Page() {
     ? params.id[0]
     : params?.id ?? "";
 
-  const { data: distination, isLoading } = useDestination(id);
+  const { data: destination, isLoading } = useDestination(id);
 
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الوجهة...</div>;
@@ -32,7 +32,7 @@ export default function Page() {
           loop={true}
           className="destination-swiper rounded-xl mb-2 w-full"
         >
-          {distination?.images?.map((image: string, index: number) => (
+          {destination?.images?.map((image: string, index: number) => (
             <SwiperSlide key={index}>
               <div className="relative h-102.5">
                 <Image
@@ -46,7 +46,7 @@ export default function Page() {
           ))}
         </Swiper>{" "}
         <div className="grid gap-3 grid-cols-3">
-          {distination?.images?.map((image: string, index: number) => (
+          {destination?.images?.map((image: string, index: number) => (
             <div
               className="relative h-32.5 rounded-sm overflow-hidden"
               key={index}
@@ -65,9 +65,9 @@ export default function Page() {
         <div>
           <div>
             <img src="/images/destination-type.svg" alt="" />
-            {distination.type}
+            {destination.type}
           </div>
-          <div>{distination.place}</div>
+          <div>{destination.place}</div>
         </div>
       </div>
     </form>

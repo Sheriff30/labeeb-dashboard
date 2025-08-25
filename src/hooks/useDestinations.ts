@@ -1,4 +1,4 @@
-import { getDestination, getDistinations } from "@/api/distinationsApi";
+import { getDestination, getDistinations } from "@/api/destinationsApi";
 import { useQuery } from "@tanstack/react-query";
 
 export const useDestinations = () => {

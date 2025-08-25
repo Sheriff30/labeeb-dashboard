@@ -3,10 +3,10 @@ import { destination } from "@/types";
 import React from "react";
 
 export default function Destinations({
-  distinations,
+  destinations,
   isLoading,
 }: {
-  distinations: destination[];
+  destinations: destination[];
   isLoading: boolean;
 }) {
   if (isLoading) {
@@ -17,7 +17,7 @@ export default function Destinations({
     );
   }
 
-  if (!distinations.length) {
+  if (!destinations.length) {
     return (
       <div className="flex  justify-center items-center text-2xl">
         لا توجد وجهات متاحة
@@ -27,8 +27,8 @@ export default function Destinations({
 
   return (
     <div className="grid grid-cols-3 gap-y-8 gap-x-10 overflow-y-auto pb-5 no-scrollbar">
-      {distinations.map((distination) => (
-        <DestinationCard key={distination.id} data={distination} />
+      {destinations.map((destination) => (
+        <DestinationCard key={destination.id} data={destination} />
       ))}
     </div>
   );

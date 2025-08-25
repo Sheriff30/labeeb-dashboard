@@ -4,7 +4,7 @@ import { Input, Select } from "@/components";
 import React, { useState } from "react";
 import { useDestinations } from "@/hooks/useDestinations";
 import { destination } from "@/types";
-import Destinations from "../Destination/Destination";
+import Destinations from "../Destinations/Destinations";
 
 const TRIPS_OPTIONS = [
   { label: "ثقافي", value: "ثقافي" },
@@ -16,9 +16,9 @@ const TRIPS_OPTIONS = [
 export default function ViewTrips() {
   const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
-  const { data: distinations = [], isLoading } = useDestinations();
+  const { data: destinations = [], isLoading } = useDestinations();
 
-  const filteredDistinations = distinations.filter(
+  const filtereddestinations = destinations.filter(
     (distination: destination) => {
       const matchesTripType =
         selectedTrip === "" ||
@@ -66,7 +66,7 @@ export default function ViewTrips() {
       </div>
 
       {/* Distination */}
-      <Destinations distinations={filteredDistinations} isLoading={isLoading} />
+      <Destinations destinations={filtereddestinations} isLoading={isLoading} />
     </div>
   );
 }
