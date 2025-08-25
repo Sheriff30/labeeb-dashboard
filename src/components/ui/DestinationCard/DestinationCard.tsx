@@ -8,9 +8,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { Button } from "@/components/shared";
-import { distination } from "@/types";
+import { destination } from "@/types";
 
-export default function DestinationCard({ data }: { data: distination }) {
+export default function DestinationCard({ data }: { data: destination }) {
   return (
     <div className="w-full border-[1.5px] border-black/15 rounded-xl p-3">
       <Swiper
@@ -43,7 +43,7 @@ export default function DestinationCard({ data }: { data: distination }) {
           text="احجز الان"
           type="button"
           variant="primary"
-          href={`/school/distinations/${data?.id}`}
+          href={`/school/destinations/${data?.id}`}
         />
         <div className="flex items-center gap-1 text-3xl">
           <div className="font-arabic-bold">{data?.pricePerStudent}</div>

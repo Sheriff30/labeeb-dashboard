@@ -19,14 +19,14 @@ export default function ViewTrips() {
   const { data: destinations = [], isLoading } = useDestinations();
 
   const filtereddestinations = destinations.filter(
-    (distination: destination) => {
+    (destination: destination) => {
       const matchesTripType =
         selectedTrip === "" ||
         selectedTrip === "الكل" ||
-        distination.type === selectedTrip;
+        destination.type === selectedTrip;
       const matchesTripName =
         tripName === "" ||
-        distination.name.toLowerCase().includes(tripName.toLowerCase());
+        destination.name.toLowerCase().includes(tripName.toLowerCase());
       return matchesTripType && matchesTripName;
     }
   );
@@ -65,7 +65,7 @@ export default function ViewTrips() {
         </div>{" "}
       </div>
 
-      {/* Distination */}
+      {/* destination */}
       <Destinations destinations={filtereddestinations} isLoading={isLoading} />
     </div>
   );
