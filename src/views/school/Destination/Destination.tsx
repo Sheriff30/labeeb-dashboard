@@ -1,12 +1,12 @@
 import { DestinationCard } from "@/components";
-import { distination } from "@/types";
+import { destination } from "@/types";
 import React from "react";
 
-export default function Distinations({
+export default function Destinations({
   distinations,
   isLoading,
 }: {
-  distinations: distination[];
+  distinations: destination[];
   isLoading: boolean;
 }) {
   if (isLoading) {

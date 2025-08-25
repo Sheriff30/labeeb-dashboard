@@ -2,9 +2,9 @@
 
 import { Input, Select } from "@/components";
 import React, { useState } from "react";
-import { Distinations } from "@/views/school";
-import { useDistinations } from "@/hooks/useDistinations";
-import { distination } from "@/types";
+import { useDestinations } from "@/hooks/useDestinations";
+import { destination } from "@/types";
+import Destinations from "../Destination/Destination";
 
 const TRIPS_OPTIONS = [
   { label: "ثقافي", value: "ثقافي" },
@@ -16,10 +16,10 @@ const TRIPS_OPTIONS = [
 export default function ViewTrips() {
   const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
-  const { data: distinations = [], isLoading } = useDistinations();
+  const { data: distinations = [], isLoading } = useDestinations();
 
   const filteredDistinations = distinations.filter(
-    (distination: distination) => {
+    (distination: destination) => {
       const matchesTripType =
         selectedTrip === "" ||
         selectedTrip === "الكل" ||
@@ -66,7 +66,7 @@ export default function ViewTrips() {
       </div>
 
       {/* Distination */}
-      <Distinations distinations={filteredDistinations} isLoading={isLoading} />
+      <Destinations distinations={filteredDistinations} isLoading={isLoading} />
     </div>
   );
 }

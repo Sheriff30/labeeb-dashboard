@@ -1,4 +1,4 @@
-export type distination = {
+export type destination = {
   id: number;
   name: string;
   type: string;

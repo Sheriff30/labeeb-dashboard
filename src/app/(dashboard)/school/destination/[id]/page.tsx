@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
-import { useDistination } from "@/hooks/useDistinations";
+import { useDestination } from "@/hooks/useDestinations";
 
 export default function Page() {
   const params = useParams();
@@ -15,14 +15,14 @@ export default function Page() {
     ? params.id[0]
     : params?.id ?? "";
 
-  const { data: distination, isLoading } = useDistination(id);
+  const { data: distination, isLoading } = useDestination(id);
 
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الوجهة...</div>;
   }
 
   return (
-    <div className="grid grid-cols-[31.6rem_1fr]">
+    <form className="grid gap-3 grid-cols-[31.6rem_1fr]">
       <div className="grid gap-2">
         <Swiper
           modules={[Navigation]}
@@ -61,7 +61,15 @@ export default function Page() {
           ))}
         </div>
       </div>
-      <div></div>
-    </div>
+      <div>
+        <div>
+          <div>
+            <img src="/images/destination-type.svg" alt="" />
+            {distination.type}
+          </div>
+          <div>{distination.place}</div>
+        </div>
+      </div>
+    </form>
   );
 }
