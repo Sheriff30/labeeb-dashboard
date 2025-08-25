@@ -1,4 +1,6 @@
 "use client";
+import { cn } from "@/lib";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 export default function ModalWrapper({
@@ -8,8 +10,15 @@ export default function ModalWrapper({
   children: React.ReactNode;
   onClose: () => void;
 }) {
+  const pathname = usePathname();
+  const isSchoolPath = pathname?.includes("school");
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      className={cn(
+        " w-full inset-0 z-50 flex items-center justify-center p-4",
+        isSchoolPath ? "absolute top-0 left-0" : "fixed"
+      )}
+    >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
 

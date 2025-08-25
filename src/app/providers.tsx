@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { ModalProvider } from "@/Context";
 import { ModalRenderer } from "@/components/ui";
+import { usePathname } from "next/navigation";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  // Create a new QueryClient instance for each request
+  const pathname = usePathname();
+  const isSchoolPath = pathname?.includes("school");
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -21,10 +23,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ModalProvider>
-        {children}
-        <ModalRenderer />
-      </ModalProvider>
+      {isSchoolPath ? (
+        children
+      ) : (
+        <ModalProvider>
+          {children}
+          <ModalRenderer />
+        </ModalProvider>
+      )}
     </QueryClientProvider>
   );
 }
