@@ -64,9 +64,20 @@ export default function Page() {
       <div>
         <div>
           <div>
-            <img src="/images/destination-type.svg" alt="" />
+            <Image
+              src="/images/destination-type.svg"
+              alt={destination.type}
+              width={32}
+              height={32}
+            />
             {destination.type}
-          </div>
+          </div>{" "}
+          <Image
+            src="/images/location.svg"
+            alt={destination.type}
+            width={32}
+            height={32}
+          />
           <div>{destination.place}</div>
         </div>
       </div>
