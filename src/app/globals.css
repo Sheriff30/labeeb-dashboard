@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-* {
-  border-box: box-sizing;
-}
-
 @theme inline {
   --font-arabic-medium: var(--font-labeeb-arabic-medium);
   --font-arabic-light: var(--font-labeeb-arabic-light);

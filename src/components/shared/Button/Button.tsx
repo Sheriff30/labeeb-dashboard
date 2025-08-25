@@ -22,7 +22,8 @@ export default function Button({
     "py-1 px-6 transition-all duration-200 cursor-pointer",
     className,
     variant === "primary" && "text-[32px] text-white bg-primary  rounded-lg ",
-    variant === "secondary" && "",
+    variant === "secondary" &&
+      "border-2 border-primary rounded-lg text-3xl text-primary",
     variant === "tertiary" &&
       "text-navy border-navy border-[1.5px] rounded-[14px] text-2xl disabled:border-gray disabled:text-gray disabled:cursor-not-allowed"
   );

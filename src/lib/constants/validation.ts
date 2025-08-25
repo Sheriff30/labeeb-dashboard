@@ -46,4 +46,19 @@ export const validators = {
       return "";
     },
   }),
+
+  capacity: (fieldName: string, maxCapacity: number) => ({
+    onChange: ({ value }: { value: string | number }) => {
+      if (value === undefined || value === null || value === "")
+        return `${fieldName} مطلوب`;
+
+      const numericValue = Number(value);
+      if (isNaN(numericValue)) return `${fieldName} يجب أن يكون رقماً`;
+      if (numericValue > maxCapacity)
+        return `${fieldName} يجب ألا يزيد عن ${maxCapacity} طالب`;
+      if (numericValue <= 0) return `${fieldName} يجب أن يكون أكبر من صفر`;
+
+      return undefined;
+    },
+  }),
 };
