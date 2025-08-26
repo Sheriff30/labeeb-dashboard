@@ -175,7 +175,7 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col h-full pb-10 ">
+        <div className="flex flex-col h-full">
           <div className="text-4xl font-arabic-bold mb-8">
             بيانات حجز الرحلة
           </div>
@@ -262,8 +262,8 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <div className="!mt-auto">
-            <Button text="إحجز الآن" type="submit" />
+          <div className="mt-auto mb-auto  max-w-[426px] w-full">
+            <Button text="إحجز الآن" type="submit" className="w-full" />
           </div>
         </div>
       )}
