@@ -24,3 +24,10 @@ export type file = {
   levels: string[];
   filePath: string;
 };
+
+export type packageType = {
+  name: string;
+  price: string;
+  unit: string;
+  items: string[];
+};

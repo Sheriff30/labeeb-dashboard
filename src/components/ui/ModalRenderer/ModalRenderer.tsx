@@ -1,7 +1,10 @@
 "use client";
 import { useModal } from "@/Context";
-import { SuccessModal } from "@/components/ui";
-import { FileSelectionModal } from "../Modals/FileSelectionModal";
+import {
+  FileSelectionModal,
+  PackagesModal,
+  SuccessModal,
+} from "@/components/ui";
 
 export default function ModalRenderer() {
   const { modal, closeModal } = useModal();
@@ -13,7 +16,8 @@ export default function ModalRenderer() {
       return <SuccessModal {...modal.props} onClose={closeModal} />;
     case "FILE_SELECTION":
       return <FileSelectionModal {...modal.props} onClose={closeModal} />;
-
+    case "PACKAGES":
+      return <PackagesModal {...modal.props} onClose={closeModal} />;
     default:
       return null;
   }
