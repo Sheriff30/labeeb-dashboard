@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Currency() {
+export default function Currency({ className }: { className?: string }) {
   return (
     <svg
       width="37"
@@ -8,6 +8,7 @@ export default function Currency() {
       viewBox="0 0 37 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <path
         d="M23.1008 36.4634C22.4525 37.9273 22.0286 39.519 21.8623 41.1872L35.5278 38.2082C36.1761 36.7442 36.6001 35.1526 36.7663 33.4844L23.1008 36.4634Z"

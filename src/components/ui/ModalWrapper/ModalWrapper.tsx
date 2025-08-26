@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ModalWrapper({
   children,
@@ -14,15 +14,31 @@ export default function ModalWrapper({
 }) {
   const pathname = usePathname();
   const isSchoolPath = pathname?.includes("school");
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger entrance animation
+    setIsVisible(true);
+  }, []);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    // Wait for animation to complete before calling onClose
+    setTimeout(() => {
+      onClose();
+    }, 300); // Match the transition duration
+  };
+
   return (
     <div
       className={cn(
-        " w-full inset-0 z-50 flex items-center justify-center p-4",
-        isSchoolPath ? "absolute top-0 left-0" : "fixed"
+        "w-full inset-0 z-50 flex items-center justify-center p-15 transition-all duration-400 ease-in-out",
+        isSchoolPath ? "absolute top-0 left-0" : "fixed",
+        isVisible ? "opacity-100" : "opacity-0"
       )}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
+      <div className="absolute inset-0 bg-black/50" onClick={handleClose}></div>
 
       {/* Modal Content */}
       <div
