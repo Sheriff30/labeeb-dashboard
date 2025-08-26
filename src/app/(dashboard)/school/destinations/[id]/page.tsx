@@ -6,6 +6,8 @@ import { Destination } from "@/views/Destination";
 import { Button, FormField, Input } from "@/components";
 import { useField, useForm } from "@tanstack/react-form";
 import { validators } from "@/lib/constants/validation";
+import { useModal } from "@/Context";
+import { file } from "@/types";
 
 export default function Page() {
   const params = useParams();
@@ -13,6 +15,7 @@ export default function Page() {
     ? params.id[0]
     : params?.id ?? "";
   const { data: destination, isLoading } = useDestination(id);
+  const { openModal } = useModal();
 
   const form = useForm({
     defaultValues: {
@@ -45,9 +48,22 @@ export default function Page() {
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الوجهة...</div>;
   }
+  const handleFileSelect = (selectedFile: file) => {
+    console.log("Selected file:", selectedFile);
+    // Do something with the selected file
+  };
 
   function HandleShowFilesModal() {
     form.handleSubmit();
+    if (
+      numberOfStudents.state.value ||
+      tripDate.state.value ||
+      tripTime.state.value
+    ) {
+      openModal("FILE_SELECTION", {
+        onFileSelect: handleFileSelect,
+      });
+    }
   }
 
   return (

@@ -15,3 +15,12 @@ export type destination = {
   capacity: number;
   paymentMethod: string;
 };
+
+export type file = {
+  id: number;
+  title: string;
+  students: number;
+  gender: string[];
+  levels: string[];
+  filePath: string;
+};

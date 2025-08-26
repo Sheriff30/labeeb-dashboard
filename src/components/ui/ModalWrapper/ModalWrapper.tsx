@@ -6,9 +6,11 @@ import React from "react";
 export default function ModalWrapper({
   children,
   onClose,
+  className,
 }: {
   children: React.ReactNode;
   onClose: () => void;
+  className?: string;
 }) {
   const pathname = usePathname();
   const isSchoolPath = pathname?.includes("school");
@@ -23,7 +25,12 @@ export default function ModalWrapper({
       <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
 
       {/* Modal Content */}
-      <div className="relative z-10 bg-white p-6 rounded-lg shadow-lg flex gap-3 flex-col max-w-125 w-full  justify-center text-center items-center">
+      <div
+        className={cn(
+          className,
+          "relative z-10 bg-white p-6 rounded-lg shadow-lg flex gap-3 flex-col max-w-125 w-full  justify-center  items-center"
+        )}
+      >
         {children}
       </div>
     </div>

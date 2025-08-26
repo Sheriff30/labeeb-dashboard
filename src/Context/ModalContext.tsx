@@ -3,7 +3,7 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-type ModalType = "SUCCESS" | null;
+type ModalType = "SUCCESS" | "FILE_SELECTION" | null;
 
 interface ModalState {
   type: ModalType;

@@ -40,7 +40,9 @@ export default function SuccessModal({
         />
       </div>
       {title && (
-        <h2 className={cn("text-3xl font-bold", titleColor)}>{title}</h2>
+        <h2 className={cn("text-3xl font-bold text-center", titleColor)}>
+          {title}
+        </h2>
       )}
       {message && <p className="my-4 text-2xl">{message}</p>}
       <Button
