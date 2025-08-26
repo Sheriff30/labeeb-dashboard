@@ -110,6 +110,7 @@ export default function Page() {
 
   return (
     <form
+      className="h-full"
       onSubmit={async (e) => {
         e.preventDefault();
         form.handleSubmit();
@@ -174,7 +175,7 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        <>
+        <div className="flex flex-col h-full pb-10 ">
           <div className="text-4xl font-arabic-bold mb-8">
             بيانات حجز الرحلة
           </div>
@@ -192,7 +193,7 @@ export default function Page() {
               رجوع للخلف
             </div>
           </div>
-          <div>
+          <div className="mb-10">
             <div className="text-3xl mb-2">{destination.name}</div>
             <div className="flex gap-2 max-w-[900px] justify-between mb-6">
               <div className="text-2xl">
@@ -261,8 +262,10 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <Button text="إحجز الآن" className="!mt-auto" type="submit" />
-        </>
+          <div className="!mt-auto">
+            <Button text="إحجز الآن" type="submit" />
+          </div>
+        </div>
       )}
     </form>
   );
