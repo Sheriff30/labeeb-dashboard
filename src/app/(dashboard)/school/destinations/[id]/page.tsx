@@ -110,7 +110,7 @@ export default function Page() {
 
   return (
     <form
-      className="h-full"
+      className="h-full overflow-auto"
       onSubmit={async (e) => {
         e.preventDefault();
         form.handleSubmit();
