@@ -13,7 +13,7 @@ export default function Layout({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="grid grid-cols-1 grid-rows-[70px_1fr] xl:grid-rows-none xl:grid-cols-[auto_1fr] xl:h-screen bg-primary-2 ">
+    <div className="grid grid-cols-1 grid-rows-[70px_1fr] xl:grid-rows-none xl:grid-cols-[auto_1fr] xl:h-screen bg-primary-2  ">
       <RootSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
 
       <div className="flex justify-between items-center p-4 xl:hidden">
@@ -23,8 +23,8 @@ export default function Layout({ children }: Props) {
         </div>
         <Image src="/images/logo.svg" height={100} width={120} alt="logo" />
       </div>
-      <div className="relative">
-        <div className="xl:h-screen py-4 lg:py-8 overflow-y-auto px-4 lg:px-10 min-[1650px]:px-20 xl:rounded-tr-[60px] xl:rounded-br-[60px] bg-white  ">
+      <div className="relative overflow-x-auto overflow-y-auto">
+        <div className="xl:h-screen py-4 lg:py-8  px-4 lg:px-10 min-[1650px]:px-20 xl:rounded-tr-[60px] xl:rounded-br-[60px] bg-white  ">
           <ModalProvider>
             {children}
             <ModalRenderer />

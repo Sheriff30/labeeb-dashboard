@@ -2,18 +2,18 @@ import { TripsCard } from "@/components";
 import React from "react";
 const TRIPS_CARDS = [
   {
-    href: "/school/previous-trips",
+    href: "/school/trips/completed",
     type: "previous",
     info: "10",
   },
   {
-    href: "/school/canceled-trips",
+    href: "/school/trips/canceled",
     type: "canceled",
     info: "10",
   },
 
   {
-    href: "/school/scheduled-trips",
+    href: "/school/trips/scheduled",
     type: "scheduled",
     info: "10",
   },

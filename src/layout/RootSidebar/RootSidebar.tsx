@@ -25,17 +25,17 @@ const SIDEBAR_ITEMS = [
       {
         label: "الرحلات المكتملة",
         icon: PreviousTripts,
-        href: "/school/previous-trips",
+        href: "/school/trips/completed",
       },
       {
         label: "الرحلات المجدولة",
         icon: ScheduledTripts,
-        href: "/school/scheduled-trips",
+        href: "/school/trips/scheduled",
       },
       {
         label: "الرحلات الملغية",
         icon: CancelledTripts,
-        href: "/school/canceled-trips",
+        href: "/school/trips/canceled",
       },
     ],
   },

@@ -31,3 +31,27 @@ export type packageType = {
   unit: string;
   items: string[];
 };
+
+export type student = {
+  name: string;
+  phone: string;
+};
+
+export type students = {
+  paid: student[];
+  unpaid: student[];
+};
+
+export type trip = {
+  id: number;
+  destination: string;
+  status: "pending" | "scheduled" | "completed" | "canceled"; // Based on your status field
+  date: string; // ISO date format (YYYY-MM-DD)
+  day: string; // e.g., "الاثنين"
+  time: string; // e.g., "10:00 ص"
+  total_students: number;
+  paid_count: number;
+  unpaid_count: number;
+  location: string;
+  students: students;
+};

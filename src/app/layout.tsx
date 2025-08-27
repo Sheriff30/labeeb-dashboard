@@ -48,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${labeebArabicMedium.variable} ${labeebArabicLight.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
+        className={` ${labeebArabicMedium.variable} ${labeebArabicLight.variable} ${labeebArabicBold.variable} ${labeebEnglishMedium.variable} ${labeebEnglishLight.variable} antialiased`}
       >
         {" "}
         <Providers>{children}</Providers>
