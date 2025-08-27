@@ -14,7 +14,7 @@ export default function TripsCard({ href, type, info }: TripsCardProps) {
     <Link
       href={href}
       className={cn(
-        "p-6 flex flex-col gap-4 text-white rounded-[18px]",
+        "p-4 md:p-6 flex flex-col gap-4 text-white rounded-[18px]",
         type === "canceled" && "bg-error",
         type === "previous" && "bg-primary-green",
         type === "scheduled" && "bg-primary-blue"

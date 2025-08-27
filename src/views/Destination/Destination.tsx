@@ -13,8 +13,8 @@ type Props = {
 };
 export function Destination({ destination }: Props) {
   return (
-    <div className="grid gap-3 grid-cols-[31.6rem_1fr]">
-      <div className="grid gap-2">
+    <div className="grid gap-3 grid-cols-1 lg:grid-cols-[31.6rem_1fr]">
+      <div className="flex flex-col gap-2">
         <Swiper
           modules={[Navigation]}
           spaceBetween={30}
@@ -75,7 +75,7 @@ export function Destination({ destination }: Props) {
           </div>
         </div>
         {/* Group 2 */}
-        <div className="flex justify-between gap-2 text-3xl mb-2">
+        <div className="flex justify-between gap-2 text-3xl mb-2 flex-w flex-wrap">
           <div className="font-arabic-bold">{destination.name}</div>
           <div className="flex  items-center">
             <div className="text-xl text-gray font-arabic-light">تبدأ من</div>
@@ -90,7 +90,7 @@ export function Destination({ destination }: Props) {
         {/* Group 3 */}
         <div className="text-xl text-gray mb-4">{destination.description}</div>
         {/* Group 4 */}
-        <div className="flex justify-between gap-10 text-2xl mb-11 ">
+        <div className="flex justify-between gap-5 text-2xl mb-11 flex-wrap">
           {/* القدرة الإستيعابية */}
           <div className="flex flex-col items-center gap-2">
             <div className="text-primary">القدرة الإستيعابية</div>
@@ -102,18 +102,18 @@ export function Destination({ destination }: Props) {
             </div>
           </div>
           {/*الفئة*/}
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col  gap-2">
             <div className="text-primary">الفئة</div>
-            <div className="flex gap-0.5 flex-col items-center">
+            <div className="flex gap-2 items-center">
               <div>{destination.gender[0]}</div>
               {destination.gender[1] && <div>و</div>}
               <div>{destination.gender[1]}</div>
             </div>
           </div>
           {/* الأوقات الأيام المتاحة */}
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col  gap-2">
             <div className="text-primary">الأوقات الأيام المتاحة</div>
-            <div className="flex gap-2 flex-wrap items-center">
+            <div className="flex gap-2 flex-wrap items-center justify-center">
               {destination.availableDays.map((day: string) => (
                 <div key={day}>{day}</div>
               ))}

@@ -32,7 +32,7 @@ export default function ModalWrapper({
   return (
     <div
       className={cn(
-        "w-full inset-0 z-50 flex items-center justify-center p-15 transition-all duration-400 ease-in-out",
+        "w-full inset-0 z-20 flex items-center justify-center p-4 lg:p-15 transition-all duration-400 ease-in-out",
         isSchoolPath ? "absolute top-0 left-0" : "fixed",
         isVisible ? "opacity-100" : "opacity-0"
       )}

@@ -124,9 +124,9 @@ export default function Page() {
               بيانات حجز الرحلة
             </div>
             {/* input groups */}
-            <div className="flex gap-10 items-end">
+            <div className="flex gap-10 items-end flex-wrap">
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px]">
+              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit ">
                 <div className="text-2xl">عدد الطلاب</div>
                 <FormField field={numberOfStudents}>
                   <Input
@@ -139,7 +139,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px]">
+              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit">
                 <div className="text-2xl">تاريخ الرحلة</div>
 
                 <FormField field={tripDate}>
@@ -151,7 +151,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px]">
+              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit">
                 <div className="text-2xl">وقت الرحلة</div>
 
                 <FormField field={tripTime}>
@@ -163,7 +163,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* button */}
-              <div className="grid grid-rows-[auto_53px] w-full max-w-[426px]">
+              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit  max-w-[426px]">
                 <span></span>
                 <Button
                   text="حجز الرحلة"
@@ -195,7 +195,7 @@ export default function Page() {
           </div>
           <div className="mb-10">
             <div className="text-3xl mb-2">{destination.name}</div>
-            <div className="flex gap-2 max-w-[900px] justify-between mb-6">
+            <div className="flex flex-col md:flex-row gap-2 max-w-[900px] justify-between mb-6">
               <div className="text-2xl">
                 <div className="text-2xl mb-1">عدد الطلاب</div>
                 <div className="border border-primary-blue py-2 px-4 text-primary-blue rounded-xl  w-full">

@@ -21,7 +21,7 @@ const TRIPS_CARDS = [
 
 export default function TripsCards() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
       {TRIPS_CARDS.map((trip) => (
         <TripsCard key={trip.href} {...trip} />
       ))}

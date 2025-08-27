@@ -41,24 +41,37 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
-export default function RootSidebar() {
+type RootSidebarProps = {
+  setSidebarOpen: (open: boolean) => void;
+};
+
+export default function RootSidebar({ setSidebarOpen }: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
 
   const pathname = usePathname();
   return (
-    <div className="bg-primary-2 w-89 h-full px-6 py-4 flex flex-col gap-8">
+    <div className="bg-primary-2 w-70 xl:w-89 h-full px-6 py-4 flex flex-col gap-4 xl:gap-8 fixed  xl:relative top-0 righ-0 z-30">
+      <Image
+        src="/images/close.svg"
+        width={30}
+        height={30}
+        alt="close icon"
+        className="xl:hidden mr-auto"
+        onClick={() => setSidebarOpen(false)}
+      />
+
       <Image
         src="/images/logo.svg"
         alt="logo"
         width={188}
         height={73}
-        className="mx-auto"
+        className="mx-auto  hidden xl:block"
       />
       <div className="text-center">
-        <div className="text-primary-3 text-[2.5rem] font-arabic-bold">
+        <div className="text-primary-3 text-3xl xl:text-[2.5rem] font-arabic-bold truncate ">
           مدرسة رياض نجد
         </div>
-        <div className="text-gray text-2xl font-roboto">
+        <div className="text-gray text-lg xl:text-2xl font-roboto  ">
           m29026753@gmail.com
         </div>
       </div>

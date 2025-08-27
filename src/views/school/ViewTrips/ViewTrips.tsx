@@ -39,8 +39,8 @@ export default function ViewTrips() {
       </div>
 
       {/* Trip Form */}
-      <div className="flex  gap-[76px] mb-5">
-        <div className="flex gap-3 items-center text-2xl max-w-[415px] w-full ">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-[76px] mb-5">
+        <div className="flex flex-col md:flex-row gap-3 md:items-center text-2xl md:max-w-[415px] w-full ">
           <div className="text-nowrap">اسم الوجهة</div>
           <div className="w-full">
             <Input
@@ -50,7 +50,7 @@ export default function ViewTrips() {
             />
           </div>
         </div>
-        <div className="flex gap-3 items-center text-2xl max-w-[300px] w-full ">
+        <div className="flex flex-col md:flex-row gap-3 md:items-center text-2xl md:max-w-[300px] w-full ">
           <div className="text-nowrap">نوع الرحلة</div>
           <div className="w-full">
             <Select

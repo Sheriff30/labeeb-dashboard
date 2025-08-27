@@ -20,7 +20,7 @@ export default function Button({
 }: ButtonProps) {
   const buttonClasses = cn(
     className,
-    "py-1 px-6 transition-all duration-200 cursor-pointer",
+    "py-1 px-4 md:px-6 transition-all duration-200 cursor-pointer",
     variant === "primary" && "text-[32px] text-white bg-primary  rounded-lg ",
     variant === "secondary" &&
       "border-2 border-primary rounded-lg text-3xl text-primary",

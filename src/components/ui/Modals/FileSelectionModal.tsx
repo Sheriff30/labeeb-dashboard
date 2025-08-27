@@ -66,7 +66,7 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
               <div
                 key={file.id}
                 onClick={() => handleFileSelect(file.filePath)}
-                className="border-2 border-primary cursor-pointer py-3 px-7 max-w-[455px] rounded-xl flex items-center gap-6"
+                className="border-2 border-primary cursor-pointer py-1.5 lg:py-3 px-3 lg:px-7 max-w-[455px] rounded-xl flex items-center gap-3 lg:gap-6"
               >
                 <input
                   type="checkbox"
@@ -76,7 +76,7 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
                 />
                 <div className="flex flex-col gap-2 text-xl text-gray w-full">
                   <div className="text-2xl text-primary">{file.title}</div>
-                  <div className="flex  justify-between items-center font-arabic-light gap-1">
+                  <div className="flex   items-center font-arabic-light gap-4 flex-wrap">
                     <div>
                       <span className="font-roboto">{file.students}</span> طالب
                     </div>

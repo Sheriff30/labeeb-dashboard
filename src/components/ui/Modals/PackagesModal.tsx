@@ -54,7 +54,7 @@ export const PackagesModal: React.FC<PackagesProps> = ({
         <div className="text-primary text-5xl mb-8  ">
           إختر الباقة المناسبة{" "}
         </div>
-        <div className="flex gap-9 items-start mb-17">
+        <div className="flex gap-9 items-start mb-17 flex-col lg:flex-row">
           {packages?.map((p: packageType) => {
             return (
               <div

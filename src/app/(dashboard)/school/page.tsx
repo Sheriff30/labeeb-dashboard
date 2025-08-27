@@ -4,7 +4,7 @@ import React from "react";
 
 export default function page() {
   return (
-    <div className="grid grid-rows-[auto_auto_1fr] h-full gap-10">
+    <div className="grid  xl:grid-rows-[auto_auto_1fr] h-full gap-10">
       <div className="flex items-center gap-2 text-3xl">
         <Image src="/images/wave.svg" alt="wave" width={34} height={35} />
         <div className="flex gap-2 text-primary-3">

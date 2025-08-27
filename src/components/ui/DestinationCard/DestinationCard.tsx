@@ -38,7 +38,7 @@ export default function DestinationCard({ data }: { data: destination }) {
         <div className="text-2xl"> {data?.name}</div>
         <div className="text-xl text-primary-blue">{data?.type}</div>
       </div>
-      <div className="flex gap-1 text-primary-blue items-center ">
+      <div className="flex gap-2 text-primary-blue items-center ">
         <Button
           text="احجز الان"
           type="button"

@@ -26,7 +26,7 @@ export default function Destinations({
   }
 
   return (
-    <div className="grid grid-cols-3 gap-y-8 gap-x-10 overflow-y-auto  no-scrollbar">
+    <div className="grid  grid-cols-1 md:grid-cols-2 min-[1550px]:!grid-cols-3 gap-4 min-[1550px]:gap-x-10  min-[1550px]:gap-y-8 max-h-[600px] xl-max-h-auto overflow-y-auto  no-scrollbar ">
       {destinations.map((destination) => (
         <DestinationCard key={destination.id} data={destination} />
       ))}
