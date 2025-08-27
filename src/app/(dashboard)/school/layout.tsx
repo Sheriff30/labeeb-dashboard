@@ -3,7 +3,7 @@ import { ModalRenderer } from "@/components";
 import { ModalProvider } from "@/Context";
 import { RootSidebar } from "@/layout";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -12,23 +12,10 @@ type Props = {
 export default function Layout({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1280) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <div className="grid grid-cols-1 grid-rows-[70px_1fr] xl:grid-rows-none xl:grid-cols-[auto_1fr] xl:h-screen bg-primary-2 ">
-      {sidebarOpen && <RootSidebar setSidebarOpen={setSidebarOpen} />}
+      <RootSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+
       <div className="flex justify-between items-center p-4 xl:hidden">
         <div onClick={() => setSidebarOpen(!sidebarOpen)}>
           {" "}

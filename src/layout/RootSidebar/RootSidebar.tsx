@@ -43,14 +43,23 @@ const SIDEBAR_ITEMS = [
 
 type RootSidebarProps = {
   setSidebarOpen: (open: boolean) => void;
+  sidebarOpen: boolean;
 };
 
-export default function RootSidebar({ setSidebarOpen }: RootSidebarProps) {
+export default function RootSidebar({
+  setSidebarOpen,
+  sidebarOpen,
+}: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
 
   const pathname = usePathname();
   return (
-    <div className="bg-primary-2 w-70 xl:w-89 h-full px-6 py-4 flex flex-col gap-4 xl:gap-8 fixed  xl:relative top-0 righ-0 z-30">
+    <div
+      className={cn(
+        sidebarOpen ? "!flex" : "hidden",
+        "xl:bg-primary-2 bg-primary-2/50 backdrop-blur-3xl xl:backdrop-blur-none w-70 xl:w-89 h-full px-6 py-4 hidden xl:flex  flex-col gap-4 xl:gap-8 fixed  xl:relative top-0 righ-0 z-30"
+      )}
+    >
       <Image
         src="/images/close.svg"
         width={30}
