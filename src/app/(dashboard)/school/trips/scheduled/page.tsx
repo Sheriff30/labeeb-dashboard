@@ -54,17 +54,19 @@ export default function Page() {
                     <td className="text-center">{trip.time}</td>
                     <td className="text-center">{trip.total_students}</td>
                     <td className="text-center">{trip.paid_count}</td>
-                    <td className="text-center">{trip.unpaid_count}</td>
+                    <td className="text-center text-error">
+                      {trip.unpaid_count}
+                    </td>
                     <td className="text-center">
                       <div className="flex gap-4 items-center">
                         <Button
                           text="موقع الرحلة"
                           className="!text-xl !py-0.5 !px-1.5"
-                          href=""
+                          href={`https://www.google.com/maps/search/?api=1&query=${trip.location}`}
                         />
                         <Button
                           text="الغاء الرحلة"
-                          className="!text-xl !py-0.5 !px-1.5"
+                          className="!text-xl !py-0.5 !px-1.5 !bg-error "
                         />
                         <Image
                           src="/images/table-arrow.svg"

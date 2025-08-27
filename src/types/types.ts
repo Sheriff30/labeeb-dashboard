@@ -44,6 +44,7 @@ export type students = {
 
 export type trip = {
   id: number;
+  trip_price: number;
   destination: string;
   status: "pending" | "scheduled" | "completed" | "canceled"; // Based on your status field
   date: string; // ISO date format (YYYY-MM-DD)
@@ -54,4 +55,7 @@ export type trip = {
   unpaid_count: number;
   location: string;
   students: students;
+  cancellation_date: string;
+  refund_status: string;
+  cancellation_reason: string;
 };

@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "trip_price": 1000,
     "destination": "رحله متحف الرمال الاسلامى",
     "status": "completed",
     "date": "2025-08-03",
@@ -32,6 +33,7 @@
   },
   {
     "id": 2,
+    "trip_price": 1000,
     "destination": "رحله متحف الرمال الاسلامى",
     "status": "completed",
     "date": "2025-08-03",
@@ -63,6 +65,7 @@
   },
   {
     "id": 3,
+    "trip_price": 1000,
     "destination": "رحله متحف اللوفر",
     "status": "scheduled",
     "date": "2025-09-10",
@@ -85,6 +88,7 @@
   },
   {
     "id": 4,
+    "trip_price": 1000,
     "destination": "رحله متحف اللوفر",
     "status": "scheduled",
     "date": "2025-09-10",
@@ -107,6 +111,7 @@
   },
   {
     "id": 5,
+    "trip_price": 1000,
     "destination": "رحله متحف اللوفر",
     "status": "canceled",
     "date": "2025-09-10",
@@ -116,6 +121,9 @@
     "paid_count": 30,
     "unpaid_count": 10,
     "location": "القاهرة، مصر",
+    "cancellation_date": "2025-09-08",
+    "refund_status": "قيد التنفيذ",
+    "cancellation_reason": "طلب عن طريق الخطاء",
     "students": {
       "paid": [
         { "name": "أحمد محمد", "phone": "01099999999" },
@@ -124,6 +132,86 @@
       "unpaid": [
         { "name": "إسلام سامي", "phone": "01077777777" },
         { "name": "هدى أحمد", "phone": "01066666666" }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "trip_price": 800,
+    "destination": "رحله متحف الدينار الاسلامي",
+    "status": "canceled",
+    "date": "2025-08-03",
+    "day": "الاثنين",
+    "time": "10:00 ص",
+    "total_students": 30,
+    "paid_count": 20,
+    "unpaid_count": 10,
+    "location": "الإسكندرية، مصر",
+    "cancellation_date": "2025-08-01",
+    "refund_status": "قيد التنفيذ",
+    "cancellation_reason": "طلب عن طريق الخطاء",
+    "students": {
+      "paid": [
+        { "name": "محمد علي أحمد", "phone": "01011111111" },
+        { "name": "فاطمة حسن", "phone": "01022222222" },
+        { "name": "أحمد سامي", "phone": "01033333333" }
+      ],
+      "unpaid": [
+        { "name": "علي محمد", "phone": "01044444444" },
+        { "name": "سارة أحمد", "phone": "01055555555" }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "trip_price": 1200,
+    "destination": "رحله متحف الفن الإسلامي",
+    "status": "canceled",
+    "date": "2025-09-15",
+    "day": "الأحد",
+    "time": "11:00 ص",
+    "total_students": 25,
+    "paid_count": 15,
+    "unpaid_count": 10,
+    "location": "القاهرة، مصر",
+    "cancellation_date": "2025-09-12",
+    "refund_status": "مكتمل",
+    "cancellation_reason": "تغيير في الجدول الدراسي",
+    "students": {
+      "paid": [
+        { "name": "يوسف خالد", "phone": "01066666666" },
+        { "name": "مريم علي", "phone": "01077777777" }
+      ],
+      "unpaid": [
+        { "name": "خالد أحمد", "phone": "01088888888" },
+        { "name": "نور محمد", "phone": "01099999999" }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "trip_price": 900,
+    "destination": "رحله متحف الأقصر",
+    "status": "canceled",
+    "date": "2025-08-20",
+    "day": "الأربعاء",
+    "time": "8:00 ص",
+    "total_students": 35,
+    "paid_count": 25,
+    "unpaid_count": 10,
+    "location": "الأقصر، مصر",
+    "cancellation_date": "2025-08-18",
+    "refund_status": "قيد التنفيذ",
+    "cancellation_reason": "ظروف صحية",
+    "students": {
+      "paid": [
+        { "name": "أحمد حسن", "phone": "01012345678" },
+        { "name": "فاطمة علي", "phone": "01087654321" },
+        { "name": "محمد سامي", "phone": "01011223344" }
+      ],
+      "unpaid": [
+        { "name": "علي محمد", "phone": "01055667788" },
+        { "name": "سارة أحمد", "phone": "01099887766" }
       ]
     }
   }
