@@ -12,6 +12,7 @@ import {
   School,
   SubAdmin,
   Trips,
+  Notifications,
 } from "@/components/shared";
 
 const SIDEBAR_ITEMS = [
@@ -50,6 +51,11 @@ const SIDEBAR_ITEMS = [
     label: "إضافة مشرف فرعي",
     icon: SubAdmin,
     href: "/school/sub-admin",
+  },
+  {
+    label: "الإشعارات",
+    icon: Notifications,
+    href: "/school/notifications",
   },
 ];
 

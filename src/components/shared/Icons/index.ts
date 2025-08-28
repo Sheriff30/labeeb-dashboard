@@ -6,3 +6,4 @@ export { default as Currency } from "./Currency";
 export { default as Trips } from "./Trips";
 export { default as School } from "./School";
 export { default as SubAdmin } from "./SubAdmin";
+export { default as Notifications } from "./Notifications";

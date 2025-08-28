@@ -13,13 +13,13 @@ export default function SubAdmin() {
         d="M16 8L16 24"
         stroke="currentColor"
         strokeWidth="2"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <path
         d="M24 16L8 16"
         stroke="currentColor"
         strokeWidth="2"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );
