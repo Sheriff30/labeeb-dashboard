@@ -61,4 +61,12 @@ export const validators = {
       return undefined;
     },
   }),
+
+  number: () => ({
+    onChange: ({ value }: { value: string }) => {
+      if (isNaN(Number(value))) return "يجب أن يكون رقماً";
+      if (Number(value) < 0) return "يجب أن يكون رقماً موجباً";
+      return undefined;
+    },
+  }),
 };
