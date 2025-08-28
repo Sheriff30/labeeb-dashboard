@@ -69,4 +69,12 @@ export const validators = {
       return undefined;
     },
   }),
+
+  message: () => ({
+    onChange: ({ value }: { value: string }) => {
+      if (!value) return "رسالتك مطلوبة";
+      if (value.length < 10) return "رسالتك تجب أن تكون على الأقل 10 حروف";
+      return undefined;
+    },
+  }),
 };

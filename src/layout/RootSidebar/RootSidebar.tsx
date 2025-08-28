@@ -13,7 +13,11 @@ import {
   SubAdmin,
   Trips,
   Notifications,
+  Support,
+  Phone,
+  Message,
 } from "@/components/shared";
+import WhatsApp from "@/components/shared/Icons/WhatsApp";
 
 const SIDEBAR_ITEMS = [
   {
@@ -56,6 +60,27 @@ const SIDEBAR_ITEMS = [
     label: "الإشعارات",
     icon: Notifications,
     href: "/school/notifications",
+  },
+  {
+    label: "الدعم الفنى",
+    icon: Support,
+    links: [
+      {
+        label: "رساله  عبر الموقع",
+        icon: Message,
+        href: "/school/support",
+      },
+      {
+        label: "مكالمة هاتفية",
+        icon: Phone,
+        href: "tel:+966555555555",
+      },
+      {
+        label: "تواصل عبر  واتس اب",
+        icon: WhatsApp,
+        href: "https://wa.me/966555555555",
+      },
+    ],
   },
 ];
 

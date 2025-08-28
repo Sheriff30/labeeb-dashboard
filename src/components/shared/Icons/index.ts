@@ -7,3 +7,6 @@ export { default as Trips } from "./Trips";
 export { default as School } from "./School";
 export { default as SubAdmin } from "./SubAdmin";
 export { default as Notifications } from "./Notifications";
+export { default as Support } from "./Support";
+export { default as Phone } from "./Phone";
+export { default as Message } from "./Message";
