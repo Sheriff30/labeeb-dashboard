@@ -192,7 +192,7 @@ export default function RootSidebar({
                     key={link.label}
                     href={link.href}
                     className={cn(
-                      "flex items-center gap-2 text-2xl py-2 text-gray",
+                      "flex items-center gap-2 text-2xl py-2 mr-2 text-gray",
                       pathname === link.href && "text-primary-3"
                     )}
                   >
