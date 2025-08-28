@@ -9,6 +9,8 @@ import {
   Home,
   PreviousTripts,
   ScheduledTripts,
+  School,
+  SubAdmin,
   Trips,
 } from "@/components/shared";
 
@@ -38,6 +40,16 @@ const SIDEBAR_ITEMS = [
         href: "/school/trips/canceled",
       },
     ],
+  },
+  {
+    label: "بيانات المدرسة",
+    icon: School,
+    href: "/school/account",
+  },
+  {
+    label: "إضافة مشرف فرعي",
+    icon: SubAdmin,
+    href: "/school/sub-admin",
   },
 ];
 
