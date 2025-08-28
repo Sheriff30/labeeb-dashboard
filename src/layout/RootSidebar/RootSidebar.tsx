@@ -112,7 +112,7 @@ export default function RootSidebar({
     <div
       className={cn(
         sidebarOpen ? "!flex" : "hidden",
-        "xl:bg-primary-2 bg-primary-2/50 backdrop-blur-3xl xl:backdrop-blur-none w-70 xl:w-89 h-full px-6 py-4 hidden xl:flex  flex-col gap-4 xl:gap-8 fixed  xl:relative top-0 righ-0 z-30"
+        "xl:bg-primary-2 bg-primary-2/50 overflow-auto backdrop-blur-3xl xl:backdrop-blur-none w-70 xl:w-89 h-full px-6 py-4 hidden xl:flex  flex-col gap-4 xl:gap-8 fixed  xl:relative top-0 righ-0 z-30 overflow-y-auto"
       )}
     >
       <Image
@@ -140,7 +140,7 @@ export default function RootSidebar({
         </div>
       </div>
 
-      <div>
+      <div className="overflow-y-auto  no-scrollbar">
         {SIDEBAR_ITEMS.map((item) => {
           const isLink = Boolean(item.href);
 
