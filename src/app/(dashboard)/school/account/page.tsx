@@ -212,7 +212,7 @@ export default function Page() {
         <form.Field name="numberOfStudents" validators={validators.number()}>
           {(field) => {
             return (
-              <div className=" flex items-end gap-2 ">
+              <div className=" flex items-end gap-2 flex-wrap">
                 <div className="flex flex-col  gap-1 w-full max-w-[324px]">
                   <FloatLabelInput
                     label="عدد طلاب المدرسة "
@@ -235,7 +235,7 @@ export default function Page() {
         <form.Field name="numberOfBranches" validators={validators.number()}>
           {(field) => {
             return (
-              <div className=" flex items-end gap-2 ">
+              <div className=" flex items-end gap-2 flex-wrap">
                 <div className="flex flex-col gap-1 w-full max-w-[324px]">
                   <FloatLabelInput
                     label="عدد أفرع المدرسة "

@@ -8,3 +8,4 @@ export * from "./FormField";
 export * from "./Icons";
 export * from "./TripsCard";
 export * from "./Input";
+export * from "./Tabs";
