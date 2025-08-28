@@ -11,6 +11,7 @@ type SelectableCheckboxGroupProps = {
   value: string[];
   onChange: (selected: string[]) => void;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
+  optional?: boolean;
 };
 
 export default function SelectableCheckboxGroup({
@@ -18,6 +19,7 @@ export default function SelectableCheckboxGroup({
   label,
   value,
   onChange,
+  optional,
   ...props
 }: SelectableCheckboxGroupProps) {
   const [expanded, setExpanded] = React.useState(false);
@@ -42,13 +44,13 @@ export default function SelectableCheckboxGroup({
     <div className="flex md:items-center flex-col md:flex-row gap-6 text-2xl">
       <div className="flex items-center cursor-pointer " onClick={handleToggle}>
         <span
-          className={`border-b-[1.5px] py-2  ${
+          className={`border-b-[1.5px] py-2 flex gap-2  ${
             expanded || value.length > 0
               ? "text-primary border-primary "
               : "text-black border-black "
           } `}
         >
-          {label}
+          {label} {optional && <div className="text-gray"> ( إختياري )</div>}
         </span>
       </div>
       {expanded && (

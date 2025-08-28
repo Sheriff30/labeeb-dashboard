@@ -23,6 +23,7 @@ export type file = {
   gender: string[];
   levels: string[];
   filePath: string;
+  date: string;
 };
 
 export type packageType = {

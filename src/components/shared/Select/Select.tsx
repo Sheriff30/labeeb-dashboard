@@ -16,12 +16,14 @@ type SelectProps = {
   placeholder?: string;
   className?: string;
   variant?: "primary" | "secondary";
+  optional?: boolean;
 };
 export default function Select({
   options,
   value,
   onChange,
   placeholder,
+  optional,
   className,
   variant = "primary",
 }: SelectProps) {
@@ -69,7 +71,13 @@ export default function Select({
             "border-b-gray py-[10px] px-3 border-2 border-gray rounded-[14px] font-arabic-light "
         )}
       >
-        {SELECTED || placeholder}
+        <div className="flex items-center gap-2 w-full">
+          <div>{SELECTED || placeholder}</div>
+
+          {!SELECTED && optional && (
+            <div className="text-gray"> ( إختياري )</div>
+          )}
+        </div>
 
         <Image
           src="/images/select-arrow.svg"

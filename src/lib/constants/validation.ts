@@ -77,4 +77,11 @@ export const validators = {
       return undefined;
     },
   }),
+
+  file: () => ({
+    onChange: ({ value }: { value: File | null }) => {
+      if (!value) return "الملف مطلوب";
+      return undefined;
+    },
+  }),
 };

@@ -16,6 +16,8 @@ import {
   Support,
   Phone,
   Message,
+  Upload,
+  Logout,
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
 
@@ -82,6 +84,16 @@ const SIDEBAR_ITEMS = [
       },
     ],
   },
+  {
+    label: "رفع بيانات الطلاب",
+    icon: Upload,
+    href: "/school/upload-students",
+  },
+  {
+    label: "تسجيل الخروج",
+    icon: Logout,
+    href: "/login",
+  },
 ];
 
 type RootSidebarProps = {
@@ -139,7 +151,8 @@ export default function RootSidebar({
                 href={item.href as string}
                 className={cn(
                   "flex items-center gap-2 text-2xl py-2 text-gray ",
-                  pathname === item.href && "text-primary-3"
+                  pathname === item.href && "text-primary-3",
+                  item.href === "/login" && "text-error"
                 )}
               >
                 {item.icon && <item.icon />}

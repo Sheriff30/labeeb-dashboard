@@ -5,7 +5,8 @@
     "students": 500,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary1.xlsx"
+    "filePath": "/files/primary1.xlsx",
+    "date": "2025-01-01"
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "students": 500,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary2.xlsx"
+    "filePath": "/files/primary2.xlsx",
+    "date": "2025-01-01"
   },
   {
     "id": 3,
@@ -21,7 +23,8 @@
     "students": 500,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary3.xlsx"
+    "filePath": "/files/primary3.xlsx",
+    "date": "2025-01-01"
   },
   {
     "id": 4,
@@ -29,7 +32,8 @@
     "students": 500,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary4.xlsx"
+    "filePath": "/files/primary4.xlsx",
+    "date": "2025-01-01"
   },
   {
     "id": 5,
@@ -37,7 +41,8 @@
     "students": 500,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary5.xlsx"
+    "filePath": "/files/primary5.xlsx",
+    "date": "2025-01-01"
   },
   {
     "id": 6,
@@ -45,6 +50,7 @@
     "students": 600,
     "gender": ["بنين", "بنات"],
     "levels": ["الابتدائية", "الاعدادية"],
-    "filePath": "/files/primary6.xlsx"
+    "filePath": "/files/primary6.xlsx",
+    "date": "2025-01-01"
   }
 ]
