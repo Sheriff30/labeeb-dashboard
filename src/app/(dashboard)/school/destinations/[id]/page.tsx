@@ -166,7 +166,7 @@ export default function Page() {
               <div className="grid grid-rows-[auto_53px] w-full lg:w-fit  max-w-[426px]">
                 <span></span>
                 <Button
-                  text="حجز الرحلة"
+                  text="إحجز الآن"
                   variant="secondary"
                   onClick={HandleShowFilesModal}
                 />

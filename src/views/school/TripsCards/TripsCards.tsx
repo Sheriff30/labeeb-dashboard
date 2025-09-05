@@ -7,14 +7,13 @@ const TRIPS_CARDS = [
     info: "10",
   },
   {
-    href: "/school/trips/canceled",
-    type: "canceled",
-    info: "10",
-  },
-
-  {
     href: "/school/trips/scheduled",
     type: "scheduled",
+    info: "10",
+  },
+  {
+    href: "/school/trips/canceled",
+    type: "canceled",
     info: "10",
   },
 ];

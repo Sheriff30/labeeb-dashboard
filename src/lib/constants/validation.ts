@@ -11,9 +11,9 @@ export const validators = {
 
   length: (fieldName: string, min: number, max: number) => ({
     onChange: ({ value }: { value: string }) => {
-      if (!value) return `${fieldName} مطلوب`;
+      if (!value) return ` الرجاء إدخال ${fieldName}`;
       if (value.length < min)
-        return `${fieldName} يجب أن يكون على الأقل ${min} ${
+        return `${fieldName} يجب أن يكون على الأقل ${min}  ${
           fieldName === "الكود" ? "ارقام" : "حرف "
         }`;
       if (value.length > max)
@@ -24,24 +24,35 @@ export const validators = {
     },
   }),
 
+  otp: () => ({
+    onChange: ({ value }: { value: string }) => {
+      if (!value) return `الرجاء إدخال رمز التحقق`;
+      if (value.length < 6)
+        return "الرجاء إدخال رمز التحقق، ويجب أن يتكون من 6 أرقام على الأقل.";
+      if (value.length > 6)
+        return "الرجاء إدخال رمز التحقق، ويجب أن يتكون من 6 أرقام على الأقل.";
+      return undefined;
+    },
+  }),
+
   email: () => ({
     onChange: ({ value }: { value: string }) => {
-      if (!value) return "البريد الإلكتروني مطلوب";
+      if (!value) return "الرجاء إدخال البريد الإلكتروني";
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(value)) return "البريد الإلكتروني غير صالح";
+      if (!emailPattern.test(value)) return " الرجاء إدخال بريد إلكتروني صالح";
       return undefined;
     },
   }),
 
   phone: () => ({
     onChange: ({ value }: { value: string }) => {
-      if (!value) return "رقم الجوال مطلوب";
+      if (!value) return "الرجاء إدخال رقم الجوال";
       const cleanValue = value.replace(/\s+/g, "");
       const saudiRegex = /^05\d{8}$/;
       const intlRegex = /^\+9665\d{8}$/;
 
       if (!saudiRegex.test(cleanValue) && !intlRegex.test(cleanValue)) {
-        return "رقم الجوال غير صالح، اكتبه بصيغة 05XXXXXXXX أو +9665XXXXXXXX";
+        return "الرجاء إدخال رقم جوال صالح بصيغة 05XXXXXXXX أو +9665XXXXXXXX.";
       }
       return "";
     },

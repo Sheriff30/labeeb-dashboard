@@ -301,7 +301,7 @@ export default function Page() {
             <span>إعادة إرسال الرمز </span>
             <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
           </p>
-          <form.Field name="otp" validators={validators.length("الكود", 6, 6)}>
+          <form.Field name="otp" validators={validators.otp()}>
             {(field) => {
               return (
                 <FormField field={field}>

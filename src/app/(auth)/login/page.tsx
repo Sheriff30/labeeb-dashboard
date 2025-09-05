@@ -76,7 +76,7 @@ export default function Page() {
   const otpField = useField({
     name: "otp",
     form,
-    validators: validators.length("الكود", 6, 6),
+    validators: validators.otp(),
   });
 
   const otpDisabled =
@@ -117,7 +117,7 @@ export default function Page() {
           <div className="flex gap-8">
             <Button
               variant="tertiary"
-              text="بريد الكتروني"
+              text="البريد الإلكتروني"
               type="button"
               onClick={() => handleLoginMethodChange("email")}
               className={cn(loginMethod === "email" && "bg-navy !text-white")}

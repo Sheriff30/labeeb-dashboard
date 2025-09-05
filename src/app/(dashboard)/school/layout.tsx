@@ -23,7 +23,7 @@ export default function Layout({ children }: Props) {
         </div>
         <Image src="/images/logo.svg" height={100} width={120} alt="logo" />
       </div>
-      <div className="relative overflow-auto">
+      <div className="relative overflow-auto bg-primary-2">
         <div className="xl:h-screen py-4 lg:py-8  px-4 lg:px-10  xl:rounded-tr-[60px] xl:rounded-br-[60px] bg-white  ">
           <ModalProvider>
             {children}
