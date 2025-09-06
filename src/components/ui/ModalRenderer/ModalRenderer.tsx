@@ -1,10 +1,7 @@
 "use client";
 import { useModal } from "@/Context";
-import {
-  FileSelectionModal,
-  PackagesModal,
-  SuccessModal,
-} from "@/components/ui";
+import { FileSelectionModal, PackagesModal } from "@/components/ui";
+import ConfirmModal from "../Modals/ConfirmModal";
 
 export default function ModalRenderer() {
   const { modal, closeModal } = useModal();
@@ -12,8 +9,8 @@ export default function ModalRenderer() {
   if (!modal.type) return null;
 
   switch (modal.type) {
-    case "SUCCESS":
-      return <SuccessModal {...modal.props} onClose={closeModal} />;
+    case "CONFIRM":
+      return <ConfirmModal {...modal.props} onClose={closeModal} />;
     case "FILE_SELECTION":
       return <FileSelectionModal {...modal.props} onClose={closeModal} />;
     case "PACKAGES":

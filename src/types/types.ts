@@ -60,3 +60,13 @@ export type trip = {
   refund_status: string;
   cancellation_reason: string;
 };
+
+export type confirmModalProps = {
+  title?: string;
+  message?: string;
+  onConfirm?: () => void;
+  onClose?: () => void;
+  titleColor?: string;
+  buttonText?: string;
+  type?: "success" | "delete";
+};

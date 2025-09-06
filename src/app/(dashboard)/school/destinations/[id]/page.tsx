@@ -39,7 +39,7 @@ export default function Page() {
       ) {
         router.push("/school");
 
-        openModal("SUCCESS", {
+        openModal("CONFIRM", {
           title: "تم  حجز  الرحلة بنجاح",
           titleColor: "text-primary-green",
           buttonText: "شكراً",

@@ -1,14 +1,47 @@
+import { useModal } from "@/Context/ModalContext";
 import { useFiles } from "@/hooks/useFiles";
-import { file } from "@/types";
+import { confirmModalProps, file } from "@/types";
 import Image from "next/image";
 import React from "react";
 
 export default function UploadedFiles() {
   const { data: files, isLoading } = useFiles();
-
+  const { openModal, closeModal } = useModal();
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
   }
+
+  const confirmAction = (options: confirmModalProps) => {
+    return new Promise<boolean>((resolve) => {
+      openModal("CONFIRM", {
+        ...options,
+        onConfirm: () => {
+          closeModal();
+          resolve(true);
+        },
+        onCancel: () => {
+          closeModal();
+          resolve(false);
+        },
+      });
+    });
+  };
+
+  const handleDelete = async () => {
+    const confirmed = await confirmAction({
+      title: "هل أنت متأكد من حذف الملف؟",
+      type: "delete",
+      buttonText: "حذف",
+    });
+
+    if (confirmed) {
+      await confirmAction({
+        title: "تم حذف الملف بنجاح",
+        buttonText: "شكراً",
+      });
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] w-full">
       {files.map((file: file) => {
@@ -43,7 +76,10 @@ export default function UploadedFiles() {
               <div className="font-roboto">{file.students}</div>
             </div>
 
-            <div className="border-error border-2 flex gap-2 items-center justify-center py-1 rounded-lg cursor-pointer">
+            <div
+              className="border-error border-2 flex gap-2 items-center justify-center py-1 rounded-lg cursor-pointer"
+              onClick={() => handleDelete()}
+            >
               <Image
                 src="/images/delete.svg"
                 alt="delete"

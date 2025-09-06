@@ -7,6 +7,7 @@ import {
   SelectableCheckboxGroup,
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
+import { useModal } from "@/Context/ModalContext";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -19,6 +20,7 @@ import { useField, useForm } from "@tanstack/react-form";
 import React from "react";
 
 export default function Page() {
+  const { openModal, closeModal } = useModal();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -56,6 +58,13 @@ export default function Page() {
         email,
       };
       console.log("FormData", formData);
+      openModal("CONFIRM", {
+        title: "تم تعديل البيانات بنجاح",
+        buttonText: "شكراً",
+        onConfirm: () => {
+          closeModal();
+        },
+      });
     },
   });
 

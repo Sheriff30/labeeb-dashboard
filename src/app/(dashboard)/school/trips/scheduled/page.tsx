@@ -22,7 +22,7 @@ export default function Page() {
   }
 
   const handleCancelTrip = () => {
-    openModal("SUCCESS", {
+    openModal("CONFIRM", {
       title: "تم تقديم طلب إلغاء الرحلة",
       buttonText: "شكراً",
       onConfirm: () => {

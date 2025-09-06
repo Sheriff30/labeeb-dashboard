@@ -1,11 +1,13 @@
 "use client";
 import { Button, FloatLabelInput, FormField, Select } from "@/components";
+import { useModal } from "@/Context/ModalContext";
 
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
 
 import React from "react";
 export default function SubAdminForm() {
+  const { openModal, closeModal } = useModal();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -43,7 +45,16 @@ export default function SubAdminForm() {
         accountName,
         email,
       };
-      console.log("FormData", formData);
+
+      openModal("CONFIRM", {
+        title: "تم إضافة الحساب بنجاح",
+        message:
+          "بإمكانه الآن تسجيل الدخول عبر رقم الجوال أو البريد الإلكتروني الخاص بحسابه",
+        buttonText: "شكراً",
+        onConfirm: () => {
+          closeModal();
+        },
+      });
     },
   });
 

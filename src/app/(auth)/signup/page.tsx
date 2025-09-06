@@ -77,7 +77,7 @@ export default function Page() {
 
       if (formData && otp.length === 6) {
         form.reset();
-        openModal("SUCCESS", {
+        openModal("CONFIRM", {
           title:
             "تم تقديم الطلب بنجاح وسيتم تفعيل حسابكم في مدة أقصاها 24 ساعة",
           buttonText: " شكراً",

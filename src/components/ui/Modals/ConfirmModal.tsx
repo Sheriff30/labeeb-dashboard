@@ -11,12 +11,14 @@ type SuccessModalProps = {
   onClose?: () => void;
   titleColor?: string;
   buttonText?: string;
+  type?: "success" | "delete";
 };
 
-export default function SuccessModal({
+export default function ConfirmModal({
   title,
   message,
   onConfirm,
+  type = "success",
   onClose,
   titleColor,
   buttonText = "تم",
@@ -33,7 +35,11 @@ export default function SuccessModal({
       />
       <div className="flex items-center gap-3">
         <Image
-          src="/images/formSuccess.svg"
+          src={
+            type === "delete"
+              ? "/images/deleteModal.svg"
+              : "/images/formSuccess.svg"
+          }
           alt="success"
           width={102}
           height={102}
@@ -45,13 +51,26 @@ export default function SuccessModal({
         </h2>
       )}
       {message && <p className="my-4 text-2xl text-center">{message}</p>}
-      <Button
-        onClick={onConfirm}
-        text={buttonText}
-        variant="primary"
-        type="button"
-        className="w-full"
-      />
+      {type === "delete" && (
+        <div className="flex gap-3 flex-col w-full">
+          <Button
+            onClick={onConfirm}
+            text="تأكيد الحذف"
+            className="!bg-error"
+          />
+          <Button onClick={onClose} text="الغاء" className="!bg-navy" />
+        </div>
+      )}
+
+      {type === "success" && (
+        <Button
+          onClick={onConfirm}
+          text={buttonText}
+          variant="primary"
+          type="button"
+          className="w-full"
+        />
+      )}
     </ModalWrapper>
   );
 }

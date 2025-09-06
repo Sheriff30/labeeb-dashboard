@@ -6,7 +6,7 @@ export const validators = {
 
   requiredArray: (fieldName: string) => ({
     onChange: ({ value }: { value: string[] }) =>
-      !value || value.length === 0 ? `${fieldName} مطلوب` : undefined,
+      !value || value.length === 0 ? `الرجاء إدخال ${fieldName}` : undefined,
   }),
 
   length: (fieldName: string, min: number, max: number) => ({
@@ -91,7 +91,7 @@ export const validators = {
 
   file: () => ({
     onChange: ({ value }: { value: File | null }) => {
-      if (!value) return "الملف مطلوب";
+      if (!value) return " الرجاء إرفاق الملف";
       return undefined;
     },
   }),

@@ -13,8 +13,10 @@ import {
 } from "@/lib/constants/options";
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
+import { useModal } from "@/Context/ModalContext";
 
 export default function FormUpload() {
+  const { openModal, closeModal } = useModal();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -25,6 +27,15 @@ export default function FormUpload() {
     onSubmit: ({ value }) => {
       console.log(value);
       form.reset();
+      openModal("CONFIRM", {
+        title: "تم رفع الملف بنجاح",
+        titleColor: "text-primary-green",
+
+        buttonText: "شكراً",
+        onConfirm: () => {
+          closeModal();
+        },
+      });
     },
   });
 
