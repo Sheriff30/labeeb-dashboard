@@ -44,7 +44,7 @@ export default function SuccessModal({
           {title}
         </h2>
       )}
-      {message && <p className="my-4 text-2xl">{message}</p>}
+      {message && <p className="my-4 text-2xl text-center">{message}</p>}
       <Button
         onClick={onConfirm}
         text={buttonText}

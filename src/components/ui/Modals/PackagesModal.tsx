@@ -54,7 +54,7 @@ export const PackagesModal: React.FC<PackagesProps> = ({
         <div className="text-primary text-5xl mb-8  ">
           إختر الباقة المناسبة{" "}
         </div>
-        <div className="flex gap-9 items-start mb-17 flex-col lg:flex-row">
+        <div className="flex gap-9 items-start mb-4 flex-col lg:flex-row">
           {packages?.map((p: packageType) => {
             return (
               <div
@@ -104,7 +104,7 @@ export const PackagesModal: React.FC<PackagesProps> = ({
             );
           })}
         </div>
-        {error && <div className="text-error mb-4">{error}</div>}
+        {error && <div className="text-error mb-17">{error}</div>}
         <div className="max-w-[426px]">
           <Button text="إحجز الآن" className="w-full" onClick={handleConfirm} />
         </div>

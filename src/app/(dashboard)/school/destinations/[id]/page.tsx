@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useDestination } from "@/hooks/useDestinations";
 import { Destination } from "@/views/Destination";
 import { Button, Currency, FormField, Input } from "@/components";
@@ -16,8 +16,9 @@ export default function Page() {
     ? params.id[0]
     : params?.id ?? "";
   const { data: destination, isLoading } = useDestination(id);
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const [showRequestInfo, setShowRequestInfo] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -36,7 +37,19 @@ export default function Page() {
         value.file &&
         value.package
       ) {
-        console.log("Done");
+        router.push("/school");
+
+        openModal("SUCCESS", {
+          title: "تم  حجز  الرحلة بنجاح",
+          titleColor: "text-primary-green",
+          buttonText: "شكراً",
+          message:
+            "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
+          onConfirm: () => {
+            form.reset();
+            closeModal();
+          },
+        });
       }
     },
   });
@@ -146,6 +159,7 @@ export default function Page() {
                   <Input
                     placeholder="اختر اليوم"
                     type="date"
+                    className="font-roboto"
                     onChange={(e) => tripDate.handleChange(e.target.value)}
                   />
                 </FormField>
@@ -159,6 +173,7 @@ export default function Page() {
                     placeholder="مثال:11ص"
                     type="time"
                     onChange={(e) => tripTime.handleChange(e.target.value)}
+                    className="font-roboto"
                   />
                 </FormField>
               </div>{" "}

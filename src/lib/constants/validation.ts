@@ -1,7 +1,7 @@
 export const validators = {
   required: (fieldName: string) => ({
     onChange: ({ value }: { value: string }) =>
-      !value ? `${fieldName} مطلوب` : undefined,
+      !value ? `الرجاء إدخال ${fieldName}` : undefined,
   }),
 
   requiredArray: (fieldName: string) => ({
@@ -61,7 +61,7 @@ export const validators = {
   capacity: (fieldName: string, maxCapacity: number) => ({
     onChange: ({ value }: { value: string | number }) => {
       if (value === undefined || value === null || value === "")
-        return `${fieldName} مطلوب`;
+        return `الرجاء إدخال ${fieldName}`;
 
       const numericValue = Number(value);
       if (isNaN(numericValue)) return `${fieldName} يجب أن يكون رقماً`;

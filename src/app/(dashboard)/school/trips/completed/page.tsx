@@ -46,12 +46,17 @@ export default function Page() {
 
                     <td className="text-center">
                       {" "}
-                      {trip.day} / {trip.date}
+                      {trip.day} /{" "}
+                      <span className="font-roboto"> {trip.date}</span>
                     </td>
-                    <td className="text-center">{trip.time}</td>
-                    <td className="text-center">{trip.total_students}</td>
-                    <td className="text-center">{trip.paid_count}</td>
-                    <td className="text-center">
+                    <td className="text-center font-roboto">{trip.time}</td>
+                    <td className="text-center font-roboto">
+                      {trip.total_students}
+                    </td>
+                    <td className="text-center font-roboto">
+                      {trip.paid_count}
+                    </td>
+                    <td className="text-center font-roboto">
                       <div className="flex  items-center justify-center">
                         {trip.trip_price}
 
@@ -92,7 +97,7 @@ export default function Page() {
                           </div>
                           <Button
                             onClick={() => setIsPaid(true)}
-                            text="الطلاب المسددين"
+                            text="تم الدفع"
                             className={cn(
                               "!px-15 !rounded-xl",
                               isPaid
@@ -102,7 +107,7 @@ export default function Page() {
                           />
                           <Button
                             onClick={() => setIsPaid(false)}
-                            text="الطلاب غير المسددين"
+                            text="لم يتم الدفع"
                             className={cn(
                               "!px-15 !rounded-xl",
                               isPaid
@@ -125,7 +130,9 @@ export default function Page() {
                                     className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
                                   >
                                     <div>{student.name}</div>
-                                    <div>{student.phone}</div>
+                                    <div className="font-roboto">
+                                      {student.phone}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -140,7 +147,9 @@ export default function Page() {
                                     className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
                                   >
                                     <div>{student.name}</div>
-                                    <div>{student.phone}</div>
+                                    <div className="font-roboto">
+                                      {student.phone}
+                                    </div>
                                   </div>
                                 );
                               })}
