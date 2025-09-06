@@ -36,9 +36,13 @@ export default function Page() {
               return (
                 <tr key={trip.id} className="text-xl">
                   <td> {trip.destination} </td>
-                  <td className="text-center">{trip.cancellation_date}</td>
+                  <td className="text-center font-roboto">
+                    {trip.cancellation_date}
+                  </td>
                   <td className="text-center">{trip.refund_status}</td>
-                  <td className="text-center">{trip.total_students}</td>
+                  <td className="text-center font-roboto">
+                    {trip.total_students}
+                  </td>
                   <td className="text-center">{trip.cancellation_reason}</td>
                   <td className="text-center">
                     <div className="flex gap-4 items-center">

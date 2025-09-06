@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components";
+import { useModal } from "@/Context/ModalContext";
 import { useTrips } from "@/hooks/useTrips";
 import { cn } from "@/lib/utils";
 import { trip } from "@/types";
@@ -10,6 +11,7 @@ export default function Page() {
   const { data: trips, isLoading } = useTrips();
   const [isPaid, setIsPaid] = useState(true);
   const [showData, setShowData] = useState<number | null>(null);
+  const { openModal, closeModal } = useModal();
 
   const scheduledTrips = trips?.filter(
     (trip: trip) => trip.status === "scheduled"
@@ -18,6 +20,17 @@ export default function Page() {
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
   }
+
+  const handleCancelTrip = () => {
+    openModal("SUCCESS", {
+      title: "تم تقديم طلب إلغاء الرحلة",
+      buttonText: "شكراً",
+      onConfirm: () => {
+        closeModal();
+      },
+    });
+  };
+
   return (
     <div className="overflow-y-auto h-full no-scrollbar">
       <div className="text-4xl mb-6 font-arabic-bold">الرحلات المجدولة</div>
@@ -49,12 +62,17 @@ export default function Page() {
                     </td>
                     <td className="text-center">
                       {" "}
-                      {trip.day} / {trip.date}
+                      {trip.day} /{" "}
+                      <span className="font-roboto"> {trip.date}</span>
                     </td>
-                    <td className="text-center">{trip.time}</td>
-                    <td className="text-center">{trip.total_students}</td>
-                    <td className="text-center">{trip.paid_count}</td>
-                    <td className="text-center text-error">
+                    <td className="text-center font-roboto">{trip.time}</td>
+                    <td className="text-center font-roboto">
+                      {trip.total_students}
+                    </td>
+                    <td className="text-center font-roboto">
+                      {trip.paid_count}
+                    </td>
+                    <td className="text-center text-error font-roboto">
                       {trip.unpaid_count}
                     </td>
                     <td className="text-center">
@@ -67,6 +85,7 @@ export default function Page() {
                         <Button
                           text="الغاء الرحلة"
                           className="!text-xl !py-0.5 !px-1.5 !bg-error "
+                          onClick={handleCancelTrip}
                         />
                         <Image
                           src="/images/table-arrow.svg"
@@ -94,7 +113,7 @@ export default function Page() {
                           </div>
                           <Button
                             onClick={() => setIsPaid(true)}
-                            text="الطلاب المسددين"
+                            text="تم الدفع"
                             className={cn(
                               "!px-15 !rounded-xl",
                               isPaid
@@ -104,7 +123,7 @@ export default function Page() {
                           />
                           <Button
                             onClick={() => setIsPaid(false)}
-                            text="الطلاب غير المسددين"
+                            text="لم يتم الدفع"
                             className={cn(
                               "!px-15 !rounded-xl",
                               isPaid
@@ -127,7 +146,9 @@ export default function Page() {
                                     className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
                                   >
                                     <div>{student.name}</div>
-                                    <div>{student.phone}</div>
+                                    <div className="font-roboto">
+                                      {student.phone}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -142,7 +163,9 @@ export default function Page() {
                                     className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
                                   >
                                     <div>{student.name}</div>
-                                    <div>{student.phone}</div>
+                                    <div className="font-roboto">
+                                      {student.phone}
+                                    </div>
                                   </div>
                                 );
                               })}
