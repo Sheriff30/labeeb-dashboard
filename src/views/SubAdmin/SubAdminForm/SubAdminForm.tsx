@@ -45,6 +45,7 @@ export default function SubAdminForm() {
         accountName,
         email,
       };
+      form.reset();
 
       openModal("CONFIRM", {
         title: "تم إضافة الحساب بنجاح",
@@ -70,10 +71,7 @@ export default function SubAdminForm() {
       }}
     >
       {/* School name */}
-      <form.Field
-        name="name"
-        validators={validators.length("اسم المشرف", 2, 50)}
-      >
+      <form.Field name="name" validators={validators.name("اسم المشرف")}>
         {(field) => {
           return (
             <FormField field={field} className="">

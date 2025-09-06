@@ -58,6 +58,7 @@ export default function Page() {
         email,
       };
       console.log("FormData", formData);
+      form.reset();
       openModal("CONFIRM", {
         title: "تم تعديل البيانات بنجاح",
         buttonText: "شكراً",

@@ -9,6 +9,22 @@ export const validators = {
       !value || value.length === 0 ? `الرجاء إدخال ${fieldName}` : undefined,
   }),
 
+  name: (fieldName: string) => ({
+    onChange: ({ value }: { value: string }) => {
+      if (!value) return `الرجاء إدخال ${fieldName}`;
+
+      if (/^[0-9\u0660-\u0669]+$/.test(value)) {
+        return `${fieldName} لا يمكن أن يحتوي على أرقام.`;
+      }
+
+      if (/^[^a-zA-Z0-9\u0600-\u06FF]+$/.test(value)) {
+        return `${fieldName} لا يمكن أن يحتوي على رموز خاصة.`;
+      }
+
+      return undefined;
+    },
+  }),
+
   length: (fieldName: string, min: number, max: number) => ({
     onChange: ({ value }: { value: string }) => {
       if (!value) return ` الرجاء إدخال ${fieldName}`;
