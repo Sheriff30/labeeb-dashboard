@@ -12,7 +12,6 @@ export default function Page() {
   const { openModal, closeModal } = useModal();
   const [scheduledTrips, setScheduledTrips] = useState<scheduledTrip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [cancelReason, setCancelReason] = useState("");
 
   useEffect(() => {
     const scheduledTrips = JSON.parse(
@@ -26,20 +25,50 @@ export default function Page() {
     return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
   }
 
-  const handleCancelTrip = () => {
+  const handleCancelTrip = (id: number) => {
     openModal("CANCEL_TRIP", {
       onConfirm: (reason: string) => {
-        setCancelReason(reason);
         closeModal();
+
+        const scheduledTrips = JSON.parse(
+          localStorage.getItem("scheduledTrips") || "[]"
+        );
+        const canceledTrips = JSON.parse(
+          localStorage.getItem("canceledTrips") || "[]"
+        );
+        const canceledTrip = scheduledTrips.find(
+          (trip: scheduledTrip) => trip.id === id
+        );
+        const today = new Date();
+        const formattedDate = today.toISOString().split("T")[0];
+
+        canceledTrip.status = "قيد التنفيذ";
+        canceledTrip.cancellation_date = formattedDate;
+        canceledTrip.cancellation_reason = reason;
+
+        const filteredScheduledTrips = scheduledTrips.filter(
+          (trip: scheduledTrip) => trip.id !== id
+        );
+
+        canceledTrips.push(canceledTrip);
+        localStorage.setItem("canceledTrips", JSON.stringify(canceledTrips));
+
+        localStorage.setItem(
+          "scheduledTrips",
+          JSON.stringify(filteredScheduledTrips)
+        );
+
+        setScheduledTrips(filteredScheduledTrips);
+
+        openModal("CONFIRM", {
+          title: "تم تقديم طلب إلغاء الرحلة",
+          buttonText: "شكراً",
+          onConfirm: () => {
+            closeModal();
+          },
+        });
       },
     });
-    // openModal("CONFIRM", {
-    //   title: "تم تقديم طلب إلغاء الرحلة",
-    //   buttonText: "شكراً",
-    //   onConfirm: () => {
-    //     closeModal();
-    //   },
-    // });
   };
 
   return (
@@ -96,7 +125,7 @@ export default function Page() {
                           <Button
                             text="الغاء الرحلة"
                             className="!text-xl !py-0.5 !px-1.5 !bg-error "
-                            onClick={handleCancelTrip}
+                            onClick={() => handleCancelTrip(trip.id)}
                           />
                           <Image
                             src="/images/table-arrow.svg"

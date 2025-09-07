@@ -82,3 +82,12 @@ export type scheduledTrip = {
   unpaid_count: number;
   students: students;
 };
+
+export type canceledTrip = {
+  id: number;
+  name: string;
+  status: string;
+  cancellation_date: string;
+  cancellation_reason: string;
+  total_students: string;
+};
