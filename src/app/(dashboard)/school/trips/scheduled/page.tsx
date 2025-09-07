@@ -12,6 +12,7 @@ export default function Page() {
   const { openModal, closeModal } = useModal();
   const [scheduledTrips, setScheduledTrips] = useState<scheduledTrip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [cancelReason, setCancelReason] = useState("");
 
   useEffect(() => {
     const scheduledTrips = JSON.parse(
@@ -26,13 +27,19 @@ export default function Page() {
   }
 
   const handleCancelTrip = () => {
-    openModal("CONFIRM", {
-      title: "تم تقديم طلب إلغاء الرحلة",
-      buttonText: "شكراً",
-      onConfirm: () => {
+    openModal("CANCEL_TRIP", {
+      onConfirm: (reason: string) => {
+        setCancelReason(reason);
         closeModal();
       },
     });
+    // openModal("CONFIRM", {
+    //   title: "تم تقديم طلب إلغاء الرحلة",
+    //   buttonText: "شكراً",
+    //   onConfirm: () => {
+    //     closeModal();
+    //   },
+    // });
   };
 
   return (

@@ -3,7 +3,12 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-type ModalType = "CONFIRM" | "FILE_SELECTION" | "PACKAGES" | null;
+type ModalType =
+  | "CONFIRM"
+  | "FILE_SELECTION"
+  | "PACKAGES"
+  | "CANCEL_TRIP"
+  | null;
 
 interface ModalState {
   type: ModalType;
