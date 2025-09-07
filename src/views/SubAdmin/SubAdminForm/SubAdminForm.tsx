@@ -5,46 +5,35 @@ import { useModal } from "@/Context/ModalContext";
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
 
+import { subAdmin } from "@/types/types";
 import React from "react";
-export default function SubAdminForm() {
+
+type SubAdminFormProps = {
+  setSubAdmin: (subAdmin: subAdmin) => void;
+};
+export default function SubAdminForm({ setSubAdmin }: SubAdminFormProps) {
   const { openModal, closeModal } = useModal();
   const form = useForm({
     defaultValues: {
       name: "",
-      city: "",
-      district: "",
-      category: "",
-      schoolStage: [] as string[],
-      accountName: "",
       email: "",
       phoneNumber: "",
-      numberOfStudents: "",
-      numberOfBranches: "",
+      city: "",
     },
     onSubmit: async ({ value }) => {
-      const {
-        name,
-        city,
-        district,
-        category,
-        schoolStage,
-        accountName,
-        email,
-        numberOfStudents,
-        numberOfBranches,
-      } = value;
+      const { name, city, email, phoneNumber } = value;
+      const today = new Date();
+      const formattedDate = new Intl.DateTimeFormat("en-CA").format(today);
 
       const formData = {
+        id: Math.random(),
         name,
         city,
-        district,
-        category,
-        schoolStage,
-        numberOfStudents,
-        numberOfBranches,
-        accountName,
+        date: formattedDate,
+        phoneNumber,
         email,
       };
+      setSubAdmin(formData);
       form.reset();
 
       openModal("CONFIRM", {

@@ -91,3 +91,12 @@ export type canceledTrip = {
   cancellation_reason: string;
   total_students: string;
 };
+
+export type subAdmin = {
+  id: number;
+  name: string;
+  date: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+};

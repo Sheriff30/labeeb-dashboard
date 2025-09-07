@@ -1,7 +1,23 @@
 import Image from "next/image";
 import React from "react";
+import { subAdmin } from "@/types/types";
 
-export default function SubAdminTable() {
+type SubAdminTableProps = {
+  subAdmin: subAdmin[];
+  handleDelete: (id: number) => void;
+};
+export default function SubAdminTable({
+  subAdmin,
+  handleDelete,
+}: SubAdminTableProps) {
+  if (subAdmin.length === 0) {
+    return (
+      <div className="flex justify-center  h-full">
+        <div className="text-2xl">لا يوجد مشرفين مسجلين حالياً</div>
+      </div>
+    );
+  }
+
   return (
     <table className="w-full text-right min-w-[1263px] overflow-x-auto">
       <thead className="text-xl">
@@ -14,26 +30,31 @@ export default function SubAdminTable() {
         </tr>
       </thead>
       <tbody>
-        <tr className="text-2xl">
-          <td>محمد احمد السيد على</td>
-          <td className="font-roboto"> 1/8/2025</td>
-          <td className="font-roboto">01026364250</td>
-          <td className="font-roboto underline">m29026753@gmail.com</td>
-          <td>مكة</td>
-          <td>
-            <div className="flex justify-end ml-3 items-center">
-              <div className="flex items-center gap-2  py-1 px-1 border-2 w-fit rounded-sm border-error cursor-pointer ">
-                <Image
-                  src="/images/delete.svg"
-                  alt="delete"
-                  width={33}
-                  height={33}
-                />
-                <div className="text-error">إزالة المشرف</div>
-              </div>{" "}
-            </div>
-          </td>
-        </tr>
+        {subAdmin.map((admin, index) => (
+          <tr key={index} className="text-2xl">
+            <td>{admin.name}</td>
+            <td className="font-roboto"> {admin.date}</td>
+            <td className="font-roboto"> {admin.phoneNumber}</td>
+            <td className="font-roboto underline"> {admin.email}</td>
+            <td> {admin.city}</td>
+            <td>
+              <div
+                className="flex justify-end ml-3 items-center"
+                onClick={() => handleDelete(admin.id)}
+              >
+                <div className="flex items-center gap-2  py-1 px-1 border-2 w-fit rounded-sm border-error cursor-pointer ">
+                  <Image
+                    src="/images/delete.svg"
+                    alt="delete"
+                    width={33}
+                    height={33}
+                  />
+                  <div className="text-error">إزالة المشرف</div>
+                </div>{" "}
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
