@@ -100,9 +100,18 @@ export default function CancelTrip({
                       <input
                         type="checkbox"
                         name="message-type"
-                        onChange={(e) =>
-                          reasonField.handleChange(e.target.value)
-                        }
+                        onChange={(e) => {
+                          const selectedValue = e.target.value;
+                          reasonField.handleChange(selectedValue);
+
+                          if (selectedValue !== "4") {
+                            form.setFieldValue("reason_manual", "");
+                            form.setFieldMeta("reason_manual", (prev) => ({
+                              ...prev,
+                              errorMap: {},
+                            }));
+                          }
+                        }}
                         checked={
                           reasonField.state.value === reason.id.toString()
                         }
