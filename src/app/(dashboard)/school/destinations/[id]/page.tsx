@@ -7,6 +7,8 @@ import { useField, useForm } from "@tanstack/react-form";
 import { validators } from "@/lib/constants/validation";
 import { useModal } from "@/Context";
 import { useState } from "react";
+import { formatDateArabic } from "@/lib/utils/dateFormatter";
+import { formatTimeArabic } from "@/lib/utils/timeFormatter";
 
 const FEES = 120;
 
@@ -37,6 +39,46 @@ export default function Page() {
         value.file &&
         value.package
       ) {
+        const existingTrips = JSON.parse(
+          localStorage.getItem("scheduledTrips") || "[]"
+        );
+
+        const tripData = {
+          id: Math.random(),
+          name: destination?.name,
+          status: "مؤكدة",
+          date: formatDateArabic(value.tripDate),
+          time: formatTimeArabic(value.tripTime),
+          total_students: value.numberOfStudents,
+          paid_count: value.numberOfStudents,
+          unpaid_count: 0,
+          students: {
+            paid: [
+              {
+                name: "أحمد محمد",
+                phone: "01099999999",
+              },
+              {
+                name: "منى خالد",
+                phone: "01088888888",
+              },
+            ],
+            unpaid: [
+              {
+                name: "إسلام سامي",
+                phone: "01077777777",
+              },
+              {
+                name: "هدى أحمد",
+                phone: "01066666666",
+              },
+            ],
+          },
+        };
+
+        existingTrips.push(tripData);
+
+        localStorage.setItem("scheduledTrips", JSON.stringify(existingTrips));
         router.push("/school");
 
         openModal("CONFIRM", {
@@ -46,7 +88,7 @@ export default function Page() {
           message:
             "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
           onConfirm: () => {
-            form.reset();
+            // form.reset();
             closeModal();
           },
         });

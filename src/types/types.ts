@@ -70,3 +70,15 @@ export type confirmModalProps = {
   buttonText?: string;
   type?: "success" | "delete";
 };
+
+export type scheduledTrip = {
+  id: number;
+  name: string;
+  status: string;
+  date: string;
+  time: string;
+  total_students: string;
+  paid_count: string;
+  unpaid_count: number;
+  students: students;
+};
