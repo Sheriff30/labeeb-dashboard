@@ -20,6 +20,7 @@ import {
   Logout,
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
+import { useUser } from "@/Context/UserContext";
 
 const SIDEBAR_ITEMS = [
   {
@@ -106,7 +107,7 @@ export default function RootSidebar({
   sidebarOpen,
 }: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
-
+  const { schoolData } = useUser();
   const pathname = usePathname();
   return (
     <div
@@ -132,11 +133,11 @@ export default function RootSidebar({
         className="mx-auto  hidden xl:block"
       />
       <div className="text-center">
-        <div className="text-primary-3 text-3xl xl:text-[2.5rem] font-arabic-bold truncate ">
-          مدرسة رياض نجد
+        <div className="text-primary-3 text-3xl xl:text-[2.5rem] font-arabic-bold truncate">
+          {schoolData.name}
         </div>
-        <div className="text-gray text-lg xl:text-2xl font-roboto  ">
-          m29026753@gmail.com
+        <div className="text-gray text-lg xl:text-2xl font-roboto truncate">
+          {schoolData.email}
         </div>
       </div>
 

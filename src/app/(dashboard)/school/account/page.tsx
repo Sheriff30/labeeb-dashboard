@@ -8,6 +8,7 @@ import {
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
 import { useModal } from "@/Context/ModalContext";
+import { useUser } from "@/Context/UserContext";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -21,17 +22,18 @@ import React from "react";
 
 export default function Page() {
   const { openModal, closeModal } = useModal();
+  const { schoolData, setSchoolData } = useUser();
   const form = useForm({
     defaultValues: {
-      name: "",
-      city: "",
-      district: "",
-      category: "",
-      schoolStage: [] as string[],
-      accountName: "",
-      email: "",
-      numberOfStudents: "",
-      numberOfBranches: "",
+      name: schoolData.name,
+      city: schoolData.city,
+      district: schoolData.district,
+      category: schoolData.category,
+      schoolStage: schoolData.schoolStage,
+      accountName: schoolData.accountName,
+      email: schoolData.email,
+      numberOfStudents: schoolData.numberOfStudents,
+      numberOfBranches: schoolData.numberOfBranches,
     },
     onSubmit: async ({ value }) => {
       const {
@@ -58,6 +60,7 @@ export default function Page() {
         email,
       };
       console.log("FormData", formData);
+      setSchoolData(formData);
       form.reset();
       openModal("CONFIRM", {
         title: "تم تعديل البيانات بنجاح",
