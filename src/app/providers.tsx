@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ModalProvider } from "@/Context";
 import { ModalRenderer } from "@/components/ui";
 import { usePathname } from "next/navigation";
-import { UserProvider } from "@/Context/UserContext";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,16 +23,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        {isSchoolPath ? (
-          children
-        ) : (
-          <ModalProvider>
-            {children}
-            <ModalRenderer />
-          </ModalProvider>
-        )}
-      </UserProvider>
+      {isSchoolPath ? (
+        children
+      ) : (
+        <ModalProvider>
+          {children}
+          <ModalRenderer />
+        </ModalProvider>
+      )}
     </QueryClientProvider>
   );
 }
