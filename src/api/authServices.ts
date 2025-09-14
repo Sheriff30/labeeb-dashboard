@@ -76,3 +76,13 @@ export const profile = async () => {
     throw error;
   }
 };
+
+export const logout = async () => {
+  try {
+    const res = await axiosInstance.post("/auth/logout");
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

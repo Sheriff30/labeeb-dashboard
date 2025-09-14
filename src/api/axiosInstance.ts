@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: "http://16.16.195.9/api",

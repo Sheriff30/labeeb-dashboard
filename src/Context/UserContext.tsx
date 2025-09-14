@@ -29,11 +29,11 @@ type UserProviderProps = {
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User>(null);
   const { data, isLoading } = useProfile();
-  const isAuthenticated =
-    typeof window !== "undefined" ? !!localStorage.getItem("token") : false;
+
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
 
   useEffect(() => {
-    if (data && !isLoading) {
+    if (data) {
       setUser(data.data);
     }
   }, [data, isLoading]);

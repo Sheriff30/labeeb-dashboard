@@ -1,9 +1,11 @@
 "use client";
 import { ModalRenderer } from "@/components";
 import { ModalProvider } from "@/Context";
+import { useAuth } from "@/Context/UserContext";
 import { RootSidebar } from "@/layout";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -11,6 +13,19 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/login");
+      return;
+    }
+    if (user?.role === "super_admin") {
+      router.replace("/admin");
+    }
+  }, [user, isAuthenticated, router]);
 
   return (
     <div className="grid grid-cols-1 grid-rows-[70px_1fr] xl:grid-rows-none xl:grid-cols-[auto_1fr] xl:h-screen bg-primary-2  ">

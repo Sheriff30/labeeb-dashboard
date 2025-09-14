@@ -1,10 +1,28 @@
-import Image from "next/image";
+"use client";
 
-export default function layout({
+import Image from "next/image";
+import { useAuth } from "@/Context/UserContext";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated && user?.role === "school") {
+      router.replace("/school");
+    }
+
+    if (isAuthenticated && user?.role === "super_admin") {
+      router.replace("/admin");
+    }
+  }, [isAuthenticated, user, router]);
+
   return (
     <main className="grid  min-[68.75rem]:grid-cols-2 min-h-screen py-10 md:py-12 px-4 md:px-11 gap-4 min-[68.75rem]:gap-10  relative">
       <Image
