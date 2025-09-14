@@ -20,7 +20,6 @@ import {
   Logout,
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
-import { on } from "events";
 
 const SIDEBAR_ITEMS = [
   {
