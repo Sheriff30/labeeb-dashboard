@@ -207,7 +207,7 @@ export default function Page() {
           <span> لا يوجد حساب للمدرسة؟ </span>{" "}
           <Link href="/signup" className="text-primary">
             {" "}
-            تسجيل دخول{" "}
+            انشاء حساب{" "}
           </Link>
         </div>
       </form>

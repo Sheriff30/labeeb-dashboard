@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 type OtpInputProps = {
   length?: number;
   onComplete?: (otp: string) => void;
-  clearErrors: () => void;
+  clearErrors?: () => void;
 };
 
 export default function OtpInput({
@@ -80,7 +80,7 @@ export default function OtpInput({
           maxLength={1}
           value={digit}
           onChange={(e) => {
-            clearErrors();
+            clearErrors?.();
             handleChange(e.target.value, index);
           }}
           onKeyDown={(e) => handleKeyDown(e, index)}
