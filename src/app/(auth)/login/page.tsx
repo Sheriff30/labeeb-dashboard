@@ -57,6 +57,8 @@ export default function Page() {
           },
           {
             onSuccess: (data) => {
+              localStorage.setItem("token", data.data.token);
+
               if (data.data.user.role === "super_admin") {
                 router.push("/admin");
               } else if (data.data.user.role === "school") {

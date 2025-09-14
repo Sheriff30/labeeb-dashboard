@@ -66,3 +66,13 @@ export const login = async (payload: credentials) => {
     throw error;
   }
 };
+
+export const profile = async () => {
+  try {
+    const res = await axiosInstance.get("/auth/profile");
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
