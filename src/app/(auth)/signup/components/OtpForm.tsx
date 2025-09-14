@@ -146,9 +146,11 @@ export default function OtpForm({
         text={isPending ? "جاري التحقق..." : "تسجيل الدخول"}
         variant="primary"
       />
-
       {error && (
-        <ul className="text-red-500  text-lg list-disc list-inside">{error}</ul>
+        <ul className="text-red-500 bg-red-500/10 px-2 py-4  text-md rounded-xl list-disc list-inside duration-200">
+          {" "}
+          {error}
+        </ul>
       )}
     </form>
   );

@@ -13,6 +13,9 @@ import { useForm, useField } from "@tanstack/react-form";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import useLoginOtp from "@/hooks/useLoginOtp";
+import { AxiosError } from "axios";
+import useLogin from "@/hooks/useLogin";
 
 type LoginMethod = "email" | "phone";
 
@@ -21,11 +24,10 @@ export default function Page() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [loginMethod, setLoginMethod] = useState<LoginMethod>("email");
   const router = useRouter();
-
-  const handleSendOtp = () => {
-    setIsOtpSent(true);
-    setIsTimerRunning(true);
-  };
+  const { mutate: loginOtp } = useLoginOtp();
+  const { mutate: login } = useLogin();
+  const [duration, setDuration] = useState(0);
+  const [error, setError] = useState("");
 
   const handleTimerComplete = () => {
     setIsTimerRunning(false);
@@ -45,19 +47,35 @@ export default function Page() {
       otp: "",
     },
     onSubmit: async ({ value }) => {
-      const { phoneNumber, email, otp } = value;
-
-      if (loginMethod === "email") {
-        console.log("Email", email);
-        router.push("/school");
-      }
+      const { phoneNumber, otp } = value;
 
       if (loginMethod === "phone") {
-        console.log("Phone", phoneNumber);
-        router.push("/school");
+        login(
+          {
+            mobile: phoneNumber,
+            otp: otp,
+          },
+          {
+            onSuccess: (data) => {
+              if (data.data.user.role === "super_admin") {
+                router.push("/admin");
+              } else if (data.data.user.role === "school") {
+                router.push("/school");
+              }
+            },
+
+            onError: (error) => {
+              if (error instanceof AxiosError) {
+                setError(error.response?.data.message);
+              }
+            },
+          }
+        );
       }
 
-      console.log("OTP", otp);
+      if (loginMethod === "email") {
+        router.push("/school");
+      }
     },
   });
 
@@ -78,6 +96,26 @@ export default function Page() {
     form,
     validators: validators.otp(),
   });
+
+  const handleSendOtp = () => {
+    if (loginMethod === "phone") {
+      loginOtp(
+        { mobile: phoneNumberField.state.value },
+        {
+          onSuccess: (data) => {
+            setDuration(data.data.expires_in);
+            setIsOtpSent(true);
+            setIsTimerRunning(true);
+          },
+          onError: (error) => {
+            if (error instanceof AxiosError) {
+              setError(error.response?.data.message);
+            }
+          },
+        }
+      );
+    }
+  };
 
   const otpDisabled =
     (loginMethod === "email" &&
@@ -140,7 +178,12 @@ export default function Page() {
               formatLang="en"
               label="البريد الإلكتروني"
               value={emailField.state.value}
-              onChange={(e) => emailField.handleChange(e.target.value)}
+              onChange={(e) => {
+                setIsOtpSent(false);
+                setIsTimerRunning(false);
+                setError("");
+                emailField.handleChange(e.target.value);
+              }}
               type="email"
               maxLength={254}
             />
@@ -160,6 +203,9 @@ export default function Page() {
               format="05XXXXXXXX"
               formatLang="en"
               onChange={(e) => {
+                setIsOtpSent(false);
+                setIsTimerRunning(false);
+                setError("");
                 const arabicNums = "٠١٢٣٤٥٦٧٨٩";
                 const englishNums = "0123456789";
                 let val = e.target.value.replace(/[٠-٩]/g, (d) => {
@@ -194,7 +240,11 @@ export default function Page() {
           <p className="text-gray flex items-center flex-wrap gap-2 mb-[14px]">
             <span className="text-gray">لم تستلم الرمز ؟ </span>
             <span>إعادة إرسال الرمز </span>
-            <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
+            <Timer
+              onComplete={handleTimerComplete}
+              isActive={isTimerRunning}
+              duration={duration}
+            />
           </p>
 
           <FormField field={otpField}>
@@ -203,6 +253,18 @@ export default function Page() {
         </div>
 
         <Button type="submit" text="تسجيل دخول" variant="primary" />
+
+        {error && (
+          <ul
+            className={cn(
+              error.length > 0 ? "opacity-100 visible" : "opacity-0  invisible",
+              "text-red-500 bg-red-500/10 px-2 py-4  text-md rounded-xl list-disc list-inside duration-200"
+            )}
+          >
+            {error}
+          </ul>
+        )}
+
         <div className="text-2xl flex items-center gap-1 flex-wrap">
           <span> لا يوجد حساب للمدرسة؟ </span>{" "}
           <Link href="/signup" className="text-primary">

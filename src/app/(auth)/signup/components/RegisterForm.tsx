@@ -300,12 +300,11 @@ export default function RegisterForm({
         text={isPending ? "جاري الإنشاء..." : "إنشاء حساب"}
         variant="primary"
       />
-
-      {error && (
-        <ul className="text-red-500  text-lg list-disc list-inside">
-          {error.map((e) => {
-            return <li key={e}>{e}</li>;
-          })}
+      {error.length > 0 && (
+        <ul className="text-red-500 bg-red-500/10 px-2 py-4  text-md rounded-xl list-disc list-inside duration-200">
+          {error.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
         </ul>
       )}
     </form>

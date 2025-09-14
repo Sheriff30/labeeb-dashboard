@@ -14,7 +14,7 @@ type register = {
 type otp = {
   mobile: string;
 };
-type otpVerify = {
+type credentials = {
   mobile: string;
   otp: string;
 };
@@ -37,9 +37,29 @@ export const otp = async (payload: otp) => {
     throw error;
   }
 };
-export const verifyOtp = async (payload: otpVerify) => {
+export const verifyOtp = async (payload: credentials) => {
   try {
     const res = await axiosInstance.post("/auth/verify-otp", payload);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const loginOtp = async (payload: otp) => {
+  try {
+    const res = await axiosInstance.post("/auth/login/send-otp", payload);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const login = async (payload: credentials) => {
+  try {
+    const res = await axiosInstance.post("/auth/login", payload);
     return res.data;
   } catch (error) {
     console.log(error);
