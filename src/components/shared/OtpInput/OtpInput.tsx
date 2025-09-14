@@ -4,9 +4,14 @@ import { useState, useRef } from "react";
 type OtpInputProps = {
   length?: number;
   onComplete?: (otp: string) => void;
+  clearErrors: () => void;
 };
 
-export default function OtpInput({ length = 6, onComplete }: OtpInputProps) {
+export default function OtpInput({
+  length = 6,
+  onComplete,
+  clearErrors,
+}: OtpInputProps) {
   const [otp, setOtp] = useState<string[]>(Array(length).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -74,7 +79,10 @@ export default function OtpInput({ length = 6, onComplete }: OtpInputProps) {
           inputMode="numeric"
           maxLength={1}
           value={digit}
-          onChange={(e) => handleChange(e.target.value, index)}
+          onChange={(e) => {
+            clearErrors();
+            handleChange(e.target.value, index);
+          }}
           onKeyDown={(e) => handleKeyDown(e, index)}
           placeholder=" "
           className="border-[1.5px] font-roboto border-primary  rounded-lg text-center text-primary text-[32px] w-full  sm:w-[62px] h-[69px] px-2 sm:px-[22px] focus:outline-none placeholder:border-b-primary placeholder:border-b-[1.5px]"

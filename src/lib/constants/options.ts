@@ -25,5 +25,5 @@ export const SCHOOL_STAGE_OPTIONS = [
   { value: "kindergarten", label: "رياض الأطفال" },
   { value: "primary", label: "الابتدائية" },
   { value: "middle", label: "الإعدادية" },
-  { value: "secondary", label: "الثانوية" },
+  { value: "high", label: "الثانوية" },
 ];

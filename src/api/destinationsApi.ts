@@ -1,5 +1,5 @@
 import { destination } from "@/types";
-import { axiosInstance } from "./axiosInstance";
+import axiosInstance from "./axiosInstance";
 
 export const getDestinations = async () => {
   try {
