@@ -110,7 +110,7 @@ export default function RootSidebar({
 }: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
   const pathname = usePathname();
-  const { mutate: logout, isPending } = useLogout();
+  const { mutate: logout } = useLogout();
   return (
     <div
       className={cn(
