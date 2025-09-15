@@ -17,7 +17,6 @@ type User = {
 type UserContextType = {
   user: User;
   setUser: (user: User) => void;
-  isAuthenticated: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -28,25 +27,17 @@ type UserProviderProps = {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User>(null);
-  const { data, isLoading } = useProfile();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsAuthenticated(!!localStorage.getItem("token"));
-    }
-  }, []);
+  const { data } = useProfile();
 
   useEffect(() => {
     if (data) {
       setUser(data.data);
     }
-  }, [data, isLoading]);
+  }, [data]);
 
   const value = {
     user,
     setUser,
-    isAuthenticated,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
