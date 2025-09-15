@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib";
+import Cookies from "js-cookie";
+
 import {
   CancelledTripts,
   Home,
@@ -20,6 +22,7 @@ import {
   Logout,
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
+import useLogout from "@/hooks/useLogout";
 
 const SIDEBAR_ITEMS = [
   {
@@ -107,6 +110,7 @@ export default function RootSidebar({
 }: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
   const pathname = usePathname();
+  const { mutate: logout, isPending } = useLogout();
   return (
     <div
       className={cn(
@@ -153,6 +157,17 @@ export default function RootSidebar({
                   pathname === item.href && "text-primary-3",
                   item.href === "/login" && "text-error"
                 )}
+                onClick={() => {
+                  if (item.href === "/login") {
+                    logout(undefined, {
+                      onSuccess: () => {
+                        Cookies.remove("token");
+                        Cookies.remove("role");
+                        window.location.href = "/login";
+                      },
+                    });
+                  }
+                }}
               >
                 {item.icon && <item.icon />}
                 <span>{item.label}</span>

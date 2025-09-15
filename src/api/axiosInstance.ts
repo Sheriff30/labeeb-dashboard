@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const axiosInstance = axios.create({
   baseURL: "http://16.16.195.9/api",
@@ -15,7 +16,7 @@ export const nextApi = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -35,7 +36,8 @@ axiosInstance.interceptors.response.use(
       !requestUrl.includes("/auth/login") &&
       !requestUrl.includes("/auth/register")
     ) {
-      localStorage.removeItem("token");
+      Cookies.remove("token");
+      Cookies.remove("role");
       window.location.href = "/login";
     }
 

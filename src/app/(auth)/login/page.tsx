@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import useLoginOtp from "@/hooks/useLoginOtp";
 import { AxiosError } from "axios";
 import useLogin from "@/hooks/useLogin";
+import Cookies from "js-cookie";
 
 type LoginMethod = "email" | "phone";
 
@@ -57,7 +58,8 @@ export default function Page() {
           },
           {
             onSuccess: (data) => {
-              localStorage.setItem("token", data.data.token);
+              Cookies.set("token", data.data.token, { expires: 1 }); // 1 day
+              Cookies.set("role", data.data.user.role, { expires: 1 });
 
               if (data.data.user.role === "super_admin") {
                 router.push("/admin");

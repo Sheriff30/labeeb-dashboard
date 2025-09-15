@@ -1,5 +1,4 @@
-import useProfile from "@/hooks/useProfile";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type User = {
   id: string;
@@ -27,13 +26,6 @@ type UserProviderProps = {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User>(null);
-  const { data } = useProfile();
-
-  useEffect(() => {
-    if (data) {
-      setUser(data.data);
-    }
-  }, [data]);
 
   const value = {
     user,

@@ -1,10 +1,9 @@
 import { profile } from "@/api/authServices";
 import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 
 function useProfile() {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
+  const token = Cookies.get("token");
   return useQuery({
     queryKey: ["profile"],
     queryFn: profile,
