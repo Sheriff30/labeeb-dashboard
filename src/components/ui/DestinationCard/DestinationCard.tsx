@@ -12,7 +12,7 @@ import { destination } from "@/types";
 
 export default function DestinationCard({ data }: { data: destination }) {
   return (
-    <div className="w-full border-[1.5px] border-black/15 rounded-xl p-3">
+    <div className="w-full border-[1.5px] border-black/15 rounded-xl p-3 h-fit">
       <Swiper
         modules={[Navigation]}
         spaceBetween={30}
@@ -46,7 +46,7 @@ export default function DestinationCard({ data }: { data: destination }) {
           href={`/school/destinations/${data?.id}`}
         />
         <div className="flex items-center gap-1 text-3xl">
-          <div className="font-arabic-bold">{data?.pricePerStudent}</div>
+          <div className="font-arabic-bold">{data?.capacity}</div>
           <Image
             src="/images/currency.svg"
             alt="currency"

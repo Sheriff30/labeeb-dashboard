@@ -1,9 +1,15 @@
-import { destination } from "@/types";
 import axiosInstance from "./axiosInstance";
 
-export const getDestinations = async () => {
+export const getDestinations = async ({
+  page = 1,
+  per_page = 10,
+  search = "",
+  type = "",
+}) => {
   try {
-    const data = await axiosInstance.get("/destination.json");
+    const data = await axiosInstance.get("/school/destinations", {
+      params: { page, per_page, search, type },
+    });
     return data.data;
   } catch (error) {
     console.log(error);
@@ -11,12 +17,12 @@ export const getDestinations = async () => {
   }
 };
 
-export const getDestination = async (id: string | number) => {
+export const getDestinationsTypes = async () => {
   try {
-    const response = await axiosInstance.get("/destination.json");
-    return response.data.find((d: destination) => String(d.id) === id);
+    const data = await axiosInstance.get("/school/destinations/types");
+    return data.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Error fetching destination by id");
+    throw new Error("Error fetching destinations types");
   }
 };

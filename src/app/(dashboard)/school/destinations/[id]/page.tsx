@@ -1,6 +1,6 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-import { useDestination } from "@/hooks/useDestinations";
+// import { useDestination } from "@/hooks/useDestinations";
 import { Destination } from "@/views/Destination";
 import { Button, Currency, FormField, Input } from "@/components";
 import { useField, useForm } from "@tanstack/react-form";

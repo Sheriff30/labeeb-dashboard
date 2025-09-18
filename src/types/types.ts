@@ -1,19 +1,44 @@
 export type destination = {
   id: number;
   name: string;
-  type: string;
-  place: string;
+  name_ar: string;
   description: string;
-  images: string[];
-  pricePerStudent: number;
-  availableDays: string[];
-  availableTimes: {
-    start: string;
-    end: string;
-  };
-  gender: string[];
+  description_ar: string;
+  type: string;
+  gender: "male" | "female" | "both";
+  city: string;
+  district: string;
+  address: string;
+  google_maps_link: string;
+  contact_phone: string;
+  contact_email: string;
+  contact_person_name: string;
   capacity: number;
-  paymentMethod: string;
+  labeeb_commission_percentage: number;
+  rating: string;
+  status: "active" | "inactive";
+  images: string[];
+  thumbnail: string;
+  facilities: string[];
+  suitable_grades: string[];
+  availability_hours: {
+    morning: string;
+    afternoon: string;
+  };
+  availability_days: (
+    | "sunday"
+    | "monday"
+    | "tuesday"
+    | "wednesday"
+    | "thursday"
+    | "friday"
+    | "saturday"
+  )[];
+  booking_required: boolean;
+  active_package_count: number;
+  min_price: string;
+  max_price: string;
+  created_at: string;
 };
 
 export type file = {

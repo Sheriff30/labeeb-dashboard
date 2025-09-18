@@ -1,4 +1,4 @@
-import { getTrips } from "@/api/tripsApi";
+// import { getTrips } from "@/api/tripsApi";
 import { useQuery } from "@tanstack/react-query";
 
 export const useTrips = () => {
