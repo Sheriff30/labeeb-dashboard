@@ -120,6 +120,17 @@ export const validators = {
         return undefined;
 
       const selectedDate = new Date(value);
+      const today = new Date();
+
+      // Set time to 00:00:00 for accurate date comparison
+      today.setHours(0, 0, 0, 0);
+      selectedDate.setHours(0, 0, 0, 0);
+
+      // Check if the selected date is today or in the past (only allow future dates)
+      if (selectedDate <= today) {
+        return "يرجى اختيار تاريخ مستقبلي فقط";
+      }
+
       // Get the day index (0 = Sunday, 1 = Monday, etc.)
       const dayIndex = selectedDate.getDay();
 

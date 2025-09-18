@@ -1,7 +1,7 @@
 "use client";
 import { TripsCard } from "@/components";
 import { Loading } from "@/components/shared/Loading";
-import useTripsStatistics from "@/hooks/useTripsStatistics";
+import { useTripsStatistics } from "@/hooks/Trips";
 import React from "react";
 
 export default function TripsCards() {

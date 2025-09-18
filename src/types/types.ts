@@ -130,3 +130,26 @@ export type subAdmin = {
   email: string;
   city: string;
 };
+
+export type SchoolTrip = {
+  destination_id: number;
+  destination_package_id: number;
+  trip_date: string; // format: YYYY-MM-DD
+  trip_time: string; // format: HH:mm
+  return_time: string; // format: HH:mm
+  description: string;
+  special_requirements?: string;
+  notes?: string;
+  total_students: number;
+  amount_per_student: number;
+  coordinator_name: string;
+  coordinator_phone: string;
+  coordinator_email: string;
+  emergency_contact_name: string;
+  emergency_contact_phone: string;
+  pickup_location: string;
+  pickup_time: string; // format: HH:mm
+  transport_provider: string;
+  transport_type: "bus" | "van" | "car" | string;
+  transport_details?: string;
+};

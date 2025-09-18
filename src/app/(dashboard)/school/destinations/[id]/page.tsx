@@ -1,13 +1,15 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { Destination } from "@/views/Destination";
-import { Button, Currency, FormField, Input } from "@/components";
 import { useField, useForm } from "@tanstack/react-form";
 import { validators } from "@/lib/constants/validation";
 import { useModal } from "@/Context";
 import { useState } from "react";
 import { useDestinationById } from "@/hooks/Destinations";
-import { formatTime } from "@/lib/utils/timeFormatter";
+import Summary from "../Summary";
+import TripForm from "../TripForm";
+import { useCreateTrip } from "@/hooks/Trips";
+import useProfile from "@/hooks/useProfile";
 
 const FEES = 120;
 
@@ -19,7 +21,11 @@ export default function Page() {
   const { data: destination, isLoading } = useDestinationById(id);
   const { openModal, closeModal } = useModal();
   const [showRequestInfo, setShowRequestInfo] = useState(false);
+  const { mutate } = useCreateTrip();
+  const { data: profile } = useProfile();
   const router = useRouter();
+
+  console.log(profile);
 
   const form = useForm({
     defaultValues: {
@@ -38,15 +44,42 @@ export default function Page() {
         value.file &&
         value.package
       ) {
-        openModal("CONFIRM", {
-          title: "تم  حجز  الرحلة بنجاح",
-          titleColor: "text-primary-green",
-          buttonText: "شكراً",
-          message:
-            "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
-          onConfirm: () => {
-            form.reset();
-            closeModal();
+        const payload = {
+          destination_id: destination?.data?.id,
+          destination_package_id: Number(value.package),
+          trip_date: value.tripDate,
+          trip_time: value.tripTime,
+          return_time: "",
+          description: "",
+          special_requirements: "",
+          notes: "",
+          total_students: Number(value.numberOfStudents),
+          amount_per_student: Number(value.package),
+          coordinator_name: profile?.data?.name || "",
+          coordinator_phone: profile?.data?.mobile || "",
+          coordinator_email: profile?.data?.email || "",
+          emergency_contact_name: profile?.data?.name || "",
+          emergency_contact_phone: profile?.data?.mobile || "",
+          pickup_location: "School main entrance",
+          pickup_time: value.tripTime,
+          transport_provider: "",
+          transport_type: "",
+          transport_details: "",
+        };
+
+        mutate(payload, {
+          onSuccess: () => {
+            router.push("/school");
+            openModal("CONFIRM", {
+              title: "تم  حجز  الرحلة بنجاح",
+              titleColor: "text-primary-green",
+              buttonText: "شكراً",
+              message:
+                "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
+              onConfirm: () => {
+                closeModal();
+              },
+            });
           },
         });
       }
@@ -132,155 +165,21 @@ export default function Page() {
       {!showRequestInfo ? (
         <div className="flex flex-col gap-13">
           <Destination destination={destination.data} />
-          <div className="flex flex-col gap-2">
-            <div className="text-3xl text-primary font-arabic-bold">
-              بيانات حجز الرحلة
-            </div>
-            {/* input groups */}
-            <div className="grid  lg:grid-cols-4 gap-10 items-end flex-wrap">
-              {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full  ">
-                <div className="text-2xl">عدد الطلاب</div>
-                <FormField field={numberOfStudents}>
-                  <Input
-                    placeholder="مثال : 70"
-                    type="number"
-                    onChange={(e) =>
-                      numberOfStudents.handleChange(e.target.value)
-                    }
-                  />
-                </FormField>
-              </div>{" "}
-              {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full ">
-                <div className="text-2xl">تاريخ الرحلة</div>
-
-                <FormField field={tripDate}>
-                  <Input
-                    placeholder="اختر اليوم"
-                    type="date"
-                    className="font-roboto"
-                    onChange={(e) => tripDate.handleChange(e.target.value)}
-                  />
-                </FormField>
-              </div>{" "}
-              {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full ">
-                <div className="text-2xl">وقت الرحلة</div>
-
-                <FormField field={tripTime}>
-                  <Input
-                    placeholder="مثال:11ص"
-                    type="time"
-                    onChange={(e) => tripTime.handleChange(e.target.value)}
-                    className="font-roboto"
-                  />
-                </FormField>
-              </div>{" "}
-              {/* button */}
-              <div className="grid grid-rows-[auto_53px] w-full ">
-                <span></span>
-                <Button
-                  text="إحجز الآن"
-                  variant="secondary"
-                  onClick={HandleShowFilesModal}
-                />
-              </div>
-            </div>
-          </div>
+          <TripForm
+            numberOfStudents={numberOfStudents}
+            tripDate={tripDate}
+            tripTime={tripTime}
+            HandleShowFilesModal={HandleShowFilesModal}
+          />
         </div>
       ) : (
-        <div className="flex flex-col h-full">
-          <div className="text-4xl font-arabic-bold mb-8">
-            بيانات حجز الرحلة
-          </div>
-          <div className="flex justify-between gap-1 items-center mb-4">
-            <div className="text-3xl font-arabic-bold text-primary">
-              ملخص الطلب
-            </div>
-            <div
-              className="text-gray text-xl cursor-pointer "
-              onClick={() => {
-                form.reset();
-                setShowRequestInfo(false);
-              }}
-            >
-              رجوع للخلف
-            </div>
-          </div>
-          <div className="mb-10">
-            <div className="text-3xl mb-2">{destination.name}</div>
-            <div className="flex flex-col md:flex-row gap-2 max-w-[900px] justify-between mb-6">
-              <div className="text-2xl">
-                <div className="text-2xl mb-1">عدد الطلاب</div>
-                <div className="border border-primary-blue py-2 px-4 text-primary-blue rounded-xl  w-full">
-                  {form.state.values.numberOfStudents}{" "}
-                  {Number(form.state.values.numberOfStudents) < 10
-                    ? "طلاب"
-                    : "طالبا"}
-                </div>
-              </div>
-              <div className="text-2xl">
-                <div className="text-2xl mb-1">وقت الرحلة</div>
-                <div className="border border-primary-blue py-2 px-4 text-primary-blue rounded-xl  w-full">
-                  {formatTime(form.state.values.tripTime)}{" "}
-                </div>
-              </div>
-              <div className="text-2xl">
-                <div className="text-2xl mb-1">تاريخ الرحلة</div>
-                <div className="border border-primary-blue py-2 px-4 text-primary-blue rounded-xl  w-full font-roboto">
-                  {form.state.values.tripDate}{" "}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl font-arabic-bold text-primary mb-2">
-                الفاتورة{" "}
-              </div>
-              <div className="py-4 px-2 bg-primary-blue-2 max-w-[355px] flex gap-1 flex-col rounded-2xl">
-                <div className="flex  gap-10 items-center">
-                  <div className="text-xl">عدد الطلاب</div>
-                  <div className="flex gap-2.5 text-xl items-center">
-                    <span className="font-roboto text-2xl">
-                      {form.state.values.numberOfStudents}
-                    </span>
-                    طالب
-                  </div>
-                </div>
-                <div className="flex  gap-10 items-center">
-                  <div className="text-xl">سعر الباقة المختارة</div>
-                  <div className="flex gap-2.5 text-xl items-center">
-                    <span className="font-roboto text-2xl">
-                      {form.state.values.package}
-                    </span>
-                    <Currency className="w-[30px] h-[30px]" />{" "}
-                  </div>
-                </div>
-                <div className="flex  gap-10 items-center mb-4">
-                  <div className="text-xl">رسوم الحجز</div>
-                  <div className="flex gap-2.5 text-xl items-center">
-                    <span className="font-roboto text-2xl">{FEES}</span>
-                    <Currency className="w-[30px] h-[30px]" />{" "}
-                  </div>
-                </div>
-                <div className="flex  gap-10 items-center text-primary-blue">
-                  <div className="text-2xl font-arabic-bold">
-                    إجمالى الفاتورة
-                  </div>
-                  <div className="flex gap-2.5 text-xl items-center">
-                    <span className="font-roboto font-bold text-2xl">
-                      {calculateTotal()}
-                    </span>
-                    <Currency className="w-[30px] h-[30px]" />{" "}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-auto mb-auto  max-w-[426px] w-full">
-            <Button text="إحجز الآن" type="submit" className="w-full" />
-          </div>
-        </div>
+        <Summary
+          setShowRequestInfo={setShowRequestInfo}
+          fees={FEES}
+          form={form}
+          name={destination?.data?.name}
+          calculateTotal={calculateTotal}
+        />
       )}
     </form>
   );
