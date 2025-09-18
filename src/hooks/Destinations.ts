@@ -1,5 +1,9 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getDestinations, getDestinationsTypes } from "@/api/destinationsApi";
+import {
+  getDestinationById,
+  getDestinations,
+  getDestinationsTypes,
+} from "@/api/destinationsApi";
 
 export const useDestinations = (
   page = 1,
@@ -11,6 +15,13 @@ export const useDestinations = (
     queryKey: ["destinations", page, per_page, search, type],
     queryFn: () => getDestinations({ page, per_page, search, type }),
     placeholderData: keepPreviousData,
+  });
+};
+
+export const useDestinationById = (id: string) => {
+  return useQuery({
+    queryKey: ["destination", id],
+    queryFn: () => getDestinationById(id),
   });
 };
 

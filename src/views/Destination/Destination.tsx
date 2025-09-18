@@ -7,11 +7,13 @@ import { RenderMixedFonts } from "@/components/ui/RenderMixedFonts";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { destination } from "@/types";
+import { formatAvailabilityHours } from "@/lib/utils/formatAvailabilityHours";
 
 type Props = {
   destination: destination;
 };
 export function Destination({ destination }: Props) {
+  console.log("destination", destination);
   return (
     <div className="grid gap-3 grid-cols-1 lg:grid-cols-[31.6rem_1fr]">
       <div className="flex flex-col gap-2">
@@ -58,7 +60,7 @@ export function Destination({ destination }: Props) {
           <div className="flex items-center gap-1">
             <Image
               src="/images/destination-type.svg"
-              alt={destination.type}
+              alt="destination type"
               width={32}
               height={32}
             />
@@ -67,11 +69,11 @@ export function Destination({ destination }: Props) {
           <div className="flex items-center gap-1">
             <Image
               src="/images/location.svg"
-              alt={destination.type}
+              alt="location"
               width={32}
               height={32}
             />
-            <div>{destination.place}</div>
+            <div>{destination?.city}</div>
           </div>
         </div>
         {/* Group 2 */}
@@ -80,7 +82,7 @@ export function Destination({ destination }: Props) {
           <div className="flex  items-center">
             <div className="text-xl text-gray font-arabic-light">تبدأ من</div>
             <div className="flex gap-1 font-arabic-bold text-primary">
-              {destination.pricePerStudent}
+              {destination.min_price}
 
               <Currency />
             </div>
@@ -104,17 +106,13 @@ export function Destination({ destination }: Props) {
           {/*الفئة*/}
           <div className="flex flex-col  gap-2">
             <div className="text-primary">الفئة</div>
-            <div className="flex gap-2 items-center">
-              <div>{destination.gender[0]}</div>
-              {destination.gender[1] && <div>و</div>}
-              <div>{destination.gender[1]}</div>
-            </div>
+            <div className="flex gap-2 items-center">{destination.gender}</div>
           </div>
           {/* الأوقات الأيام المتاحة */}
           <div className="flex flex-col  gap-2">
             <div className="text-primary">الأوقات الأيام المتاحة</div>
             <div className="flex gap-2 flex-wrap items-center justify-center">
-              {destination.availableDays.map((day: string) => (
+              {destination.availability_days?.map((day: string) => (
                 <div key={day}>{day}</div>
               ))}
             </div>
@@ -123,16 +121,18 @@ export function Destination({ destination }: Props) {
             {" "}
             <div className="text-primary">الأوقات المتاحة</div>
             <div className="flex gap-1">
-              {<RenderMixedFonts text={destination.availableTimes.start} />}
-              <div className="font-arabic-light">حتي</div>
-              {<RenderMixedFonts text={destination.availableTimes.end} />}
+              {
+                <RenderMixedFonts
+                  text={formatAvailabilityHours(destination.availability_hours)}
+                />
+              }
             </div>
           </div>
         </div>
         {/* Group 5 */}
         <div className="flex flex-col  gap-2 text-2xl">
           <div className="text-primary">طريقة الدفع</div>
-          <div>{destination.paymentMethod}</div>
+          <div>دفع إلكتروني</div>
         </div>
       </div>
     </div>

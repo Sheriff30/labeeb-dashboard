@@ -1,3 +1,5 @@
+import { formatTime } from "../utils/timeFormatter";
+
 export const validators = {
   required: (fieldName: string) => ({
     onChange: ({ value }: { value: string }) =>
@@ -111,4 +113,121 @@ export const validators = {
       return undefined;
     },
   }),
+
+  availableDate: (message: string, availableDays?: string[]) => {
+    return (value: string) => {
+      if (!value || !availableDays || availableDays.length === 0)
+        return undefined;
+
+      const selectedDate = new Date(value);
+      // Get the day index (0 = Sunday, 1 = Monday, etc.)
+      const dayIndex = selectedDate.getDay();
+
+      // Map day index to day name
+      const dayNames = [
+        "sunday", // 0
+        "monday", // 1
+        "tuesday", // 2
+        "wednesday", // 3
+        "thursday", // 4
+        "friday", // 5
+        "saturday", // 6
+      ];
+
+      const dayName = dayNames[dayIndex];
+
+      if (!availableDays.includes(dayName)) {
+        const dayMap = {
+          sunday: "الأحد",
+          monday: "الاثنين",
+          tuesday: "الثلاثاء",
+          wednesday: "الأربعاء",
+          thursday: "الخميس",
+          friday: "الجمعة",
+          saturday: "السبت",
+        };
+
+        const availableDaysArabic = availableDays
+          .map((day) => dayMap[day as keyof typeof dayMap])
+          .join("، ");
+
+        return `الوجهة متاحة فقط في الأيام التالية: ${availableDaysArabic}`;
+      }
+
+      return undefined;
+    };
+  },
+
+  availableTime: (
+    message: string,
+    availabilityHours?: { morning?: string; afternoon?: string }
+  ) => {
+    return (value: string) => {
+      if (!value || !availabilityHours) return undefined;
+
+      const [hours, minutes] = value.split(":").map(Number);
+      const selectedMinutes = hours * 60 + minutes;
+
+      let isValid = false;
+      const availableHours: string[] = [];
+
+      // Helper function to format time to 12-hour format
+      const formatTimeRange = (timeRange: string) => {
+        const [start, end] = timeRange.split("-");
+
+        return `${formatTime(start)}-${formatTime(end)}`;
+      };
+
+      // Check morning availability
+      if (availabilityHours.morning) {
+        const [morningStart, morningEnd] = availabilityHours.morning.split("-");
+        const [startH, startM] = morningStart.split(":").map(Number);
+        const [endH, endM] = morningEnd.split(":").map(Number);
+
+        const morningStartMinutes = startH * 60 + startM;
+        const morningEndMinutes = endH * 60 + endM;
+
+        if (
+          selectedMinutes >= morningStartMinutes &&
+          selectedMinutes <= morningEndMinutes
+        ) {
+          isValid = true;
+        }
+
+        availableHours.push(
+          `${formatTimeRange(availabilityHours.morning)} صباحاً`
+        );
+      }
+
+      // Check afternoon availability
+      if (availabilityHours.afternoon && !isValid) {
+        const [afternoonStart, afternoonEnd] =
+          availabilityHours.afternoon.split("-");
+        const [startH, startM] = afternoonStart.split(":").map(Number);
+        const [endH, endM] = afternoonEnd.split(":").map(Number);
+
+        const afternoonStartMinutes = startH * 60 + startM;
+        const afternoonEndMinutes = endH * 60 + endM;
+
+        if (
+          selectedMinutes >= afternoonStartMinutes &&
+          selectedMinutes <= afternoonEndMinutes
+        ) {
+          isValid = true;
+        }
+
+        availableHours.push(
+          `${formatTimeRange(availabilityHours.afternoon)} مساءً`
+        );
+      }
+
+      if (!isValid) {
+        return `الوجهة متاحة في الأوقات التالية: ${availableHours.join(
+          " أو "
+        )}`;
+      }
+
+      return undefined;
+    };
+  },
 };

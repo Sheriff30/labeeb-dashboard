@@ -26,3 +26,13 @@ export const getDestinationsTypes = async () => {
     throw new Error("Error fetching destinations types");
   }
 };
+
+export const getDestinationById = async (id: string) => {
+  try {
+    const data = await axiosInstance.get(`/school/destinations/${id}`);
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error fetching destination by ID");
+  }
+};

@@ -1,14 +1,12 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-// import { useDestination } from "@/hooks/useDestinations";
 import { Destination } from "@/views/Destination";
 import { Button, Currency, FormField, Input } from "@/components";
 import { useField, useForm } from "@tanstack/react-form";
 import { validators } from "@/lib/constants/validation";
 import { useModal } from "@/Context";
 import { useState } from "react";
-import { formatDateArabic } from "@/lib/utils/dateFormatter";
-import { formatTimeArabic } from "@/lib/utils/timeFormatter";
+import { useDestinationById } from "@/hooks/Destinations";
 
 const FEES = 120;
 
@@ -17,7 +15,7 @@ export default function Page() {
   const id: string = Array.isArray(params?.id)
     ? params.id[0]
     : params?.id ?? "";
-  const { data: destination, isLoading } = useDestination(id);
+  const { data: destination, isLoading } = useDestinationById(id);
   const { openModal, closeModal } = useModal();
   const [showRequestInfo, setShowRequestInfo] = useState(false);
   const router = useRouter();
@@ -39,48 +37,6 @@ export default function Page() {
         value.file &&
         value.package
       ) {
-        const existingTrips = JSON.parse(
-          localStorage.getItem("scheduledTrips") || "[]"
-        );
-
-        const tripData = {
-          id: Math.random(),
-          name: destination?.name,
-          status: "مؤكدة",
-          date: formatDateArabic(value.tripDate),
-          time: formatTimeArabic(value.tripTime),
-          total_students: value.numberOfStudents,
-          paid_count: value.numberOfStudents,
-          unpaid_count: 0,
-          students: {
-            paid: [
-              {
-                name: "أحمد محمد",
-                phone: "01099999999",
-              },
-              {
-                name: "منى خالد",
-                phone: "01088888888",
-              },
-            ],
-            unpaid: [
-              {
-                name: "إسلام سامي",
-                phone: "01077777777",
-              },
-              {
-                name: "هدى أحمد",
-                phone: "01066666666",
-              },
-            ],
-          },
-        };
-
-        existingTrips.push(tripData);
-
-        localStorage.setItem("scheduledTrips", JSON.stringify(existingTrips));
-        router.push("/school");
-
         openModal("CONFIRM", {
           title: "تم  حجز  الرحلة بنجاح",
           titleColor: "text-primary-green",
@@ -99,17 +55,31 @@ export default function Page() {
   const numberOfStudents = useField({
     name: "numberOfStudents",
     form,
-    validators: validators.capacity("عدد الطلاب", destination?.capacity),
+    validators: validators.capacity("عدد الطلاب", destination?.data?.capacity),
   });
+
   const tripDate = useField({
     name: "tripDate",
     form,
-    validators: validators.required("تاريخ الرحلة"),
+    validators: {
+      onChange: ({ value }) =>
+        validators.availableDate(
+          "تاريخ غير متاح",
+          destination?.data?.availability_days
+        )(value),
+    },
   });
+
   const tripTime = useField({
     name: "tripTime",
     form,
-    validators: validators.required("وقت الرحلة"),
+    validators: {
+      onChange: ({ value }) =>
+        validators.availableTime(
+          "وقت غير متاح",
+          destination?.data?.availability_hours
+        )(value),
+    },
   });
 
   if (isLoading) {
@@ -173,7 +143,7 @@ export default function Page() {
     >
       {!showRequestInfo ? (
         <div className="flex flex-col gap-13">
-          <Destination destination={destination} />
+          <Destination destination={destination.data} />
           <div className="flex flex-col gap-2">
             <div className="text-3xl text-primary font-arabic-bold">
               بيانات حجز الرحلة
