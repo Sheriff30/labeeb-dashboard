@@ -10,6 +10,7 @@ import Summary from "../Summary";
 import TripForm from "../TripForm";
 import { useCreateTrip } from "@/hooks/Trips";
 import useProfile from "@/hooks/useProfile";
+import { AxiosError } from "axios";
 
 const FEES = 120;
 
@@ -21,11 +22,10 @@ export default function Page() {
   const { data: destination, isLoading } = useDestinationById(id);
   const { openModal, closeModal } = useModal();
   const [showRequestInfo, setShowRequestInfo] = useState(false);
-  const { mutate } = useCreateTrip();
+  const { mutate, isPending } = useCreateTrip();
   const { data: profile } = useProfile();
   const router = useRouter();
-
-  console.log(profile);
+  const [error, setError] = useState("");
 
   const form = useForm({
     defaultValues: {
@@ -80,6 +80,12 @@ export default function Page() {
                 closeModal();
               },
             });
+          },
+
+          onError: (error) => {
+            if (error instanceof AxiosError) {
+              setError(error?.response?.data?.message);
+            }
           },
         });
       }
@@ -179,6 +185,9 @@ export default function Page() {
           form={form}
           name={destination?.data?.name}
           calculateTotal={calculateTotal}
+          isPending={isPending}
+          error={error}
+          setError={setError}
         />
       )}
     </form>

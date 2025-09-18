@@ -11,6 +11,9 @@ type Props = {
   fees: number;
   name: string;
   calculateTotal: () => number;
+  isPending: boolean;
+  error?: string;
+  setError?: (error: string) => void;
 };
 
 export default function Summary({
@@ -19,6 +22,9 @@ export default function Summary({
   fees,
   name,
   calculateTotal,
+  isPending,
+  error,
+  setError,
 }: Props) {
   return (
     <div className="flex flex-col h-full">
@@ -30,6 +36,7 @@ export default function Summary({
           onClick={() => {
             form.reset();
             setShowRequestInfo(false);
+            if (setError) setError("");
           }}
         >
           رجوع للخلف
@@ -75,8 +82,14 @@ export default function Summary({
           </div>
         </div>
       </div>
-      <div className="mt-auto mb-auto  max-w-[426px] w-full">
-        <Button text="إحجز الآن" type="submit" className="w-full" />
+      <div className="mt-auto mb-auto  max-w-[426px] w-full gap-4 flex flex-col">
+        <Button
+          text={isPending ? "جاري الحجز..." : "إحجز الآن"}
+          type="submit"
+          className="w-full"
+          disabled={isPending}
+        />
+        <div className="text-red-500 ">{error}</div>
       </div>
     </div>
   );
