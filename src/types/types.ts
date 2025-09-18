@@ -52,10 +52,15 @@ export type file = {
 };
 
 export type packageType = {
+  id: number;
   name: string;
-  price: string;
-  unit: string;
-  items: string[];
+  price: number;
+  benefits: string[];
+  formatted_benefits: string | null;
+  status: "active" | "inactive"; // assuming only these states, adjust if needed
+  sort_order: number;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
 };
 
 export type student = {

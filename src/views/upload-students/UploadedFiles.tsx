@@ -44,7 +44,7 @@ export default function UploadedFiles() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] w-full">
-      {files.map((file: file) => {
+      {files?.map((file: file) => {
         return (
           <div
             key={file.id}

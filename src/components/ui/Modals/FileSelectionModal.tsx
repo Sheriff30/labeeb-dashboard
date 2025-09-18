@@ -61,7 +61,7 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
           </div>
         </div>
         <div className="flex flex-col gap-2 max-h-[540px] overflow-y-scroll no-scrollbar">
-          {files.map((file: file) => {
+          {files?.map((file: file) => {
             return (
               <div
                 key={file.id}

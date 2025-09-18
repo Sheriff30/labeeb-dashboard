@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useModal } from "@/Context/ModalContext";
 import { Button } from "@/components/shared/Button";
-import { usePackages } from "@/hooks/usePackages";
 import { ModalWrapper } from "../ModalWrapper";
 import { packageType } from "@/types";
 import { Currency } from "@/components/shared";
@@ -10,21 +9,25 @@ import Image from "next/image";
 import { cn } from "@/lib";
 
 interface PackagesProps {
-  onPackageSelect: (selectedPackage: string) => void;
+  onPackageSelect: (selectedPackage: number) => void;
+  packages: packageType[]; // Add packages prop
+  isLoading?: boolean; // Add optional loading prop
   title?: string;
   onClose?: () => void;
 }
-
 export const PackagesModal: React.FC<PackagesProps> = ({
   onPackageSelect,
   onClose,
+  packages,
+  isLoading,
 }) => {
   const { closeModal } = useModal();
-  const [selectedPackage, setSelectedPackage] = useState("");
+  const [selectedPackage, setSelectedPackage] = useState(1);
   const [error, setError] = useState<string>("");
-  const { data: packages, isLoading } = usePackages();
 
-  const handlePackageSelect = (p: string) => {
+  console.log("Available packages:", packages);
+
+  const handlePackageSelect = (p: number) => {
     setError("");
     setSelectedPackage(p);
   };
@@ -61,9 +64,9 @@ export const PackagesModal: React.FC<PackagesProps> = ({
                 key={p.name}
                 className={cn(
                   "w-full bg-white-2 p-[18px] rounded-xl flex flex-col gap-3 cursor-pointer ",
-                  selectedPackage === p.price ? "ring-2 ring-primary" : "" // Add selection styling
+                  selectedPackage === p.id ? "ring-2 ring-primary" : "" // Add selection styling
                 )}
-                onClick={() => handlePackageSelect(p.price)}
+                onClick={() => handlePackageSelect(p.id)}
               >
                 <div className="flex flex-col gap-1">
                   <div className="text-2xl">{p.name}</div>
@@ -76,7 +79,7 @@ export const PackagesModal: React.FC<PackagesProps> = ({
                   </div>
                   <div className="text-xl text-gray">تشمل الأتى</div>
                   <div>
-                    {p.items.map((f: string, index: number) => (
+                    {p.benefits.map((f: string, index: number) => (
                       <div
                         key={index}
                         className="text-lg text-primary-blue flex gap-2"

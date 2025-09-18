@@ -13,7 +13,6 @@ type Props = {
   destination: destination;
 };
 export function Destination({ destination }: Props) {
-  console.log("destination", destination);
   return (
     <div className="grid gap-3 grid-cols-1 lg:grid-cols-[31.6rem_1fr]">
       <div className="flex flex-col gap-2">

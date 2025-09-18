@@ -7,6 +7,7 @@ import { validators } from "@/lib/constants/validation";
 import { useModal } from "@/Context";
 import { useState } from "react";
 import { useDestinationById } from "@/hooks/Destinations";
+import { formatTime } from "@/lib/utils/timeFormatter";
 
 const FEES = 120;
 
@@ -44,7 +45,7 @@ export default function Page() {
           message:
             "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
           onConfirm: () => {
-            // form.reset();
+            form.reset();
             closeModal();
           },
         });
@@ -98,6 +99,8 @@ export default function Page() {
       form.setFieldValue("file", selectedFile);
       setTimeout(() => {
         openModal("PACKAGES", {
+          packages: destination?.data?.active_packages || [],
+          isLoading: isLoading,
           onPackageSelect: handlePackageSelect,
         });
       }, 0);
@@ -110,21 +113,6 @@ export default function Page() {
 
     openModal("FILE_SELECTION", { onFileSelect: handleFileSelect });
   }
-
-  const formatTime = (timeValue: string) => {
-    if (!timeValue) return "";
-
-    const [hours, minutes] = timeValue.split(":");
-    const hour = parseInt(hours);
-
-    if (hour < 12) {
-      return `${hour}:${minutes} صباحا`; // AM with minutes
-    } else if (hour === 12) {
-      return `12:${minutes} ظهرا`; // Noon with minutes
-    } else {
-      return `${hour - 12}:${minutes} مساء`; // PM with minutes
-    }
-  };
 
   const calculateTotal = () => {
     const numberOfStudents = parseInt(form.state.values.numberOfStudents) || 0;
@@ -149,9 +137,9 @@ export default function Page() {
               بيانات حجز الرحلة
             </div>
             {/* input groups */}
-            <div className="flex gap-10 items-end flex-wrap">
+            <div className="grid  lg:grid-cols-4 gap-10 items-end flex-wrap">
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit ">
+              <div className="grid grid-rows-[auto_53px] w-full  ">
                 <div className="text-2xl">عدد الطلاب</div>
                 <FormField field={numberOfStudents}>
                   <Input
@@ -164,7 +152,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit">
+              <div className="grid grid-rows-[auto_53px] w-full ">
                 <div className="text-2xl">تاريخ الرحلة</div>
 
                 <FormField field={tripDate}>
@@ -177,7 +165,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* input group */}
-              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit">
+              <div className="grid grid-rows-[auto_53px] w-full ">
                 <div className="text-2xl">وقت الرحلة</div>
 
                 <FormField field={tripTime}>
@@ -190,7 +178,7 @@ export default function Page() {
                 </FormField>
               </div>{" "}
               {/* button */}
-              <div className="grid grid-rows-[auto_53px] w-full lg:w-fit  max-w-[426px]">
+              <div className="grid grid-rows-[auto_53px] w-full ">
                 <span></span>
                 <Button
                   text="إحجز الآن"

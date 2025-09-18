@@ -1,8 +1,8 @@
-import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 export const getFiles = async () => {
   try {
-    const data = await axiosInstance.get("/files.json");
+    const data = await axios.get("/data/files.json");
     return data.data;
   } catch (error) {
     console.log(error);
