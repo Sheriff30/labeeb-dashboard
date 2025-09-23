@@ -24,80 +24,104 @@ import {
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
 import useLogout from "@/hooks/useLogout";
 
-const SIDEBAR_ITEMS = [
-  {
-    label: "الصفحة الرئيسية",
-    icon: Home,
-    href: "/school",
-  },
-  {
-    label: "الرحلات",
-    icon: Trips,
-    links: [
-      {
-        label: "الرحلات المكتملة",
-        icon: PreviousTripts,
-        href: "/school/trips/completed",
-      },
-      {
-        label: "الرحلات المجدولة",
-        icon: ScheduledTripts,
-        href: "/school/trips/scheduled",
-      },
-      {
-        label: "الرحلات الملغية",
-        icon: CancelledTripts,
-        href: "/school/trips/canceled",
-      },
-    ],
-  },
-  {
-    label: "بيانات المدرسة",
-    icon: School,
-    href: "/school/account",
-  },
-  {
-    label: "إضافة مشرف فرعي",
-    icon: SubAdmin,
-    href: "/school/sub-admin",
-  },
-  {
-    label: "الإشعارات",
-    icon: Notifications,
-    href: "/school/notifications",
-  },
-  {
-    label: "الدعم الفنى",
-    icon: Support,
-    links: [
-      {
-        label: "رساله  عبر الموقع",
-        icon: Message,
-        href: "/school/support",
-      },
-      {
-        label: "مكالمة هاتفية",
-        icon: Phone,
-        href: "tel:+966555555555",
-      },
-      {
-        label: "تواصل عبر  واتس اب",
-        icon: WhatsApp,
-        href: "https://wa.me/966555555555",
-      },
-    ],
-  },
-  {
-    label: "رفع بيانات الطلاب",
-    icon: Upload,
-    href: "/school/upload-students",
-  },
-  {
-    label: "تسجيل الخروج",
-    icon: Logout,
-    href: "/login",
-  },
-];
+type link = {
+  label: string;
+  icon: React.ComponentType;
+  href?: string;
+  links?: link[];
+};
+
+type links = {
+  label: string;
+  icon: React.ComponentType;
+  href?: string;
+  links?: link[];
+};
+
+const LINKS = {
+  school: [
+    {
+      label: "الصفحة الرئيسية",
+      icon: Home,
+      href: "/school",
+    },
+    {
+      label: "الرحلات",
+      icon: Trips,
+      links: [
+        {
+          label: "الرحلات المكتملة",
+          icon: PreviousTripts,
+          href: "/school/trips/completed",
+        },
+        {
+          label: "الرحلات المجدولة",
+          icon: ScheduledTripts,
+          href: "/school/trips/scheduled",
+        },
+        {
+          label: "الرحلات الملغية",
+          icon: CancelledTripts,
+          href: "/school/trips/canceled",
+        },
+      ],
+    },
+    {
+      label: "بيانات المدرسة",
+      icon: School,
+      href: "/school/account",
+    },
+    {
+      label: "إضافة مشرف فرعي",
+      icon: SubAdmin,
+      href: "/school/sub-admin",
+    },
+    {
+      label: "الإشعارات",
+      icon: Notifications,
+      href: "/school/notifications",
+    },
+    {
+      label: "الدعم الفنى",
+      icon: Support,
+      links: [
+        {
+          label: "رساله  عبر الموقع",
+          icon: Message,
+          href: "/school/support",
+        },
+        {
+          label: "مكالمة هاتفية",
+          icon: Phone,
+          href: "tel:+966555555555",
+        },
+        {
+          label: "تواصل عبر  واتس اب",
+          icon: WhatsApp,
+          href: "https://wa.me/966555555555",
+        },
+      ],
+    },
+    {
+      label: "رفع بيانات الطلاب",
+      icon: Upload,
+      href: "/school/upload-students",
+    },
+    {
+      label: "تسجيل الخروج",
+      icon: Logout,
+      href: "/login",
+    },
+  ],
+
+  super_admin: [
+    {
+      label: "الصفحة الرئيسية",
+      icon: Home,
+      href: "/admin",
+    },
+  ],
+};
 
 type RootSidebarProps = {
   setSidebarOpen: (open: boolean) => void;
@@ -111,6 +135,7 @@ export default function RootSidebar({
   const [isOpen, setIsOpen] = useState("");
   const pathname = usePathname();
   const { mutate: logout } = useLogout();
+  const role = Cookies.get("role") as "school" | "super_admin";
   return (
     <div
       className={cn(
@@ -144,7 +169,7 @@ export default function RootSidebar({
       </div>
 
       <div className="overflow-y-auto  no-scrollbar">
-        {SIDEBAR_ITEMS.map((item) => {
+        {LINKS[role]?.map((item: links) => {
           const isLink = Boolean(item.href);
 
           if (isLink) {
@@ -184,7 +209,7 @@ export default function RootSidebar({
                   "flex items-center gap-2 cursor-pointer",
                   isOpen === item.label && "text-primary-3",
                   item.links &&
-                    item.links.some((link) => link.href === pathname) &&
+                    item.links.some((link: link) => link.href === pathname) &&
                     "text-primary-3"
                 )}
                 onClick={() =>
@@ -201,10 +226,10 @@ export default function RootSidebar({
                   isOpen === item.label && "flex"
                 )}
               >
-                {item.links?.map((link) => (
+                {item.links?.map((link: link) => (
                   <Link
                     key={link.label}
-                    href={link.href}
+                    href={link.href as string}
                     className={cn(
                       "flex items-center gap-2 text-2xl py-2  text-gray",
                       pathname === link.href && "text-primary-3"
