@@ -20,3 +20,15 @@ export const createSchoolTrip = async (payload: SchoolTrip) => {
     throw error;
   }
 };
+
+export const getTrips = async (type = "", page = 1, per_page = 10) => {
+  try {
+    const res = await axiosInstance.get(`/school/trips/${type}`, {
+      params: { page, per_page },
+    });
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

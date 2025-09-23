@@ -153,3 +153,54 @@ export type SchoolTrip = {
   transport_type: "bus" | "van" | "car" | string;
   transport_details?: string;
 };
+
+export interface Destination {
+  id: number;
+  name: string;
+  name_ar: string;
+  city: string;
+  type: string;
+}
+
+export interface School {
+  id: string;
+  name: string;
+  city: string;
+}
+
+export interface Package {
+  id: number;
+  name: string;
+}
+
+export interface Trip {
+  id: number;
+  trip_reference: string;
+  destination: Destination;
+  school: School;
+  package: Package;
+  trip_date: string; // e.g. "2025-09-29"
+  trip_time: string; // ISO string
+  return_time: string | null;
+  pickup_time: string;
+  pickup_location: string;
+  students_count: number;
+  confirmed_students: number;
+  total_students: number;
+  amount_per_student: string; // keep as string since it's returned that way
+  total_amount: string;
+  paid_amount: string;
+  pending_amount: string;
+  payment_progress: number;
+  coordinator_name: string;
+  coordinator_phone: string;
+  status: "approved" | "pending" | "rejected" | string; // can extend later
+  status_label: string;
+  is_editable: boolean;
+  is_cancellable: boolean;
+  approved_at: string | null;
+  rejected_at: string | null;
+  cancelled_at: string | null;
+  completed_at: string | null;
+  created_at: string;
+}

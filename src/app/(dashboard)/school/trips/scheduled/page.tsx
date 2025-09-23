@@ -1,25 +1,20 @@
 "use client";
 import { Button } from "@/components";
 import { useModal } from "@/Context/ModalContext";
+import { useTrips } from "@/hooks/Trips";
 import { cn } from "@/lib/utils";
-import { scheduledTrip } from "@/types";
+import { formatArabicTime } from "@/lib/utils/formatArabicTime";
+import { scheduledTrip, Trip } from "@/types";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function Page() {
   const [isPaid, setIsPaid] = useState(true);
   const [showData, setShowData] = useState<number | null>(null);
   const { openModal, closeModal } = useModal();
-  const [scheduledTrips, setScheduledTrips] = useState<scheduledTrip[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const scheduledTrips = JSON.parse(
-      localStorage.getItem("scheduledTrips") || "[]"
-    );
-    setScheduledTrips(scheduledTrips);
-    setIsLoading(false);
-  }, []);
+  const { data, isLoading } = useTrips("upcoming");
+  console.log(data);
 
   if (isLoading) {
     return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
@@ -75,10 +70,10 @@ export default function Page() {
     <div className="overflow-y-auto h-full no-scrollbar">
       <div className="text-4xl mb-6 font-arabic-bold">الرحلات المجدولة</div>
 
-      {scheduledTrips.length === 0 && (
+      {data.length === 0 && (
         <div className="text-2xl text-center">لا يوجد رحلات مجدولة</div>
       )}
-      {scheduledTrips.length > 0 && (
+      {data.length > 0 && (
         <div className="overflow-x-auto w-full text-right">
           <table className="w-full min-w-[1263px]">
             {/* table header */}
@@ -96,31 +91,33 @@ export default function Page() {
             {/* table body */}
             <tbody>
               {/* table row */}
-              {scheduledTrips?.map((trip: scheduledTrip) => {
+              {data?.map((trip: Trip) => {
                 return (
                   <React.Fragment key={trip.id}>
                     <tr className="text-xl">
-                      <td> {trip.name} </td>
+                      <td> {trip?.destination?.name} </td>
                       <td className="text-center">{trip.status}</td>
                       <td className="text-center">
-                        <span className="font-roboto"> {trip.date}</span>
+                        <span className="font-roboto"> {trip.trip_date}</span>
                       </td>
-                      <td className="text-center font-roboto">{trip.time}</td>
+                      <td className="text-center ">
+                        {formatArabicTime(trip.trip_time)}
+                      </td>
                       <td className="text-center font-roboto">
                         {trip.total_students}
                       </td>
                       <td className="text-center font-roboto">
-                        {trip.paid_count}
+                        {trip?.paid_count || 0}
                       </td>
                       <td className="text-center text-error font-roboto">
-                        {trip.unpaid_count}
+                        {trip?.unpaid_count || 0}
                       </td>
                       <td className="text-center">
                         <div className="flex gap-4 items-center">
                           <Button
                             text="موقع الرحلة"
                             className="!text-xl !py-0.5 !px-1.5"
-                            href={`https://www.google.com/maps/search/?api=1&query=${trip.name}`}
+                            href={`https://www.google.com/maps/search/?api=1&query=${trip?.destination?.name}`}
                           />
                           <Button
                             text="الغاء الرحلة"
