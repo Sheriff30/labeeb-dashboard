@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib";
 import Cookies from "js-cookie";
@@ -132,10 +132,26 @@ export default function RootSidebar({
   setSidebarOpen,
   sidebarOpen,
 }: RootSidebarProps) {
+  const [role, setRole] = useState<"school" | "super_admin" | null>(null);
   const [isOpen, setIsOpen] = useState("");
   const pathname = usePathname();
   const { mutate: logout } = useLogout();
-  const role = Cookies.get("role") as "school" | "super_admin";
+
+  useEffect(() => {
+    const cookieRole = Cookies.get("role");
+    if (cookieRole === "school" || cookieRole === "super_admin") {
+      setRole(cookieRole);
+    } else {
+      setRole("school"); // fallback
+    }
+  }, []);
+
+  if (role === null) {
+    return null;
+  }
+
+  const currentLinks = LINKS[role];
+
   return (
     <div
       className={cn(
@@ -169,7 +185,7 @@ export default function RootSidebar({
       </div>
 
       <div className="overflow-y-auto  no-scrollbar">
-        {LINKS[role]?.map((item: links) => {
+        {currentLinks?.map((item: links) => {
           const isLink = Boolean(item.href);
 
           if (isLink) {
