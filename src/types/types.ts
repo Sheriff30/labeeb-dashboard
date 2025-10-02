@@ -168,11 +168,6 @@ export interface School {
   city: string;
 }
 
-export interface Package {
-  id: number;
-  name: string;
-}
-
 export interface Trip {
   id: number;
   trip_reference: string;
@@ -204,3 +199,36 @@ export interface Trip {
   completed_at: string | null;
   created_at: string;
 }
+
+type AvailabilityHours = {
+  from: string;
+  to: string;
+};
+
+export interface Package {
+  name: string;
+  price: string;
+  benefits: string[];
+  status: "active";
+}
+
+export type DestinationCreate = {
+  name: string;
+  description: string;
+  google_maps_link: string;
+  email: string;
+  phone: string;
+  contact_person_name: string;
+  type: string;
+  city: string;
+  district: string;
+  gender: string;
+  labeeb_commission_percentage: string;
+  capacity: string;
+  availability_hours: AvailabilityHours[];
+  availability_days: string[];
+  images: string[];
+  status: "active";
+  payment_method: string;
+  packages: Package[];
+};

@@ -1,3 +1,4 @@
+import { DestinationCreate } from "@/types";
 import axiosInstance from "./axiosInstance";
 
 export const getDestinations = async ({
@@ -34,5 +35,15 @@ export const getDestinationById = async (id: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Error fetching destination by ID");
+  }
+};
+
+export const createDestination = async (payload: DestinationCreate) => {
+  try {
+    const data = await axiosInstance.post("/admin/destinations", { payload });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Error creating destination");
   }
 };

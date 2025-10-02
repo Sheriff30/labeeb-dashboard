@@ -1,5 +1,6 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import {
+  createDestination,
   getDestinationById,
   getDestinations,
   getDestinationsTypes,
@@ -29,5 +30,12 @@ export const useDestinationsTypes = () => {
   return useQuery({
     queryKey: ["destinationsTypes"],
     queryFn: () => getDestinationsTypes(),
+  });
+};
+
+export const useCreateDestination = () => {
+  return useMutation({
+    mutationKey: ["destination"],
+    mutationFn: createDestination,
   });
 };

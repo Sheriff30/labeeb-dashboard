@@ -116,9 +116,15 @@ const LINKS = {
 
   super_admin: [
     {
-      label: "الصفحة الرئيسية",
-      icon: Home,
-      href: "/admin",
+      label: "الوجهات",
+      icon: Trips,
+      links: [
+        {
+          label: "إضافة وجهة",
+          icon: PreviousTripts,
+          href: "/admin/destinations/add",
+        },
+      ],
     },
   ],
 };
