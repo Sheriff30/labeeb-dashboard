@@ -41,9 +41,16 @@ export const useAdminDestinations = (
 };
 
 export const useDeleteDestination = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["destinations"],
     mutationFn: deleteDestination,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["destinations"],
+      });
+    },
   });
 };
 
