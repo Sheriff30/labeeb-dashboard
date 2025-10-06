@@ -13,7 +13,8 @@ export default function ModalWrapper({
   className?: string;
 }) {
   const pathname = usePathname();
-  const isSchoolPath = pathname?.includes("school");
+  const isSchoolPath =
+    pathname?.includes("school") || pathname?.includes("admin");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

@@ -118,13 +118,12 @@ const LINKS = {
     {
       label: "الوجهات",
       icon: Trips,
-      links: [
-        {
-          label: "إضافة وجهة",
-          icon: PreviousTripts,
-          href: "/admin/destinations/add",
-        },
-      ],
+      href: "/admin/destinations",
+    },
+    {
+      label: "تسجيل الخروج",
+      icon: Logout,
+      href: "/login",
     },
   ],
 };
@@ -148,15 +147,11 @@ export default function RootSidebar({
     if (cookieRole === "school" || cookieRole === "super_admin") {
       setRole(cookieRole);
     } else {
-      setRole("school"); // fallback
+      setRole("school");
     }
   }, []);
 
-  if (role === null) {
-    return null;
-  }
-
-  const currentLinks = LINKS[role];
+  const currentLinks = LINKS[role as keyof typeof LINKS];
 
   return (
     <div

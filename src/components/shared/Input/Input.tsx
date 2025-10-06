@@ -1,11 +1,18 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  className?: string;
+  value?: string | number;
+  textSize?: string;
+};
+
 export default function Input({
   className,
   value,
+  textSize = "text-2xl",
   ...props
-}: React.InputHTMLAttributes<HTMLInputElement>) {
+}: InputProps) {
   return (
     <div
       className={cn(
@@ -16,7 +23,10 @@ export default function Input({
     >
       <input
         {...props}
-        className="placeholder:font-arabic-light w-full text-2xl outline-none"
+        className={cn(
+          textSize,
+          "placeholder:font-arabic-light w-full  outline-none"
+        )}
       />
     </div>
   );

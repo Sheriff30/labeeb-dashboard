@@ -532,7 +532,10 @@ export default function Page() {
             <div className="text-2xl text-gray">
               يجب اضافة باقة واحدة على الأقل للوجهة
             </div>
-            <form.Field name="packages[0].name">
+            <form.Field
+              name="packages[0].name"
+              validators={validators.required("اسم الباقة")}
+            >
               {(field) => (
                 <div className="flex flex-col gap-2 max-w-[800px]">
                   <p className="text-3xl font-arabic-light text-navy">
@@ -544,15 +547,18 @@ export default function Page() {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {field.state.meta.errors && (
+                  {field.state.meta.errors.length > 0 && (
                     <div className="text-red-500">
-                      {field.state.meta.errors}
+                      {field.state.meta.errors[0]}
                     </div>
                   )}
                 </div>
               )}
             </form.Field>
-            <form.Field name="packages[0].price">
+            <form.Field
+              name="packages[0].price"
+              validators={validators.number()}
+            >
               {(field) => (
                 <div className="flex flex-col gap-2 max-w-[800px]">
                   <p className="text-3xl font-arabic-light text-navy">
@@ -564,15 +570,18 @@ export default function Page() {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {field.state.meta.errors && (
+                  {field.state.meta.errors.length > 0 && (
                     <div className="text-red-500">
-                      {field.state.meta.errors}
+                      {field.state.meta.errors[0]}
                     </div>
                   )}
                 </div>
               )}
             </form.Field>
-            <form.Field name="packages[0].benefits">
+            <form.Field
+              name="packages[0].benefits"
+              validators={validators.requiredArray("مميزات الباقة")}
+            >
               {(field) => (
                 <div className="flex gap-10 max-w-[800px]">
                   <SelectableCheckboxGroup
@@ -590,9 +599,9 @@ export default function Page() {
                     onChange={(values) => field.handleChange(values)}
                     type="primary"
                   />
-                  {field.state.meta.errors && (
+                  {field.state.meta.errors.length > 0 && (
                     <div className="text-red-500">
-                      {field.state.meta.errors}
+                      {field.state.meta.errors[0]}
                     </div>
                   )}
                 </div>
