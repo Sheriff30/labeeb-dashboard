@@ -121,6 +121,11 @@ const LINKS = {
       href: "/admin/destinations",
     },
     {
+      label: "المحتوى",
+      icon: Trips,
+      href: "/admin/content",
+    },
+    {
       label: "تسجيل الخروج",
       icon: Logout,
       href: "/login",
