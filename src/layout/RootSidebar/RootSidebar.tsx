@@ -23,6 +23,8 @@ import {
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
 import useLogout from "@/hooks/useLogout";
+import Pages from "@/components/shared/Icons/Pages";
+import Blog from "@/components/shared/Icons/Blog";
 
 type link = {
   label: string;
@@ -121,9 +123,14 @@ const LINKS = {
       href: "/admin/destinations",
     },
     {
-      label: "المحتوى",
-      icon: Trips,
+      label: "إدارة الموقع الإلكتروني",
+      icon: Pages,
       href: "/admin/content",
+    },
+    {
+      label: "المدونة",
+      icon: Blog,
+      href: "/admin/blog",
     },
     {
       label: "تسجيل الخروج",

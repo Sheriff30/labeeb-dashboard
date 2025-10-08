@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 type Page = {
   id: string;
   slug: string;
+  title: string;
   type: string;
   sections: any[];
 };
@@ -21,13 +22,13 @@ export default function Page() {
   const { mutate, isPending } = useUpdatePage(selectedPageId);
 
   const page_selector = data?.data?.map((page: Page) => ({
-    label: page.slug,
+    label: page.title,
     value: page.id,
   }));
 
   const page = data?.data.find((p: Page) => p.id === selectedPageId);
 
-  const section_selector = page?.sections.map((section: any) => {
+  const section_selector = page?.sections?.map((section: any) => {
     return { label: section.section_type, value: section.id };
   });
 
@@ -60,7 +61,7 @@ export default function Page() {
   const form = useForm({
     defaultValues: {
       title: page?.title_ar || "",
-      meta_description_ar: page?.meta_description_ar || "",
+      meta_description_ar: page?.meta_description_ar,
       section_content_ar: section?.content || "",
       section_title_ar: section?.title_ar || "",
     },
@@ -173,7 +174,7 @@ export default function Page() {
               <div className="text-2xl">وصف حكاية لبيب</div>
               <textarea
                 className="py-[10px]   border-gray border-2 rounded-[14px] px-3 w-full"
-                value={field.state.value}
+                value={field.state.value || " لا يوجد وصف "}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             </FormField>
