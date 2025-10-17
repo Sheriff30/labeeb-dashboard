@@ -66,12 +66,13 @@ export default function OtpInput({
       newOtp[index] = normalized;
       setOtp(newOtp);
 
-      // If digit entered -> move to next
       if (normalized && index < length - 1) {
         inputsRef.current[index + 1]?.focus();
       }
 
-      onComplete?.(newOtp.join(""));
+      if (newOtp.every((digit) => digit !== "")) {
+        onComplete?.(newOtp.join(""));
+      }
     }
   };
 
