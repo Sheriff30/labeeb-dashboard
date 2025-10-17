@@ -13,29 +13,41 @@ import { useForm, useField } from "@tanstack/react-form";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLogin, useRequestLoginOtp } from "@/hooks/auth";
 
 type LoginMethod = "email" | "phone";
+
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: Record<string, string[]>;
+    };
+  };
+}
 
 export default function Page() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<LoginMethod>("email");
-  const router = useRouter();
+  const [loginMethod, setLoginMethod] = useState<LoginMethod>("phone");
+  const {
+    mutate: requestLoginOtp,
+    error: otpError,
+    isError: isOtpError,
+  } = useRequestLoginOtp();
 
-  const handleSendOtp = () => {
-    setIsOtpSent(true);
-    setIsTimerRunning(true);
-  };
+  const {
+    mutate: login,
+    error: loginError,
+    isError: isLoginError,
+    isPending: isLoginPending,
+  } = useLogin();
+  const [otpDuration, setOtpDuration] = useState(0);
+
+  const router = useRouter();
 
   const handleTimerComplete = () => {
     setIsTimerRunning(false);
-  };
-
-  const handleLoginMethodChange = (method: LoginMethod) => {
-    setIsOtpSent(false);
-    setIsTimerRunning(false);
-    setLoginMethod(method);
-    form.reset();
   };
 
   const form = useForm({
@@ -47,17 +59,18 @@ export default function Page() {
     onSubmit: async ({ value }) => {
       const { phoneNumber, email, otp } = value;
 
-      if (loginMethod === "email") {
-        console.log("Email", email);
-        router.push("/school");
-      }
-
-      if (loginMethod === "phone") {
-        console.log("Phone", phoneNumber);
-        router.push("/school");
-      }
-
-      console.log("OTP", otp);
+      login(
+        {
+          identifier: loginMethod === "email" ? email : phoneNumber,
+          otp,
+        },
+        {
+          onSuccess: (data) => {
+            localStorage.setItem("token", data.data.token);
+            router.push("/school");
+          },
+        }
+      );
     },
   });
 
@@ -76,8 +89,50 @@ export default function Page() {
   const otpField = useField({
     name: "otp",
     form,
-    validators: validators.otp(),
+    validators: {
+      onSubmit: ({ value }) => {
+        if (!value || value.length === 0) return "الرجاء إدخال رمز التحقق";
+        if (value.length !== 6)
+          return "الرجاء إدخال رمز التحقق المكون من 6 أرقام";
+        if (!/^\d{6}$/.test(value)) return "الرجاء إدخال أرقام فقط";
+        return undefined;
+      },
+      onChange: ({ value }) => {
+        // Only validate if the field has a value
+        if (!value || value.length === 0) return undefined;
+        if (value.length !== 6)
+          return "الرجاء إدخال رمز التحقق المكون من 6 أرقام";
+        if (!/^\d{6}$/.test(value)) return "الرجاء إدخال أرقام فقط";
+        return undefined;
+      },
+    },
   });
+
+  const handleLoginMethodChange = (method: LoginMethod) => {
+    setLoginMethod(method);
+    setIsOtpSent(false);
+    setIsTimerRunning(false);
+    form.reset();
+    otpField.handleChange("");
+  };
+  const handleSendOtp = () => {
+    requestLoginOtp(
+      {
+        identifier:
+          loginMethod === "email"
+            ? emailField.state.value
+            : phoneNumberField.state.value,
+        type: loginMethod,
+      },
+      {
+        onSuccess: (data) => {
+          setOtpDuration(data.data.expires_in_minutes);
+          setIsOtpSent(true);
+          setIsTimerRunning(true);
+        },
+      }
+    );
+  };
 
   const otpDisabled =
     (loginMethod === "email" &&
@@ -95,6 +150,48 @@ export default function Page() {
           ادخل البريد الإلكتروني أو رقم الجوال لتسجيل الدخول إلى حسابك{" "}
         </p>
       </div>
+
+      {/* Error Messages */}
+      {isOtpError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <strong>خطأ في إرسال الرمز: </strong>
+          {(otpError as ApiError)?.response?.data?.message ||
+            "حدث خطأ غير متوقع"}
+
+          {(otpError as ApiError)?.response?.data?.errors && (
+            <ul className="mt-2 list-disc list-inside">
+              {Object.entries(
+                (otpError as ApiError).response!.data!.errors!
+              ).map(([field, errors]) => (
+                <li key={field}>
+                  {Array.isArray(errors) ? errors.join(", ") : String(errors)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {isLoginError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <strong>خطأ في إرسال الرمز: </strong>
+          {(loginError as ApiError)?.response?.data?.message ||
+            "حدث خطأ غير متوقع"}
+
+          {(loginError as ApiError)?.response?.data?.errors && (
+            <ul className="mt-2 list-disc list-inside">
+              {Object.entries(
+                (loginError as ApiError).response!.data!.errors!
+              ).map(([field, errors]) => (
+                <li key={field}>
+                  {Array.isArray(errors) ? errors.join(", ") : String(errors)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       {/* Form */}
       <form
         className="flex flex-col gap-7  max-w-[573px]"
@@ -194,15 +291,28 @@ export default function Page() {
           <p className="text-gray flex items-center flex-wrap gap-2 mb-[14px]">
             <span className="text-gray">لم تستلم الرمز ؟ </span>
             <span>إعادة إرسال الرمز </span>
-            <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
+            <Timer
+              onComplete={handleTimerComplete}
+              isActive={isTimerRunning}
+              duration={otpDuration * 60}
+            />
           </p>
 
           <FormField field={otpField}>
-            <OtpInput onComplete={otpField.handleChange} />{" "}
+            <OtpInput
+              onComplete={otpField.handleChange}
+              value={otpField.state.value}
+              shouldReset={!isOtpSent} // Reset when OTP is not sent
+            />{" "}
           </FormField>
         </div>
 
-        <Button type="submit" text="تسجيل دخول" variant="primary" />
+        <Button
+          type="submit"
+          text={isLoginPending ? "جاري تسجيل الدخول..." : "تسجيل دخول"}
+          variant="primary"
+          disabled={isLoginPending}
+        />
         <div className="text-2xl flex items-center gap-1 flex-wrap">
           <span> لا يوجد حساب للمدرسة؟ </span>{" "}
           <Link href="/signup" className="text-primary">

@@ -1,14 +1,44 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type OtpInputProps = {
   length?: number;
   onComplete?: (otp: string) => void;
+  value?: string; // Add this prop to receive external value
+  shouldReset?: boolean; // Add this prop to trigger reset
 };
 
-export default function OtpInput({ length = 6, onComplete }: OtpInputProps) {
+export default function OtpInput({
+  length = 6,
+  onComplete,
+  value = "",
+  shouldReset = false,
+}: OtpInputProps) {
   const [otp, setOtp] = useState<string[]>(Array(length).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Reset OTP when shouldReset changes or when value is empty
+  useEffect(() => {
+    if (shouldReset || value === "") {
+      const newOtp = Array(length).fill("");
+      setOtp(newOtp);
+      // Focus first input after reset
+      setTimeout(() => {
+        inputsRef.current[0]?.focus();
+      }, 0);
+    }
+  }, [shouldReset, value, length]);
+
+  // Update OTP when external value changes
+  useEffect(() => {
+    if (value && value.length <= length) {
+      const newOtp = Array(length).fill("");
+      for (let i = 0; i < value.length; i++) {
+        newOtp[i] = value[i] || "";
+      }
+      setOtp(newOtp);
+    }
+  }, [value, length]);
 
   // normalize any input to English digits only
   const normalizeDigit = (value: string) => {

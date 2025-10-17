@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import Providers from "./providers";
+import { AuthRedirect } from "@/components";
 
 // Arabic font - Medium only
 const labeebArabicMedium = localFont({
@@ -52,7 +53,11 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         {" "}
-        <Providers>{children}</Providers>
+        <Providers>
+          {" "}
+          <AuthRedirect />
+          {children}
+        </Providers>
       </body>
     </html>
   );

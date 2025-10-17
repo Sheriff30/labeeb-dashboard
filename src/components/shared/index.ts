@@ -9,3 +9,4 @@ export * from "./Icons";
 export * from "./TripsCard";
 export * from "./Input";
 export * from "./Tabs";
+export * from "./AuthRedirect";

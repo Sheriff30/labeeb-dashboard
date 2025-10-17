@@ -16,14 +16,14 @@ export const DISTRICT_OPTIONS = [
 ];
 
 export const CATEGORY_OPTIONS = [
-  { value: "boys", label: "بنين" },
-  { value: "girls", label: "بنات" },
-  { value: "both", label: "كلاهم" },
+  { value: "male", label: "بنين" },
+  { value: "female", label: "بنات" },
+  { value: "mixed", label: "كلاهم" },
 ];
 
 export const SCHOOL_STAGE_OPTIONS = [
   { value: "kindergarten", label: "رياض الأطفال" },
-  { value: "primary", label: "الابتدائية" },
-  { value: "middle", label: "الإعدادية" },
-  { value: "secondary", label: "الثانوية" },
+  { value: "elementary", label: "الابتدائية" },
+  { value: "middle_school", label: "الإعدادية" },
+  { value: "high_school", label: "الثانوية" },
 ];

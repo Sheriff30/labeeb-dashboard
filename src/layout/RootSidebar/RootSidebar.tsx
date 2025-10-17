@@ -21,6 +21,8 @@ import {
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
 import { useUser } from "@/Context/UserContext";
+import { useLogout } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
 
 const SIDEBAR_ITEMS = [
   {
@@ -93,7 +95,7 @@ const SIDEBAR_ITEMS = [
   {
     label: "تسجيل الخروج",
     icon: Logout,
-    href: "/login",
+    action: "logout",
   },
 ];
 
@@ -109,6 +111,22 @@ export default function RootSidebar({
   const [isOpen, setIsOpen] = useState("");
   const { schoolData } = useUser();
   const pathname = usePathname();
+  const { mutate: logout } = useLogout();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+      },
+      onError: () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+      },
+    });
+  };
+
   return (
     <div
       className={cn(
@@ -144,6 +162,7 @@ export default function RootSidebar({
       <div className="overflow-y-auto  no-scrollbar">
         {SIDEBAR_ITEMS.map((item) => {
           const isLink = Boolean(item.href);
+          const isAction = Boolean(item.action);
 
           if (isLink) {
             return (
@@ -152,8 +171,7 @@ export default function RootSidebar({
                 href={item.href as string}
                 className={cn(
                   "flex items-center gap-2 text-2xl py-2 text-gray ",
-                  pathname === item.href && "text-primary-3",
-                  item.href === "/login" && "text-error"
+                  pathname === item.href && "text-primary-3"
                 )}
               >
                 {item.icon && <item.icon />}
@@ -161,6 +179,20 @@ export default function RootSidebar({
               </Link>
             );
           }
+
+          if (isAction && item.action === "logout") {
+            return (
+              <button
+                key={item.label}
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-2xl py-2 text-error cursor-pointer"
+              >
+                {item.icon && <item.icon />}
+                <span>{item.label}</span>
+              </button>
+            );
+          }
+
           return (
             <div
               key={item.label}

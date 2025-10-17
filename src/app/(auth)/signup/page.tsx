@@ -10,6 +10,7 @@ import {
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
 import { useModal } from "@/Context";
+import { useRegister, useRequestOtp } from "@/hooks/auth";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -23,15 +24,32 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: Record<string, string[]>;
+    };
+  };
+}
+
 export default function Page() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const { openModal, closeModal } = useModal();
+  const [otpDuration, setOtpDuration] = useState(0);
+  const {
+    mutate: requestOtp,
+    error: otpError,
+    isError: isOtpError,
+  } = useRequestOtp();
+  const {
+    mutate: register,
+    error: registerError,
+    isError: isRegisterError,
+  } = useRegister();
+
   const router = useRouter();
-  const handleSendOtp = () => {
-    setIsOtpSent(true);
-    setIsTimerRunning(true);
-  };
 
   const handleTimerComplete = () => {
     setIsTimerRunning(false);
@@ -62,45 +80,67 @@ export default function Page() {
         otp,
       } = value;
 
-      const formData = {
-        name,
-        city,
-        district,
-        category,
-        schoolStage,
-        phoneNumber,
-        accountName,
-        email,
-      };
-
-      console.log("OTP", otp);
-
-      if (formData && otp.length === 6) {
-        form.reset();
-        openModal("CONFIRM", {
-          title:
-            "تم تقديم الطلب بنجاح وسيتم تفعيل حسابكم في مدة أقصاها 24 ساعة",
-          buttonText: " شكراً",
-          onConfirm: () => {
-            router.push("/login");
-            closeModal();
+      register(
+        {
+          school_name: name,
+          city,
+          district,
+          gender: category as "male" | "female" | "mixed",
+          school_type: schoolStage[0] as
+            | "kindergarten"
+            | "elementary"
+            | "middle_school"
+            | "high_school",
+          representative_name: accountName,
+          representative_phone: phoneNumber,
+          email,
+          password: "AAA123123123",
+          password_confirmation: "AAA123123123",
+          otp,
+        },
+        {
+          onSuccess: () => {
+            form.reset();
+            setIsOtpSent(false);
+            setIsTimerRunning(false);
+            openModal("CONFIRM", {
+              title:
+                "تم تقديم الطلب بنجاح وسيتم تفعيل حسابكم في مدة أقصاها 24 ساعة",
+              buttonText: " شكراً",
+              onConfirm: () => {
+                router.push("/login");
+                closeModal();
+              },
+            });
           },
-        });
-        console.log("FormData", formData);
-        console.log("OTP", otp);
-      }
+        }
+      );
     },
   });
 
-  const emailField = useField({
-    name: "email",
+  const phoneNumber = useField({
+    name: "phoneNumber",
     form,
-    validators: validators.email(),
+    validators: validators.phone(),
   });
 
   const otpDisabled = Boolean(
-    !emailField.state.value || !!emailField.state.meta.errors?.length
+    !phoneNumber.state.value || !!phoneNumber.state.meta.errors?.length
   );
+
+  const handleSendOtp = () => {
+    requestOtp(String(phoneNumber.state.value), {
+      onSuccess: (data) => {
+        setIsOtpSent(true);
+        setIsTimerRunning(true);
+        setOtpDuration(data.data.expires_in_minutes);
+      },
+      onError: () => {
+        setIsOtpSent(false);
+        setIsTimerRunning(false);
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -111,6 +151,47 @@ export default function Page() {
           يرجى تعبئة البيانات لإنشاء حسابكم في المنصة
         </p>
       </div>
+
+      {/* Error Messages */}
+      {isOtpError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <strong>خطأ في إرسال الرمز: </strong>
+          {(otpError as ApiError)?.response?.data?.message ||
+            "حدث خطأ غير متوقع"}
+
+          {(otpError as ApiError)?.response?.data?.errors && (
+            <ul className="mt-2 list-disc list-inside">
+              {Object.entries(
+                (otpError as ApiError).response!.data!.errors!
+              ).map(([field, errors]) => (
+                <li key={field}>
+                  {Array.isArray(errors) ? errors.join(", ") : String(errors)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {isRegisterError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <strong>خطأ في التسجيل: </strong>
+          {(registerError as ApiError)?.response?.data?.message ||
+            "حدث خطأ غير متوقع"}
+          {(registerError as ApiError)?.response?.data?.errors && (
+            <ul className="mt-2 list-disc list-inside">
+              {Object.entries(
+                (registerError as ApiError).response!.data!.errors!
+              ).map(([field, errors]) => (
+                <li key={field}>
+                  {Array.isArray(errors) ? errors.join(", ") : String(errors)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       {/* Form */}
       <form
         className="flex flex-col gap-7  max-w-[700px]"
@@ -267,15 +348,22 @@ export default function Page() {
 
         {/* Email  */}
 
-        <FormField field={emailField} className="max-w-[573px]">
-          <FloatLabelInput
-            label="البريد الإلكتروني"
-            value={emailField.state.value}
-            onChange={(e) => emailField.handleChange(e.target.value)}
-            type="email"
-            maxLength={254}
-          />
-        </FormField>
+        <form.Field name="email" validators={validators.email()}>
+          {(field) => {
+            return (
+              <FormField field={field} className="md:max-w-[573px]">
+                <FloatLabelInput
+                  label="البريد الإلكتروني"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="email"
+                  minLength={5}
+                  maxLength={100}
+                />
+              </FormField>
+            );
+          }}
+        </form.Field>
 
         {/* OTP */}
         <Button
@@ -299,7 +387,11 @@ export default function Page() {
           <p className="text-gray flex items-center flex-wrap gap-2 mb-[14px]">
             <span className="text-gray">لم تستلم الرمز ؟ </span>
             <span>إعادة إرسال الرمز </span>
-            <Timer onComplete={handleTimerComplete} isActive={isTimerRunning} />
+            <Timer
+              onComplete={handleTimerComplete}
+              isActive={isTimerRunning}
+              duration={otpDuration * 60}
+            />
           </p>
           <form.Field name="otp" validators={validators.otp()}>
             {(field) => {
