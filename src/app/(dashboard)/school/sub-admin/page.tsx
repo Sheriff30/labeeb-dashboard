@@ -1,22 +1,12 @@
 "use client";
 import { Tabs } from "@/components";
 import { cn } from "@/lib";
-import { subAdmin } from "@/types/types";
 import { SubAdminForm } from "@/views/SubAdmin";
 import { SubAdminTable } from "@/views/SubAdmin/SubAdminTable";
 import React, { useState } from "react";
 
 export default function Page() {
   const [isActive, setIsActive] = useState(true);
-  const [subAdminData, setSubAdminData] = useState<subAdmin[]>([]);
-
-  const handleAddSubAdmin = (subAdmin: subAdmin) => {
-    setSubAdminData([...subAdminData, subAdmin]);
-  };
-
-  const handleDeleteSubAdmin = (id: number) => {
-    setSubAdminData(subAdminData.filter((subAdmin) => subAdmin.id !== id));
-  };
 
   return (
     <div className={cn(" flex flex-col h-full", isActive ? "gap-10" : "gap-0")}>
@@ -28,13 +18,8 @@ export default function Page() {
         buttonText2="المشرفين الحاليين"
       />{" "}
       <div className="h-full overflow-y-auto no-scrollbar">
-        {isActive && <SubAdminForm setSubAdmin={handleAddSubAdmin} />}
-        {!isActive && (
-          <SubAdminTable
-            subAdmin={subAdminData}
-            handleDelete={handleDeleteSubAdmin}
-          />
-        )}
+        {isActive && <SubAdminForm setIsActive={setIsActive} />}
+        {!isActive && <SubAdminTable />}
       </div>
     </div>
   );

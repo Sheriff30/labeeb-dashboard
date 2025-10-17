@@ -93,10 +93,9 @@ export type canceledTrip = {
 };
 
 export type subAdmin = {
-  id: number;
   name: string;
-  date: string;
-  phoneNumber: string;
   email: string;
-  city: string;
+  phone: string;
+  password: string;
+  password_confirmation: string;
 };

@@ -1,175 +1,166 @@
 "use client";
-import { Button, FloatLabelInput, FormField, Select } from "@/components";
+import { Button, FloatLabelInput, FormField } from "@/components";
 import { useModal } from "@/Context/ModalContext";
-
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
-
-import { subAdmin } from "@/types/types";
 import React from "react";
+import { useCreateSupervisor } from "@/hooks/supervisors";
 
-type SubAdminFormProps = {
-  setSubAdmin: (subAdmin: subAdmin) => void;
-};
-export default function SubAdminForm({ setSubAdmin }: SubAdminFormProps) {
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: Record<string, string[]>;
+    };
+  };
+}
+
+export default function SubAdminForm({
+  setIsActive,
+}: {
+  setIsActive?: (active: boolean) => void;
+}) {
   const { openModal, closeModal } = useModal();
+
+  const { mutate, isPending, isError, error } = useCreateSupervisor();
   const form = useForm({
     defaultValues: {
       name: "",
       email: "",
-      phoneNumber: "",
-      city: "",
+      phone: "",
+      password: "pasword1234",
+      password_confirmation: "pasword1234",
     },
     onSubmit: async ({ value }) => {
-      const { name, city, email, phoneNumber } = value;
-      const today = new Date();
-      const formattedDate = new Intl.DateTimeFormat("en-CA").format(today);
+      const { name, email, phone, password, password_confirmation } = value;
 
-      const formData = {
-        id: Math.random(),
+      const formdata = {
         name,
-        city,
-        date: formattedDate,
-        phoneNumber,
         email,
+        phone,
+        password,
+        password_confirmation,
       };
-      setSubAdmin(formData);
-      form.reset();
 
-      openModal("CONFIRM", {
-        title: "تم إضافة الحساب بنجاح",
-        message:
-          "بإمكانه الآن تسجيل الدخول عبر رقم الجوال أو البريد الإلكتروني الخاص بحسابه",
-        buttonText: "شكراً",
-        onConfirm: () => {
-          closeModal();
+      mutate(formdata, {
+        onSuccess: () => {
+          form.reset();
+          openModal("CONFIRM", {
+            title: "تم إضافة الحساب بنجاح",
+            message:
+              "بإمكانه الآن تسجيل الدخول عبر رقم الجوال أو البريد الإلكتروني الخاص بحسابه",
+            buttonText: "شكراً",
+            onConfirm: () => {
+              closeModal();
+            },
+          });
+          setIsActive?.(false);
         },
       });
     },
   });
 
   return (
-    <form
-      className="flex flex-col gap-10 max-w-[441px] overflow-auto no-scrollbar h-full"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const isValid = await form.validateAllFields("submit");
-        if (isValid) {
-          form.handleSubmit();
-        }
-      }}
-    >
-      {/* School name */}
-      <form.Field name="name" validators={validators.name("اسم المشرف")}>
-        {(field) => {
-          return (
-            <FormField field={field} className="">
-              <FloatLabelInput
-                label="اسم المشرف"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                minLength={2}
-                maxLength={50}
-              />
-            </FormField>
-          );
+    <div className="flex gap-10 flex-col max-w-[441px]">
+      {isError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <strong>خطأ في التسجيل: </strong>
+          {(error as ApiError)?.response?.data?.message || "حدث خطأ غير متوقع"}
+          {(error as ApiError)?.response?.data?.errors && (
+            <ul className="mt-2 list-disc list-inside">
+              {Object.entries((error as ApiError).response!.data!.errors!).map(
+                ([field, errors]) => (
+                  <li key={field}>
+                    {Array.isArray(errors) ? errors.join(", ") : String(errors)}
+                  </li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+      <form
+        className="flex flex-col gap-10 max-w-[441px] overflow-auto no-scrollbar h-full"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const isValid = await form.validateAllFields("submit");
+          if (isValid) {
+            form.handleSubmit();
+          }
         }}
-      </form.Field>
-
-      {/* Email  */}
-      <form.Field name="email" validators={validators.email()}>
-        {(field) => {
-          return (
-            <FormField field={field} className="max-w-[573px]">
-              <FloatLabelInput
-                label="البريد الإلكتروني"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                type="email"
-                maxLength={254}
-              />
-            </FormField>
-          );
-        }}
-      </form.Field>
-
-      {/* Phone Number */}
-      <form.Field name="phoneNumber" validators={validators.phone()}>
-        {(field) => {
-          return (
-            <FormField field={field} className="max-w-[573px]">
-              <FloatLabelInput
-                label="رقم الجوال"
-                value={field.state.value}
-                type="tel"
-                inputMode="numeric"
-                pattern="[0-9+]{10,15}"
-                minLength={10}
-                maxLength={20}
-                format="05XXXXXXXX"
-                formatLang="en"
-                onChange={(e) => {
-                  const arabicNums = "٠١٢٣٤٥٦٧٨٩";
-                  const englishNums = "0123456789";
-                  let val = e.target.value.replace(/[٠-٩]/g, (d) => {
-                    return englishNums[arabicNums.indexOf(d)];
-                  });
-                  val = val.replace(/[^0-9+]/g, "");
-                  field.handleChange(val);
-                }}
-              />
-            </FormField>
-          );
-        }}
-      </form.Field>
-
-      <form.Field
-        name="city"
-        validators={validators.required("موقع المشرف / الفرع")}
       >
-        {(field) => {
-          return (
-            <FormField field={field}>
-              <div className="flex gap-4  md:items-center flex-col md:flex-row ">
-                <div className="text-2xl flex-shrink-0 ">
-                  موقع المشرف / الفرع
-                </div>
-                <Select
-                  options={[
-                    {
-                      label: "الرياض",
-                      value: "الرياض",
-                    },
-                    {
-                      label: "جدة",
-                      value: "جدة",
-                    },
-                    {
-                      label: "مكة",
-                      value: "مكة",
-                    },
-
-                    {
-                      label: "المدينة المنورة",
-                      value: "المدينة المنورة",
-                    },
-                  ]}
+        {/* School name */}
+        <form.Field name="name" validators={validators.name("اسم المشرف")}>
+          {(field) => {
+            return (
+              <FormField field={field} className="">
+                <FloatLabelInput
+                  label="اسم المشرف"
                   value={field.state.value}
-                  onChange={(value) => field.handleChange(value)}
-                  variant="secondary"
-                  placeholder="اختر المدينة"
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  minLength={2}
+                  maxLength={50}
                 />
-              </div>
-            </FormField>
-          );
-        }}
-      </form.Field>
-      <Button
-        type="submit"
-        text="تأكيد الإضافة"
-        variant="primary"
-        className="max-w-[336px] w-full my-auto"
-      />
-    </form>
+              </FormField>
+            );
+          }}
+        </form.Field>
+
+        {/* Email  */}
+        <form.Field name="email" validators={validators.email()}>
+          {(field) => {
+            return (
+              <FormField field={field} className="max-w-[573px]">
+                <FloatLabelInput
+                  label="البريد الإلكتروني"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="email"
+                  maxLength={254}
+                />
+              </FormField>
+            );
+          }}
+        </form.Field>
+
+        {/* Phone Number */}
+        <form.Field name="phone" validators={validators.phone()}>
+          {(field) => {
+            return (
+              <FormField field={field} className="max-w-[573px]">
+                <FloatLabelInput
+                  label="رقم الجوال"
+                  value={field.state.value}
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9+]{10,15}"
+                  minLength={10}
+                  maxLength={20}
+                  format="05XXXXXXXX"
+                  formatLang="en"
+                  onChange={(e) => {
+                    const arabicNums = "٠١٢٣٤٥٦٧٨٩";
+                    const englishNums = "0123456789";
+                    let val = e.target.value.replace(/[٠-٩]/g, (d) => {
+                      return englishNums[arabicNums.indexOf(d)];
+                    });
+                    val = val.replace(/[^0-9+]/g, "");
+                    field.handleChange(val);
+                  }}
+                />
+              </FormField>
+            );
+          }}
+        </form.Field>
+
+        <Button
+          type="submit"
+          text={isPending ? "جاري الإضافة..." : "إضافة مشرف فرعي"}
+          disabled={isPending}
+          variant="primary"
+          className="max-w-[336px] w-full "
+        />
+      </form>{" "}
+    </div>
   );
 }

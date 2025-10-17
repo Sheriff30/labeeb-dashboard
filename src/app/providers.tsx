@@ -6,6 +6,7 @@ import { ModalProvider } from "@/Context";
 import { ModalRenderer } from "@/components/ui";
 import { usePathname } from "next/navigation";
 import { UserProvider } from "@/Context/UserContext";
+import { Toaster } from "react-hot-toast";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,6 +25,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <UserProvider>
         {isSchoolPath ? (
           children
