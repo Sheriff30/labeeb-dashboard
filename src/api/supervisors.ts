@@ -10,7 +10,7 @@ interface CreateUserRequest {
 
 export const createSupervisor = async (payload: CreateUserRequest) => {
   try {
-    const res = await axiosInstance.post("/users", payload);
+    const res = await axiosInstance.post("/school/users", payload);
     return res.data;
   } catch (error) {
     throw error;
@@ -19,7 +19,7 @@ export const createSupervisor = async (payload: CreateUserRequest) => {
 
 export const supervisors = async () => {
   try {
-    const res = await axiosInstance.get("/users");
+    const res = await axiosInstance.get("/school/users");
     return res.data.data;
   } catch (error) {
     throw error;
@@ -28,7 +28,7 @@ export const supervisors = async () => {
 
 export const deleteSupervisors = async (id: string) => {
   try {
-    const res = await axiosInstance.delete(`/users/${id}`);
+    const res = await axiosInstance.delete(`/school/users/${id}`);
     return res.data.data;
   } catch (error) {
     throw error;

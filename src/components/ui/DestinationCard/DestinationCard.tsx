@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React from "react";
@@ -8,9 +9,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { Button } from "@/components/shared";
-import { destination } from "@/types";
 
-export default function DestinationCard({ data }: { data: destination }) {
+export const IMAGE_BASE_URL = "https://s3.eu-north-1.amazonaws.com/labeb.sa/";
+
+export default function DestinationCard({ data }: { data: any }) {
+  console.log(data);
   return (
     <div className="w-full border-[1.5px] border-black/15 rounded-xl p-3">
       <Swiper
@@ -21,11 +24,11 @@ export default function DestinationCard({ data }: { data: destination }) {
         loop={true}
         className="destination-swiper  rounded-xl mb-2"
       >
-        {data?.images?.map((image: string, index: number) => (
+        {data?.images?.map((image: any, index: number) => (
           <SwiperSlide key={index}>
             <div className="relative h-51.5 ">
               <Image
-                src={image}
+                src={`${IMAGE_BASE_URL}${image.image_path}`}
                 alt="destination"
                 fill
                 className="object-cover"
@@ -36,7 +39,9 @@ export default function DestinationCard({ data }: { data: destination }) {
       </Swiper>
       <div className="flex justify-between gap-1 mb-[15px]">
         <div className="text-2xl"> {data?.name}</div>
-        <div className="text-xl text-primary-blue">{data?.type}</div>
+        <div className="text-xl text-primary-blue">
+          {data?.destination_type?.name}
+        </div>
       </div>
       <div className="flex gap-2 text-primary-blue items-center ">
         <Button

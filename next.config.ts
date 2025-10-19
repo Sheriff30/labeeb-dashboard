@@ -1,7 +1,17 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ["s3.eu-north-1.amazonaws.com"],
+    // or use remotePatterns for more control:
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s3.eu-north-1.amazonaws.com",
+        port: "",
+        pathname: "/labeb.sa/**",
+      },
+    ],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

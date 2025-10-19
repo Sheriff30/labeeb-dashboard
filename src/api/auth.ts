@@ -26,7 +26,7 @@ interface Login {
 
 export const requestOtp = async (representative_phone: string) => {
   try {
-    const res = await axiosInstance.post("/register/request-otp", {
+    const res = await axiosInstance.post("/school/register/request-otp", {
       representative_phone,
     });
     return res.data;
@@ -37,7 +37,7 @@ export const requestOtp = async (representative_phone: string) => {
 
 export const register = async (payload: SchoolRegistration) => {
   try {
-    const res = await axiosInstance.post("/register", payload);
+    const res = await axiosInstance.post("/school/register", payload);
     return res.data;
   } catch (error) {
     throw error;
@@ -46,7 +46,7 @@ export const register = async (payload: SchoolRegistration) => {
 
 export const requestLoginOtp = async (payload: LoginOtp) => {
   try {
-    const res = await axiosInstance.post("/login/request-otp", payload);
+    const res = await axiosInstance.post("/school/login/request-otp", payload);
     return res.data;
   } catch (error) {
     throw error;
@@ -55,7 +55,7 @@ export const requestLoginOtp = async (payload: LoginOtp) => {
 
 export const login = async (payload: Login) => {
   try {
-    const res = await axiosInstance.post("/login", payload);
+    const res = await axiosInstance.post("/school/login", payload);
     return res.data;
   } catch (error) {
     throw error;
@@ -63,7 +63,7 @@ export const login = async (payload: Login) => {
 };
 export const logout = async () => {
   try {
-    const res = await axiosInstance.post("/logout");
+    const res = await axiosInstance.post("/school/logout");
     return res.data;
   } catch (error) {
     throw error;

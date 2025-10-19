@@ -3,33 +3,36 @@
 import { Input, Select } from "@/components";
 import React, { useState } from "react";
 import { useDestinations } from "@/hooks/useDestinations";
-import { destination } from "@/types";
 import Destinations from "../Destinations/Destinations";
+import { Pagination } from "@/components/shared/Pagination";
 
 const TRIPS_OPTIONS = [
   { label: "ثقافي", value: "ثقافي" },
   { label: "ترفيهي", value: "ترفيهي" },
-  { label: "اخرى", value: "اخرى" },
-  { label: "الكل", value: "الكل" },
 ];
 
 export default function ViewTrips() {
   const [selectedTrip, setSelectedTrip] = useState("");
   const [tripName, setTripName] = useState("");
-  const { data: destinations = [], isLoading } = useDestinations();
+  const [page, setPage] = useState(1);
 
-  const filtereddestinations = destinations.filter(
-    (destination: destination) => {
-      const matchesTripType =
-        selectedTrip === "" ||
-        selectedTrip === "الكل" ||
-        destination.type === selectedTrip;
-      const matchesTripName =
-        tripName === "" ||
-        destination.name.toLowerCase().includes(tripName.toLowerCase());
-      return matchesTripType && matchesTripName;
-    }
+  const { data: destinations, isLoading } = useDestinations(
+    tripName,
+    selectedTrip,
+    page
   );
+
+  const handlePrevPage = () => {
+    if (destinations?.prev_page_url && page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (destinations?.next_page_url && page < destinations?.last_page) {
+      setPage(page + 1);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-3 overflow-y-auto ">
@@ -66,7 +69,20 @@ export default function ViewTrips() {
       </div>
 
       {/* destination */}
-      <Destinations destinations={filtereddestinations} isLoading={isLoading} />
+      <Destinations destinations={destinations?.data} isLoading={isLoading} />
+      {destinations && (
+        <Pagination
+          currentPage={destinations.current_page}
+          lastPage={destinations.last_page}
+          total={destinations.total}
+          from={destinations.from}
+          to={destinations.to}
+          hasNextPage={!!destinations.next_page_url}
+          hasPrevPage={!!destinations.prev_page_url}
+          onNextPage={handleNextPage}
+          onPrevPage={handlePrevPage}
+        />
+      )}
     </div>
   );
 }

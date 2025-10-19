@@ -1,22 +1,13 @@
-import { destination } from "@/types";
 import { axiosInstance } from "./axiosInstance";
 
-export const getDestinations = async () => {
+export const getDestinations = async (name = "", type = "", page = 1) => {
   try {
-    const data = await axiosInstance.get("/destination.json");
-    return data.data;
+    const data = await axiosInstance.get(
+      `/destinations/search?name=${name}&type=${type}&page=${page}`
+    );
+    return data.data.data;
   } catch (error) {
     console.log(error);
     throw new Error("Error fetching destinations");
-  }
-};
-
-export const getDestination = async (id: string | number) => {
-  try {
-    const response = await axiosInstance.get("/destination.json");
-    return response.data.find((d: destination) => String(d.id) === id);
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error fetching destination by id");
   }
 };

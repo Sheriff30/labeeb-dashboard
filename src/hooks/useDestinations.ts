@@ -1,16 +1,9 @@
-import { getDestination, getDestinations } from "@/api/destinationsApi";
+import { getDestinations } from "@/api/destinationsApi";
 import { useQuery } from "@tanstack/react-query";
 
-export const useDestinations = () => {
+export const useDestinations = (name = "", type = "", page: number = 1) => {
   return useQuery({
-    queryKey: ["destinations"],
-    queryFn: getDestinations,
-  });
-};
-
-export const useDestination = (id: string | number) => {
-  return useQuery({
-    queryKey: ["destination", id],
-    queryFn: () => getDestination(id),
+    queryKey: ["destinations", name, type, page],
+    queryFn: () => getDestinations(name, type, page),
   });
 };

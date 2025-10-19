@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://back-end.labeb.sa/api/v1/school",
+  baseURL: "https://back-end.labeb.sa/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
