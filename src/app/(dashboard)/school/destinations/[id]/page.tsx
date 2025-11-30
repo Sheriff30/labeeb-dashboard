@@ -159,9 +159,14 @@ export default function Page() {
 
   const calculateTotal = () => {
     const numberOfStudents = parseInt(form.state.values.numberOfStudents) || 0;
-    const packagePrice = form.state.values.package;
+    const selectedPackage = destination?.packages?.find(
+      (p: packageType) => p.id === form.state.values.package
+    );
+    const packagePrice = selectedPackage
+      ? parseFloat(selectedPackage.price)
+      : 0;
 
-    return Number(packagePrice) * numberOfStudents + FEES;
+    return packagePrice * numberOfStudents + FEES;
   };
 
   return (
