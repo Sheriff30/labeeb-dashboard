@@ -111,4 +111,49 @@ export const validators = {
       return undefined;
     },
   }),
+
+  tripDate: (fieldName: string, workingDays: string[]) => ({
+    onChange: ({ value }: { value: string }) => {
+      if (!value) return `الرجاء إدخال ${fieldName}`;
+
+      const selectedDate = new Date(value);
+      const dayOfWeek = selectedDate.toLocaleDateString("ar-SA", {
+        weekday: "long",
+      });
+
+      if (!workingDays.includes(dayOfWeek)) {
+        return `الوجهة غير متاحة في يوم ${dayOfWeek}`;
+      }
+
+      return undefined;
+    },
+  }),
+
+  tripTime: (
+    fieldName: string,
+    workingHoursFrom: string,
+    workingHoursTo: string
+  ) => ({
+    onChange: ({ value }: { value: string }) => {
+      if (!value) return `الرجاء إدخال ${fieldName}`;
+
+      const [hours, minutes] = value.split(":").map(Number);
+      const selectedTime = new Date();
+      selectedTime.setHours(hours, minutes, 0);
+
+      const [fromHours, fromMinutes] = workingHoursFrom.split(":").map(Number);
+      const workingFrom = new Date();
+      workingFrom.setHours(fromHours, fromMinutes, 0);
+
+      const [toHours, toMinutes] = workingHoursTo.split(":").map(Number);
+      const workingTo = new Date();
+      workingTo.setHours(toHours, toMinutes, 0);
+
+      if (selectedTime < workingFrom || selectedTime > workingTo) {
+        return `الوقت المحدد خارج ساعات العمل (${workingHoursFrom} - ${workingHoursTo})`;
+      }
+
+      return undefined;
+    },
+  }),
 };

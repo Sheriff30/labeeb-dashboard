@@ -106,12 +106,20 @@ export default function Page() {
   const tripDate = useField({
     name: "tripDate",
     form,
-    validators: validators.required("تاريخ الرحلة"),
+    validators: validators.tripDate(
+      "تاريخ الرحلة",
+      destination?.working_days || []
+    ),
   });
+
   const tripTime = useField({
     name: "tripTime",
     form,
-    validators: validators.required("وقت الرحلة"),
+    validators: validators.tripTime(
+      "وقت الرحلة",
+      destination?.working_hours_from || "00:00",
+      destination?.working_hours_to || "23:59"
+    ),
   });
 
   if (isLoading) {
