@@ -7,7 +7,7 @@ import { useFiles } from "@/hooks/useFiles";
 import { ModalWrapper } from "../ModalWrapper";
 
 interface FileSelectionModalProps {
-  onFileSelect: (selectedFile: string) => void;
+  onFileSelect: (selectedFile: file) => void; // Updated to pass the whole file object
   title?: string;
   onClose?: () => void;
 }
@@ -17,14 +17,14 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
   onClose,
 }) => {
   const { closeModal } = useModal();
-  const [selectedFile, setSelectedFile] = useState("");
+  const [selectedFile, setSelectedFile] = useState<file | null>(null); // Updated to store the whole file object
   const [error, setError] = useState<string>("");
   const { data: files, isLoading } = useFiles();
 
-  const handleFileSelect = (fileIdentifier: string | number) => {
-    console.log("Selected file identifier:", fileIdentifier);
+  const handleFileSelect = (file: file) => {
+    console.log("Selected file:", file);
     setError("");
-    setSelectedFile(fileIdentifier.toString());
+    setSelectedFile(file); // Store the whole file object
   };
 
   const handleConfirm = () => {
@@ -32,8 +32,8 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
       setError("من فضلك اختر ملفاً قبل المتابعة");
       return;
     }
-    console.log("Confirmed file identifier:", selectedFile);
-    onFileSelect(selectedFile);
+    console.log("Confirmed file:", selectedFile);
+    onFileSelect(selectedFile); // Pass the whole file object to the parent
     closeModal();
   };
 
@@ -65,18 +65,17 @@ export const FileSelectionModal: React.FC<FileSelectionModalProps> = ({
         </div>
         <div className="flex flex-col gap-2 max-h-[540px] overflow-y-scroll no-scrollbar">
           {files.data?.map((file: file) => {
-            const fileIdentifier = file.filePath || file.id;
             return (
               <div
                 key={file.id}
-                onClick={() => handleFileSelect(fileIdentifier)}
+                onClick={() => handleFileSelect(file)} // Pass the whole file object
                 className="border-2 border-primary cursor-pointer py-1.5 lg:py-3 px-3 lg:px-7 max-w-[455px] rounded-xl flex items-center gap-3 lg:gap-6"
               >
                 <input
                   type="checkbox"
                   className="h-6 w-6 cursor-pointer appearance-none border-black border-[2.5px] rounded-[7px] checked:border-primary"
                   readOnly
-                  checked={selectedFile === fileIdentifier.toString()}
+                  checked={selectedFile?.id === file.id} // Compare by file ID
                 />
                 <div className="flex flex-col gap-2 text-xl text-gray w-full">
                   <div className="text-2xl text-primary">{file.name}</div>

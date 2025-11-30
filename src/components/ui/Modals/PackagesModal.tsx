@@ -2,29 +2,37 @@
 import React, { useState } from "react";
 import { useModal } from "@/Context/ModalContext";
 import { Button } from "@/components/shared/Button";
-import { usePackages } from "@/hooks/usePackages";
 import { ModalWrapper } from "../ModalWrapper";
 import { packageType } from "@/types";
 import { Currency } from "@/components/shared";
 import Image from "next/image";
 import { cn } from "@/lib";
+import { useDestination } from "@/hooks/useDestinations";
+import { useParams } from "next/navigation";
 
 interface PackagesProps {
-  onPackageSelect: (selectedPackage: string) => void;
+  onPackageSelect: (selectedPackage: { id: string; price: string }) => void; // Updated to accept an object
   title?: string;
   onClose?: () => void;
 }
-
 export const PackagesModal: React.FC<PackagesProps> = ({
   onPackageSelect,
   onClose,
 }) => {
   const { closeModal } = useModal();
-  const [selectedPackage, setSelectedPackage] = useState("");
+  const [selectedPackage, setSelectedPackage] = useState<{
+    id: string;
+    price: string;
+  } | null>(null);
   const [error, setError] = useState<string>("");
-  const { data: packages, isLoading } = usePackages();
 
-  const handlePackageSelect = (p: string) => {
+  const params = useParams();
+  const id: string = Array.isArray(params?.id)
+    ? params.id[0]
+    : params?.id ?? "";
+  const { data: destination, isLoading } = useDestination(id);
+
+  const handlePackageSelect = (p: { id: string; price: string }) => {
     setError("");
     setSelectedPackage(p);
   };
@@ -55,15 +63,17 @@ export const PackagesModal: React.FC<PackagesProps> = ({
           إختر الباقة المناسبة{" "}
         </div>
         <div className="flex gap-9 items-start mb-4 flex-col lg:flex-row">
-          {packages?.map((p: packageType) => {
+          {destination?.packages?.map((p: packageType) => {
             return (
               <div
                 key={p.name}
                 className={cn(
                   "w-full bg-white-2 p-[18px] rounded-xl flex flex-col gap-3 cursor-pointer ",
-                  selectedPackage === p.price ? "ring-2 ring-primary" : "" // Add selection styling
+                  selectedPackage?.id === p.id ? "ring-2 ring-primary" : "" // Add selection styling
                 )}
-                onClick={() => handlePackageSelect(p.price)}
+                onClick={() =>
+                  handlePackageSelect({ id: p.id, price: p.price })
+                }
               >
                 <div className="flex flex-col gap-1">
                   <div className="text-2xl">{p.name}</div>
@@ -76,20 +86,22 @@ export const PackagesModal: React.FC<PackagesProps> = ({
                   </div>
                   <div className="text-xl text-gray">تشمل الأتى</div>
                   <div>
-                    {p.items.map((f: string, index: number) => (
-                      <div
-                        key={index}
-                        className="text-lg text-primary-blue flex gap-2"
-                      >
-                        <Image
-                          src="/images/list-point.svg"
-                          width={18}
-                          height={18}
-                          alt="list point"
-                        />{" "}
-                        {f}
-                      </div>
-                    ))}
+                    {p?.benefits?.map(
+                      (benefit: { id: number; name: string }) => (
+                        <div
+                          key={benefit.id}
+                          className="text-lg text-primary-blue flex gap-2"
+                        >
+                          <Image
+                            src="/images/list-point.svg"
+                            width={18}
+                            height={18}
+                            alt="list point"
+                          />{" "}
+                          {benefit.name}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
                 <Button
@@ -97,7 +109,7 @@ export const PackagesModal: React.FC<PackagesProps> = ({
                   variant="secondary"
                   className={cn(
                     "!text-black !border-black !text-2xl",
-                    selectedPackage === p.price ? "bg-black !text-white" : ""
+                    selectedPackage?.id === p.id ? "bg-black !text-white" : ""
                   )}
                 />
               </div>

@@ -6,11 +6,20 @@ import { useField, useForm } from "@tanstack/react-form";
 import { validators } from "@/lib/constants/validation";
 import { useModal } from "@/Context";
 import { useState } from "react";
-import { formatDateArabic } from "@/lib/utils/dateFormatter";
-import { formatTimeArabic } from "@/lib/utils/timeFormatter";
 import { useDestination } from "@/hooks/useDestinations";
+import { useBookTrip } from "@/hooks/useTrips";
+import { packageType } from "@/types";
 
 const FEES = 120;
+
+type Student = {
+  id: number;
+  name: string;
+};
+
+type File = {
+  students: Student[];
+};
 
 export default function Page() {
   const params = useParams();
@@ -22,14 +31,14 @@ export default function Page() {
   const [showRequestInfo, setShowRequestInfo] = useState(false);
   const router = useRouter();
 
-  console.log(destination);
+  const { mutate, isPending: isBooking } = useBookTrip();
 
   const form = useForm({
     defaultValues: {
       numberOfStudents: "",
       tripDate: "",
       tripTime: "",
-      file: "",
+      file: { students: [] } as File,
       package: "",
     },
 
@@ -41,57 +50,36 @@ export default function Page() {
         value.file &&
         value.package
       ) {
-        const existingTrips = JSON.parse(
-          localStorage.getItem("scheduledTrips") || "[]"
+        const studentIds = value.file.students.map((student: Student) =>
+          student.id.toString()
         );
 
-        const tripData = {
-          id: Math.random(),
-          name: destination?.name,
-          status: "مؤكدة",
-          date: formatDateArabic(value.tripDate),
-          time: formatTimeArabic(value.tripTime),
-          total_students: value.numberOfStudents,
-          paid_count: value.numberOfStudents,
-          unpaid_count: 0,
-          students: {
-            paid: [
-              {
-                name: "أحمد محمد",
-                phone: "01099999999",
-              },
-              {
-                name: "منى خالد",
-                phone: "01088888888",
-              },
-            ],
-            unpaid: [
-              {
-                name: "إسلام سامي",
-                phone: "01077777777",
-              },
-              {
-                name: "هدى أحمد",
-                phone: "01066666666",
-              },
-            ],
-          },
+        const payload = {
+          destination_id: id,
+          package_id: value.package,
+          trip_date: value.tripDate,
+          time_slot: value.tripTime,
+          student_ids: studentIds,
         };
 
-        existingTrips.push(tripData);
+        mutate(payload, {
+          onSuccess: () => {
+            openModal("CONFIRM", {
+              title: "تم  حجز  الرحلة بنجاح",
+              titleColor: "text-primary-green",
+              buttonText: "شكراً",
+              message:
+                "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
+              onConfirm: () => {
+                form.reset();
+                closeModal();
+              },
+            });
 
-        localStorage.setItem("scheduledTrips", JSON.stringify(existingTrips));
-        router.push("/school");
-
-        openModal("CONFIRM", {
-          title: "تم  حجز  الرحلة بنجاح",
-          titleColor: "text-primary-green",
-          buttonText: "شكراً",
-          message:
-            "تم إحجز فى انتظار موافقة الوجهة و سيصلكم إشعار بحالة الحجز عبر النظام و البريد الإلكتروني",
-          onConfirm: () => {
-            // form.reset();
-            closeModal();
+            router.push("/school");
+          },
+          onError: (error) => {
+            console.error("Error booking trip:", error);
           },
         });
       }
@@ -126,14 +114,17 @@ export default function Page() {
     return <div className="text-2xl text-center">جاري تحميل الوجهة...</div>;
   }
 
-  const handlePackageSelect = (selectedPackage: string) => {
+  const handlePackageSelect = (selectedPackage: {
+    id: string;
+    price: string;
+  }) => {
     if (selectedPackage) {
-      form.setFieldValue("package", selectedPackage);
+      form.setFieldValue("package", selectedPackage.id);
       setShowRequestInfo(true);
     }
   };
 
-  const handleFileSelect = (selectedFile: string) => {
+  const handleFileSelect = (selectedFile: File) => {
     if (selectedFile) {
       form.setFieldValue("file", selectedFile);
       setTimeout(() => {
@@ -303,7 +294,9 @@ export default function Page() {
                   <div className="text-xl">سعر الباقة المختارة</div>
                   <div className="flex gap-2.5 text-xl items-center">
                     <span className="font-roboto text-2xl">
-                      {form.state.values.package}
+                      {destination?.packages?.find(
+                        (p: packageType) => p.id === form.state.values.package
+                      )?.price || "0"}
                     </span>
                     <Currency className="w-[30px] h-[30px]" />{" "}
                   </div>
@@ -330,7 +323,12 @@ export default function Page() {
             </div>
           </div>
           <div className="mt-auto mb-auto  max-w-[426px] w-full">
-            <Button text="إحجز الآن" type="submit" className="w-full" />
+            <Button
+              text={isBooking ? "جاري الحجز..." : "تأكيد الحجز"}
+              type="submit"
+              className="w-full"
+              disabled={isBooking}
+            />
           </div>
         </div>
       )}

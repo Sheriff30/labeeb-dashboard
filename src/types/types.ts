@@ -26,10 +26,12 @@ export type destination = {
   };
   city: string;
   packages?: {
+    id: string;
     name: string;
     price: string;
     unit: string;
     items: string[];
+    benefits: { id: number; name: string }[]; // Updated to reflect object structure
   }[];
 };
 
@@ -45,10 +47,11 @@ export type file = {
 };
 
 export type packageType = {
+  id: string;
   name: string;
   price: string;
   unit: string;
-  items: string[];
+  benefits: { id: number; name: string }[]; // Updated to reflect object structure
 };
 
 export type student = {
