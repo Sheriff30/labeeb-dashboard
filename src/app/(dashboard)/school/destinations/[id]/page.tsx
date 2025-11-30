@@ -1,6 +1,5 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-import { useDestination } from "@/hooks/useDestinations";
 import { Destination } from "@/views/Destination";
 import { Button, Currency, FormField, Input } from "@/components";
 import { useField, useForm } from "@tanstack/react-form";
@@ -9,6 +8,7 @@ import { useModal } from "@/Context";
 import { useState } from "react";
 import { formatDateArabic } from "@/lib/utils/dateFormatter";
 import { formatTimeArabic } from "@/lib/utils/timeFormatter";
+import { useDestination } from "@/hooks/useDestinations";
 
 const FEES = 120;
 
@@ -21,6 +21,8 @@ export default function Page() {
   const { openModal, closeModal } = useModal();
   const [showRequestInfo, setShowRequestInfo] = useState(false);
   const router = useRouter();
+
+  console.log(destination);
 
   const form = useForm({
     defaultValues: {

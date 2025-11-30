@@ -7,11 +7,15 @@ import { RenderMixedFonts } from "@/components/ui/RenderMixedFonts";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { destination } from "@/types";
+export const IMAGE_BASE_URL = "https://s3.eu-north-1.amazonaws.com/labeb.sa/";
 
 type Props = {
   destination: destination;
 };
 export function Destination({ destination }: Props) {
+  const lowestPackagePrice = destination.packages?.length
+    ? Math.min(...destination.packages.map((pkg) => parseFloat(pkg.price)))
+    : null;
   return (
     <div className="grid gap-3 grid-cols-1 lg:grid-cols-[31.6rem_1fr]">
       <div className="flex flex-col gap-2">
@@ -23,11 +27,11 @@ export function Destination({ destination }: Props) {
           loop={true}
           className="destination-swiper rounded-xl mb-2 w-full"
         >
-          {destination?.images?.map((image: string, index: number) => (
-            <SwiperSlide key={index}>
+          {destination?.images?.map((image) => (
+            <SwiperSlide key={image.id}>
               <div className="relative h-102.5">
                 <Image
-                  src={image}
+                  src={`${IMAGE_BASE_URL}${image.image_path}`} // Access the image_path property
                   alt="destination"
                   fill
                   className="object-cover"
@@ -35,15 +39,15 @@ export function Destination({ destination }: Props) {
               </div>
             </SwiperSlide>
           ))}
-        </Swiper>{" "}
+        </Swiper>
         <div className="grid gap-3 grid-cols-3">
-          {destination?.images?.map((image: string, index: number) => (
+          {destination?.images?.map((image, index) => (
             <div
               className="relative h-32.5 rounded-sm overflow-hidden"
               key={index}
             >
               <Image
-                src={image}
+                src={`${IMAGE_BASE_URL}${image.image_path}`} // Access the image_path property
                 alt="destination"
                 fill
                 className="object-cover"
@@ -62,16 +66,16 @@ export function Destination({ destination }: Props) {
               width={32}
               height={32}
             />
-            {destination.type}
+            {destination.destination_type.name}
           </div>{" "}
           <div className="flex items-center gap-1">
             <Image
               src="/images/location.svg"
-              alt={destination.type}
+              alt={destination.destination_type.name}
               width={32}
               height={32}
             />
-            <div>{destination.place}</div>
+            <div>{destination.city}</div>
           </div>
         </div>
         {/* Group 2 */}
@@ -80,7 +84,9 @@ export function Destination({ destination }: Props) {
           <div className="flex  items-center">
             <div className="text-xl text-gray font-arabic-light">تبدأ من</div>
             <div className="flex gap-1 font-arabic-bold text-primary">
-              {destination.pricePerStudent}
+              {lowestPackagePrice !== null
+                ? lowestPackagePrice.toFixed(2)
+                : "N/A"}
 
               <Currency />
             </div>
@@ -88,7 +94,12 @@ export function Destination({ destination }: Props) {
           </div>
         </div>
         {/* Group 3 */}
-        <div className="text-xl text-gray mb-4">{destination.description}</div>
+        <div
+          className="text-xl text-gray mb-4"
+          dangerouslySetInnerHTML={{
+            __html: destination.description,
+          }}
+        />
         {/* Group 4 */}
         <div className="flex justify-between gap-5 text-2xl mb-11 flex-wrap">
           {/* القدرة الإستيعابية */}
@@ -114,7 +125,7 @@ export function Destination({ destination }: Props) {
           <div className="flex flex-col  gap-2">
             <div className="text-primary">الأوقات الأيام المتاحة</div>
             <div className="flex gap-2 flex-wrap items-center justify-center">
-              {destination.availableDays.map((day: string) => (
+              {destination.working_days?.map((day: string) => (
                 <div key={day}>{day}</div>
               ))}
             </div>
@@ -123,16 +134,16 @@ export function Destination({ destination }: Props) {
             {" "}
             <div className="text-primary">الأوقات المتاحة</div>
             <div className="flex gap-1">
-              {<RenderMixedFonts text={destination.availableTimes.start} />}
+              {<RenderMixedFonts text={destination?.working_hours_from} />}
               <div className="font-arabic-light">حتي</div>
-              {<RenderMixedFonts text={destination.availableTimes.end} />}
+              {<RenderMixedFonts text={destination?.working_hours_to} />}
             </div>
           </div>
         </div>
         {/* Group 5 */}
         <div className="flex flex-col  gap-2 text-2xl">
           <div className="text-primary">طريقة الدفع</div>
-          <div>{destination.paymentMethod}</div>
+          <div>{destination?.payment_type}</div>
         </div>
       </div>
     </div>

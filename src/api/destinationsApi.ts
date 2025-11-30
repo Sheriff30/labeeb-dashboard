@@ -11,3 +11,13 @@ export const getDestinations = async (name = "", type = "", page = 1) => {
     throw new Error("Error fetching destinations");
   }
 };
+
+export const getDestinationById = async (id: string) => {
+  try {
+    const data = await axiosInstance.get(`/destinations/${id}`);
+    return data.data.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error fetching destination by ID");
+  }
+};

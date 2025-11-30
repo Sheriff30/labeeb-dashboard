@@ -4,16 +4,33 @@ export type destination = {
   type: string;
   place: string;
   description: string;
-  images: string[];
+  images: {
+    image_path: string;
+    id: number;
+    destination_id: number;
+    order: number;
+  }[];
   pricePerStudent: number;
   availableDays: string[];
-  availableTimes: {
-    start: string;
-    end: string;
-  };
+  working_hours_from: string;
+  working_hours_to: string;
+  working_days?: string[];
   gender: string[];
   capacity: number;
-  paymentMethod: string;
+  payment_type: string;
+  destination_type: {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+  };
+  city: string;
+  packages?: {
+    name: string;
+    price: string;
+    unit: string;
+    items: string[];
+  }[];
 };
 
 export type file = {
