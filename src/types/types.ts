@@ -35,12 +35,13 @@ export type destination = {
 
 export type file = {
   id: number;
-  title: string;
+  name: string;
   students: number;
   gender: string[];
   levels: string[];
   filePath: string;
   date: string;
+  students_count: number;
 };
 
 export type packageType = {

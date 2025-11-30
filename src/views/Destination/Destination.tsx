@@ -62,7 +62,7 @@ export function Destination({ destination }: Props) {
           <div className="flex items-center gap-1">
             <Image
               src="/images/destination-type.svg"
-              alt={destination.type}
+              alt={destination.destination_type.name}
               width={32}
               height={32}
             />
