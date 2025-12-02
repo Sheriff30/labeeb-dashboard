@@ -8,6 +8,7 @@ import {
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
 import { useModal } from "@/Context/ModalContext";
+import { useGetCurrentUser } from "@/hooks/auth";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -15,12 +16,14 @@ import {
   SCHOOL_STAGE_OPTIONS,
 } from "@/lib";
 import { validators } from "@/lib/constants/validation";
-import { useField, useForm } from "@tanstack/react-form";
+import { useForm } from "@tanstack/react-form";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Page() {
   const { openModal, closeModal } = useModal();
+  const { data, isLoading } = useGetCurrentUser();
+  const school = data?.data;
   const form = useForm({
     defaultValues: {
       name: "",
@@ -69,12 +72,30 @@ export default function Page() {
     },
   });
 
-  const emailField = useField({
-    name: "email",
-    form,
-    validators: validators.email(),
-  });
+  useEffect(() => {
+    if (!school) return;
 
+    const schoolData = school.school;
+    const user = school.user;
+
+    console.log(school);
+
+    form.reset({
+      name: schoolData.name || "",
+      city: schoolData.city || "",
+      district: schoolData.district || "",
+      category: schoolData.gender || "",
+      schoolStage: [schoolData.type || ""],
+      accountName: user.name || "",
+      email: schoolData.email || "",
+      numberOfStudents: "",
+      numberOfBranches: "",
+    });
+  }, [school, form]);
+
+  if (isLoading) {
+    return <div className="text-2xl text-center">جاري تحميل البيانات..</div>;
+  }
   return (
     <div className="flex flex-col gap-11 h-full  overflow-auto no-scrollbar">
       {/* Header */}
@@ -115,15 +136,21 @@ export default function Page() {
 
         {/* Email  */}
 
-        <FormField field={emailField} className="max-w-[573px]">
-          <FloatLabelInput
-            label="البريد الإلكتروني"
-            value={emailField.state.value}
-            onChange={(e) => emailField.handleChange(e.target.value)}
-            type="email"
-            maxLength={254}
-          />
-        </FormField>
+        <form.Field name="email" validators={validators.email()}>
+          {(field) => {
+            return (
+              <FormField field={field} className="max-w-[573px]">
+                <FloatLabelInput
+                  label="البريد الإلكتروني"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="email"
+                  maxLength={254}
+                />
+              </FormField>
+            );
+          }}
+        </form.Field>
 
         {/* Group selector */}
 
