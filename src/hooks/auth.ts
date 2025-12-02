@@ -5,6 +5,7 @@ import {
   register,
   requestLoginOtp,
   requestOtp,
+  updateSchool,
 } from "@/api/auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -45,5 +46,12 @@ export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: ["current-user"],
     queryFn: getCurrentUser,
+  });
+};
+
+export const useUpdateSchool = () => {
+  return useMutation({
+    mutationKey: ["update-school"],
+    mutationFn: updateSchool,
   });
 };

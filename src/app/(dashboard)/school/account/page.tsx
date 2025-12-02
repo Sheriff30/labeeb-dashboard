@@ -8,7 +8,7 @@ import {
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
 import { useModal } from "@/Context/ModalContext";
-import { useGetCurrentUser } from "@/hooks/auth";
+import { useGetCurrentUser, useUpdateSchool } from "@/hooks/auth";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -23,6 +23,7 @@ import React, { useEffect } from "react";
 export default function Page() {
   const { openModal, closeModal } = useModal();
   const { data, isLoading } = useGetCurrentUser();
+  const { mutate } = useUpdateSchool();
   const school = data?.data;
   const form = useForm({
     defaultValues: {
@@ -37,36 +38,31 @@ export default function Page() {
       numberOfBranches: "",
     },
     onSubmit: async ({ value }) => {
-      const {
-        name,
-        city,
-        district,
-        category,
-        schoolStage,
-        accountName,
-        email,
-        numberOfStudents,
-        numberOfBranches,
-      } = value;
+      const { name, city, district, accountName, email } = value;
 
       const formData = {
         name,
         city,
         district,
-        category,
-        schoolStage,
-        numberOfStudents,
-        numberOfBranches,
         accountName,
         email,
       };
-      console.log("FormData", formData);
-      form.reset();
-      openModal("CONFIRM", {
-        title: "تم تعديل البيانات بنجاح",
-        buttonText: "شكراً",
-        onConfirm: () => {
-          closeModal();
+
+      console.log(formData);
+
+      mutate(formData, {
+        onSuccess: () => {
+          form.reset();
+          openModal("CONFIRM", {
+            title: "تم تعديل البيانات بنجاح",
+            buttonText: "شكراً",
+            onConfirm: () => {
+              closeModal();
+            },
+          });
+        },
+        onError: (error) => {
+          console.error("Error updating school:", error);
         },
       });
     },
@@ -77,8 +73,6 @@ export default function Page() {
 
     const schoolData = school.school;
     const user = school.user;
-
-    console.log(school);
 
     form.reset({
       name: schoolData.name || "",

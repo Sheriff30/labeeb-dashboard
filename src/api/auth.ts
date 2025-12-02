@@ -78,3 +78,20 @@ export const getCurrentUser = async () => {
     throw error;
   }
 };
+
+export const updateSchool = async (payload: {
+  name: string;
+  city: string;
+  district: string;
+  accountName: string;
+  email: string;
+  numberOfStudents?: string;
+  numberOfBranches?: string;
+}) => {
+  try {
+    const res = await axiosInstance.put("/school/me", payload);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
