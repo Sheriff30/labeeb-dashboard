@@ -20,8 +20,7 @@ import {
   Logout,
 } from "@/components/shared";
 import WhatsApp from "@/components/shared/Icons/WhatsApp";
-import { useUser } from "@/Context/UserContext";
-import { useLogout } from "@/hooks/auth";
+import { useGetCurrentUser, useLogout } from "@/hooks/auth";
 import { useRouter } from "next/navigation";
 
 const SIDEBAR_ITEMS = [
@@ -109,10 +108,15 @@ export default function RootSidebar({
   sidebarOpen,
 }: RootSidebarProps) {
   const [isOpen, setIsOpen] = useState("");
-  const { schoolData } = useUser();
   const pathname = usePathname();
   const { mutate: logout } = useLogout();
   const router = useRouter();
+
+  const { data, isLoading } = useGetCurrentUser();
+
+  const school = data?.data;
+
+  console.log("Current User:", school);
 
   const handleLogout = () => {
     logout(undefined, {
@@ -152,10 +156,10 @@ export default function RootSidebar({
       />
       <div className="text-center">
         <div className="text-primary-3 text-3xl xl:text-[2.5rem] font-arabic-bold truncate">
-          {schoolData.name}
+          {isLoading ? "جاري التحميل..." : school?.school?.name}
         </div>
         <div className="text-gray text-lg xl:text-2xl font-roboto truncate">
-          {schoolData.email}
+          {isLoading ? "جاري التحميل..." : school?.school?.email}
         </div>
       </div>
 

@@ -1,11 +1,12 @@
 import {
+  getCurrentUser,
   login,
   logout,
   register,
   requestLoginOtp,
   requestOtp,
 } from "@/api/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useRequestOtp = () => {
   return useMutation({
@@ -37,5 +38,12 @@ export const useLogout = () => {
   return useMutation({
     mutationKey: ["logout"],
     mutationFn: logout,
+  });
+};
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: ["current-user"],
+    queryFn: getCurrentUser,
   });
 };

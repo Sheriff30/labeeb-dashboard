@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ModalProvider } from "@/Context";
 import { ModalRenderer } from "@/components/ui";
 import { usePathname } from "next/navigation";
-import { UserProvider } from "@/Context/UserContext";
 import { Toaster } from "react-hot-toast";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -26,16 +25,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      <UserProvider>
-        {isSchoolPath ? (
-          children
-        ) : (
-          <ModalProvider>
-            {children}
-            <ModalRenderer />
-          </ModalProvider>
-        )}
-      </UserProvider>
+      {isSchoolPath ? (
+        children
+      ) : (
+        <ModalProvider>
+          {children}
+          <ModalRenderer />
+        </ModalProvider>
+      )}
     </QueryClientProvider>
   );
 }

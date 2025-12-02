@@ -69,3 +69,12 @@ export const logout = async () => {
     throw error;
   }
 };
+
+export const getCurrentUser = async () => {
+  try {
+    const res = await axiosInstance.get("/school/me");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
