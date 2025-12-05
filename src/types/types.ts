@@ -104,14 +104,18 @@ export type scheduledTrip = {
   students: students;
 };
 
-export type canceledTrip = {
+export interface canceledTrip {
   id: number;
-  name: string;
-  status: string;
-  cancellation_date: string;
-  cancellation_reason: string;
-  total_students: string;
-};
+  destination: {
+    id: number;
+    name: string;
+    google_maps_link: string;
+  };
+  updated_at: string;
+  status_label: string;
+  rejection_reason: string | null;
+  total_students: number;
+}
 
 export type subAdmin = {
   name: string;
