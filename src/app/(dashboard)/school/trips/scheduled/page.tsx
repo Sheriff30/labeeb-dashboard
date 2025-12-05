@@ -73,7 +73,7 @@ export default function Page() {
 
   return (
     <div className="overflow-y-auto h-full no-scrollbar">
-      <div className="text-4xl mb-6 font-arabic-bold">الرحلات المجدولة</div>
+      <div className="text-4xl mb-6 font-arabic-bold">الرحلات قيد المراجعة</div>
 
       {scheduledTrips.length === 0 && (
         <div className="text-2xl text-center">لا يوجد رحلات مجدولة</div>

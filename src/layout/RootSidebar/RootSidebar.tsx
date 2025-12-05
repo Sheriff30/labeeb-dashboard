@@ -39,7 +39,7 @@ const SIDEBAR_ITEMS = [
         href: "/school/trips/completed",
       },
       {
-        label: "الرحلات المجدولة",
+        label: "الرحلات قيد المراجعة",
         icon: ScheduledTripts,
         href: "/school/trips/scheduled",
       },

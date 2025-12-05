@@ -26,7 +26,7 @@ export default function TripsCard({ href, type, info }: TripsCardProps) {
             ? "الرحلات الموافق عليها"
             : type === "canceled"
             ? "الرحلات الملغية"
-            : "الرحلات المجدولة"}
+            : "الرحلات قيد المراجعة"}
         </div>
         <Image src="/images/arrow.svg" alt="arrow" width={24} height={24} />
       </div>
