@@ -1,228 +1,110 @@
 "use client";
-import { Button } from "@/components";
-import { useModal } from "@/Context/ModalContext";
-import { cn } from "@/lib/utils";
-import { scheduledTrip } from "@/types";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { Pagination } from "@/components/shared/Pagination";
+import { useTrips } from "@/hooks/useTrips";
+import { Trip } from "@/types";
+import { useState } from "react";
 
 export default function Page() {
-  const [isPaid, setIsPaid] = useState(true);
-  const [showData, setShowData] = useState<number | null>(null);
-  const { openModal, closeModal } = useModal();
-  const [scheduledTrips, setScheduledTrips] = useState<scheduledTrip[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    data: tripsData,
+    isLoading,
+    error,
+  } = useTrips("pending", currentPage);
 
-  useEffect(() => {
-    const scheduledTrips = JSON.parse(
-      localStorage.getItem("scheduledTrips") || "[]"
-    );
-    setScheduledTrips(scheduledTrips);
-    setIsLoading(false);
-  }, []);
+  const trips = tripsData?.data?.data || [];
+  const paginationInfo = tripsData?.data || {};
 
-  if (isLoading) {
-    return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
-  }
+  const handleNextPage = () => {
+    if (paginationInfo.current_page < paginationInfo.last_page) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
 
-  const handleCancelTrip = (id: number) => {
-    openModal("CANCEL_TRIP", {
-      onConfirm: (reason: string) => {
-        closeModal();
-
-        const scheduledTrips = JSON.parse(
-          localStorage.getItem("scheduledTrips") || "[]"
-        );
-        const canceledTrips = JSON.parse(
-          localStorage.getItem("canceledTrips") || "[]"
-        );
-        const canceledTrip = scheduledTrips.find(
-          (trip: scheduledTrip) => trip.id === id
-        );
-        const today = new Date();
-        const formattedDate = today.toISOString().split("T")[0];
-
-        canceledTrip.status = "قيد التنفيذ";
-        canceledTrip.cancellation_date = formattedDate;
-        canceledTrip.cancellation_reason = reason;
-
-        const filteredScheduledTrips = scheduledTrips.filter(
-          (trip: scheduledTrip) => trip.id !== id
-        );
-
-        canceledTrips.push(canceledTrip);
-        localStorage.setItem("canceledTrips", JSON.stringify(canceledTrips));
-
-        localStorage.setItem(
-          "scheduledTrips",
-          JSON.stringify(filteredScheduledTrips)
-        );
-
-        setScheduledTrips(filteredScheduledTrips);
-
-        openModal("CONFIRM", {
-          title: "تم تقديم طلب إلغاء الرحلة",
-          buttonText: "شكراً",
-          onConfirm: () => {
-            closeModal();
-          },
-        });
-      },
-    });
+  const handlePrevPage = () => {
+    if (paginationInfo.current_page > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
   return (
     <div className="overflow-y-auto h-full no-scrollbar">
-      <div className="text-4xl mb-6 font-arabic-bold">الرحلات قيد المراجعة</div>
+      <div className="text-4xl mb-6 font-arabic-bold">
+        الرحلات قيد المراجعة{" "}
+      </div>
 
-      {scheduledTrips.length === 0 && (
-        <div className="text-2xl text-center">لا يوجد رحلات مجدولة</div>
-      )}
-      {scheduledTrips.length > 0 && (
-        <div className="overflow-x-auto w-full text-right">
-          <table className="w-full min-w-[1263px]">
-            {/* table header */}
-            <thead className="text-2xl">
-              <tr>
-                <th>اسم الوجهة</th>
-                <th className="text-center">حالة الرحلة</th>
-                <th className="text-center">تاريخ / يوم الرحلة</th>
-                <th className="text-center">وقت الرحلة</th>
-                <th className="text-center">عدد الطلاب</th>
-                <th className="text-center">تم الدفع </th>
-                <th className="text-center text-error">لم يتم الدفع</th>
-              </tr>
-            </thead>
-            {/* table body */}
-            <tbody>
-              {/* table row */}
-              {scheduledTrips?.map((trip: scheduledTrip) => {
-                return (
-                  <React.Fragment key={trip.id}>
-                    <tr className="text-xl">
-                      <td> {trip.name} </td>
-                      <td className="text-center">{trip.status}</td>
-                      <td className="text-center">
-                        <span className="font-roboto"> {trip.date}</span>
-                      </td>
-                      <td className="text-center font-roboto">{trip.time}</td>
-                      <td className="text-center font-roboto">
-                        {trip.total_students}
-                      </td>
-                      <td className="text-center font-roboto">
-                        {trip.paid_count}
-                      </td>
-                      <td className="text-center text-error font-roboto">
-                        {trip.unpaid_count}
-                      </td>
-                      <td className="text-center">
-                        <div className="flex gap-4 items-center">
-                          <Button
-                            text="موقع الرحلة"
-                            className="!text-xl !py-0.5 !px-1.5"
-                            href={`https://www.google.com/maps/search/?api=1&query=${trip.name}`}
-                          />
-                          <Button
-                            text="الغاء الرحلة"
-                            className="!text-xl !py-0.5 !px-1.5 !bg-error "
-                            onClick={() => handleCancelTrip(trip.id)}
-                          />
-                          <Image
-                            src="/images/table-arrow.svg"
-                            alt="arrow"
-                            width={20}
-                            height={20}
-                            className={cn(
-                              "transition-all duration-300 cursor-pointer",
-                              showData === trip.id && "rotate-270"
-                            )}
-                            onClick={() => {
-                              setShowData(
-                                showData === trip.id ? null : trip.id
-                              );
-                              setIsPaid(true);
-                            }}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    {showData === trip.id && (
-                      <tr>
-                        <td colSpan={8} className="!border-none !p-0">
-                          <div className="flex gap-10 items-center mb-6">
-                            <div className="text-3xl text-primary-3 font-arabic-bold">
-                              بيانات السداد
-                            </div>
-                            <Button
-                              onClick={() => setIsPaid(true)}
-                              text="تم الدفع"
-                              className={cn(
-                                "!px-15 !rounded-xl",
-                                isPaid
-                                  ? "!text-white !bg-navy border-2 !border-navy !text-2xl"
-                                  : "!text-navy !bg-white border-2 !border-navy !text-2xl"
-                              )}
-                            />
-                            <Button
-                              onClick={() => setIsPaid(false)}
-                              text="لم يتم الدفع"
-                              className={cn(
-                                "!px-15 !rounded-xl",
-                                isPaid
-                                  ? "!text-navy !bg-white border-2 !border-navy !text-2xl"
-                                  : "!text-white !bg-navy border-2 !border-navy !text-2xl"
-                              )}
-                            />
-                          </div>
-                          <div className="max-w-[565px] flex flex-col gap-4">
-                            <div className="flex justify-between  pr-10 pl-34 text-xl">
-                              <div>اسم الطالب</div>
-                              <div>رقم الجوال </div>
-                            </div>
-                            {!isPaid && (
-                              <div className="flex flex-col gap-4">
-                                {trip.students.unpaid.map((student) => {
-                                  return (
-                                    <div
-                                      key={student.name}
-                                      className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
-                                    >
-                                      <div>{student.name}</div>
-                                      <div className="font-roboto">
-                                        {student.phone}
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                            {isPaid && (
-                              <div className="flex flex-col gap-4">
-                                {trip.students.paid.map((student) => {
-                                  return (
-                                    <div
-                                      key={student.name}
-                                      className="flex py-2 px-10 justify-between  text-2xl border-navy rounded-xl border-2"
-                                    >
-                                      <div>{student.name}</div>
-                                      <div className="font-roboto">
-                                        {student.phone}
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          </table>
+      {isLoading && <div className="text-2xl text-center">جاري التحميل...</div>}
+
+      {error && (
+        <div className="text-2xl text-center text-red-500">
+          حدث خطأ أثناء التحميل
         </div>
+      )}
+
+      {trips.length === 0 && !isLoading && (
+        <div className="text-2xl text-center">لا يوجد رحلات مكتملة</div>
+      )}
+
+      {trips.length > 0 && (
+        <>
+          <div className="overflow-x-auto w-full text-right">
+            <table className="w-full min-w-[1263px]">
+              {/* Table Header */}
+              <thead className="text-2xl">
+                <tr>
+                  <th>اسم الوجهة</th>
+                  <th className="text-center">تاريخ الرحلة</th>
+                  <th className="text-center">الوقت</th>
+                  <th className="text-center">عدد الطلاب</th>
+                  <th className="text-center">حالة الرحلة</th>
+                  <th className="text-center">رابط الدفع</th>
+                </tr>
+              </thead>
+              {/* Table Body */}
+              <tbody>
+                {trips.map((trip: Trip) => (
+                  <tr key={trip.id} className="text-xl">
+                    <td>{trip.destination.name}</td>
+                    <td className="text-center font-roboto">
+                      {trip.trip_date}
+                    </td>
+                    <td className="text-center font-roboto">
+                      {trip.time_slot}
+                    </td>
+                    <td className="text-center font-roboto">
+                      {trip.total_students}
+                    </td>
+                    <td className="text-center">{trip.status_label}</td>
+                    <td className="text-center">
+                      <a
+                        href={trip.payment_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 underline"
+                      >
+                        رابط الدفع
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination Component */}
+          <Pagination
+            currentPage={paginationInfo.current_page}
+            lastPage={paginationInfo.last_page}
+            total={paginationInfo.total}
+            from={paginationInfo.from}
+            to={paginationInfo.to}
+            hasNextPage={!!paginationInfo.next_page_url}
+            hasPrevPage={!!paginationInfo.prev_page_url}
+            onNextPage={handleNextPage}
+            onPrevPage={handlePrevPage}
+            className="mt-6"
+          />
+        </>
       )}
     </div>
   );
