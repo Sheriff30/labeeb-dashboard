@@ -34,7 +34,7 @@ const SIDEBAR_ITEMS = [
     icon: Trips,
     links: [
       {
-        label: "الرحلات المكتملة",
+        label: "الرحلات الموافق عليها",
         icon: PreviousTripts,
         href: "/school/trips/completed",
       },

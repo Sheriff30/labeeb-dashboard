@@ -64,23 +64,24 @@ export type students = {
   unpaid: student[];
 };
 
-export type trip = {
+export interface Trip {
   id: number;
-  trip_price: number;
-  destination: string;
-  status: "pending" | "scheduled" | "completed" | "canceled"; // Based on your status field
-  date: string; // ISO date format (YYYY-MM-DD)
-  day: string; // e.g., "الاثنين"
-  time: string; // e.g., "10:00 ص"
+  destination: {
+    id: number;
+    name: string;
+    google_maps_link: string;
+  };
+  trip_date: string;
+  time_slot: string;
+  approval_status: string;
+  rejection_reason: string | null;
   total_students: number;
-  paid_count: number;
-  unpaid_count: number;
-  location: string;
-  students: students;
-  cancellation_date: string;
-  refund_status: string;
-  cancellation_reason: string;
-};
+  total_amount: string;
+  payment_link: string;
+  created_at: string;
+  updated_at: string;
+  status_label: string;
+}
 
 export type confirmModalProps = {
   title?: string;
