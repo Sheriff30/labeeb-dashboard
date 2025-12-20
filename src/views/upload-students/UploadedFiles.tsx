@@ -50,7 +50,7 @@ export default function UploadedFiles() {
             key={file.id}
             className="p-[18px] border-2 rounded-xl border-gray grid gap-1 w-full "
           >
-            <div className="text-2xl text-primary">{file.title}</div>
+            {/* <div className="text-2xl text-primary">{file.title}</div> */}
             <div className="flex gap-6 text-xl">
               <div>تاريخ الإضافة</div>
               <div className="font-roboto">{file.date}</div>
