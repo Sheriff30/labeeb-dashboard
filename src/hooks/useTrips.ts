@@ -1,5 +1,5 @@
-import { fetchSchoolTrips } from "@/api/tripsApi";
-import { useQuery } from "@tanstack/react-query";
+import { bookTrip, fetchSchoolTrips } from "@/api/tripsApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useTrips = (
   status?: "pending" | "approved" | "rejected",
@@ -14,5 +14,11 @@ export const useTrips = (
         page as number
       );
     },
+  });
+};
+
+export const useBookTrip = () => {
+  return useMutation({
+    mutationFn: bookTrip,
   });
 };
