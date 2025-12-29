@@ -3,10 +3,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Currency } from "@/components";
-import { RenderMixedFonts } from "@/components/ui/RenderMixedFonts";
 import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import { destination } from "@/types";
+import { formatTimeArabic } from "@/lib/utils/timeFormatter";
 export const IMAGE_BASE_URL = "https://s3.eu-north-1.amazonaws.com/labeb.sa/";
 
 type Props = {
@@ -131,12 +131,19 @@ export function Destination({ destination }: Props) {
             </div>
           </div>
           <div>
-            {" "}
             <div className="text-primary">الأوقات المتاحة</div>
             <div className="flex gap-1">
-              {<RenderMixedFonts text={destination?.working_hours_from} />}
-              <div className="font-arabic-light">حتي</div>
-              {<RenderMixedFonts text={destination?.working_hours_to} />}
+              <span>
+                {destination?.working_hours_from
+                  ? formatTimeArabic(destination.working_hours_from)
+                  : "--"}
+              </span>
+              <div className="font-arabic-light">حتى</div>
+              <span>
+                {destination?.working_hours_to
+                  ? formatTimeArabic(destination.working_hours_to)
+                  : "--"}
+              </span>
             </div>
           </div>
         </div>

@@ -150,7 +150,11 @@ export const validators = {
       workingTo.setHours(toHours, toMinutes, 0);
 
       if (selectedTime < workingFrom || selectedTime > workingTo) {
-        return `الوقت المحدد خارج ساعات العمل (${workingHoursFrom} - ${workingHoursTo})`;
+        // Dynamically import the formatter to avoid circular deps
+        const { formatTimeArabic } = require("@/lib/utils/timeFormatter");
+        const fromFormatted = formatTimeArabic(workingHoursFrom);
+        const toFormatted = formatTimeArabic(workingHoursTo);
+        return `الوقت المحدد خارج ساعات العمل (${fromFormatted} - ${toFormatted})`;
       }
 
       return undefined;
