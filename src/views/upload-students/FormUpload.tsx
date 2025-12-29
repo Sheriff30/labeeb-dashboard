@@ -13,10 +13,12 @@ import {
 } from "@/lib/constants/options";
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
+import { useUploadStudentList } from "@/hooks/useFiles";
 import { useModal } from "@/Context/ModalContext";
 
 export default function FormUpload() {
   const { openModal, closeModal } = useModal();
+  const { mutate, isPending } = useUploadStudentList();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -25,17 +27,23 @@ export default function FormUpload() {
       file: null as File | null,
     },
     onSubmit: ({ value }) => {
-      console.log(value);
-      form.reset();
-      openModal("CONFIRM", {
-        title: "تم رفع الملف بنجاح",
-        titleColor: "text-primary-green",
-
-        buttonText: "شكراً",
-        onConfirm: () => {
-          closeModal();
-        },
-      });
+      if (!value.name || !value.file) return;
+      mutate(
+        { name: value.name, file: value.file },
+        {
+          onSuccess: () => {
+            form.reset();
+            openModal("CONFIRM", {
+              title: "تم رفع الملف بنجاح",
+              titleColor: "text-primary-green",
+              buttonText: "شكراً",
+              onConfirm: () => {
+                closeModal();
+              },
+            });
+          },
+        }
+      );
     },
   });
 
@@ -122,7 +130,12 @@ export default function FormUpload() {
           );
         }}
       </form.Field>
-      <Button type="submit" className="max-w-[336px]" text="تأكيد رفع الملف" />
+      <Button
+        type="submit"
+        className="max-w-[336px]"
+        text={isPending ? "جاري الرفع..." : "تأكيد رفع الملف"}
+        disabled={isPending}
+      />
     </form>
   );
 }

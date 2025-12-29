@@ -1,3 +1,19 @@
+export const uploadStudentList = async (name: string, file: File) => {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("file", file);
+  const response = await axiosInstance.post("/school/student-lists", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+export const getStudentListById = async (id: string) => {
+  const response = await axiosInstance.get(`/school/student-lists/${id}`);
+  return response.data;
+};
 import { axiosInstance } from "./axiosInstance";
 
 export const getFiles = async () => {
