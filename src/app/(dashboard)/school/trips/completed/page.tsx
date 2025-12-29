@@ -1,6 +1,7 @@
 "use client";
 import { Pagination } from "@/components/shared/Pagination";
 import { useTrips } from "@/hooks/useTrips";
+import { formatDateArabic } from "@/lib/utils/dateFormatter";
 import { Trip } from "@/types";
 import { useState } from "react";
 
@@ -67,7 +68,7 @@ export default function Page() {
                   <tr key={trip.id} className="text-xl">
                     <td>{trip.destination.name}</td>
                     <td className="text-center font-roboto">
-                      {trip.trip_date}
+                      {formatDateArabic(trip.trip_date)}
                     </td>
                     <td className="text-center font-roboto">
                       {trip.time_slot}

@@ -2,6 +2,7 @@
 import { Button } from "@/components";
 import { Pagination } from "@/components/shared/Pagination";
 import { useTrips } from "@/hooks/useTrips";
+import { formatDateArabic } from "@/lib/utils/dateFormatter";
 import { canceledTrip } from "@/types";
 import { useState } from "react";
 
@@ -64,7 +65,7 @@ export default function Page() {
                   <tr key={trip.id} className="text-xl">
                     <td>{trip.destination.name}</td>
                     <td className="text-center font-roboto">
-                      {trip.updated_at}
+                      {formatDateArabic(trip.updated_at)}
                     </td>
                     <td className="text-center">{trip.status_label}</td>
                     <td className="text-center font-roboto">
