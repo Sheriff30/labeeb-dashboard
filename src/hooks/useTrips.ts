@@ -1,12 +1,12 @@
 import { bookTrip, fetchSchoolTrips } from "@/api/tripsApi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useTrips = (
   status?: "pending" | "approved" | "rejected",
   page: number = 1
 ) => {
   return useQuery({
-    queryKey: ["trips", status, page], // Include page in queryKey
+    queryKey: ["trips", status, page],
     queryFn: ({ queryKey }) => {
       const [, status, page] = queryKey;
       return fetchSchoolTrips(
@@ -18,7 +18,11 @@ export const useTrips = (
 };
 
 export const useBookTrip = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: bookTrip,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trips"] });
+    },
   });
 };
