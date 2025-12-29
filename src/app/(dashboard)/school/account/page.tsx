@@ -8,7 +8,8 @@ import {
 } from "@/components";
 import { FieldInfo } from "@/components/shared/FieldInfo";
 import { useModal } from "@/Context/ModalContext";
-import { useGetCurrentUser, useUpdateSchool } from "@/hooks/auth";
+import { useGetCurrentUser } from "@/hooks/auth";
+import { useUpdateSchoolProfile } from "@/hooks/account";
 import {
   CATEGORY_OPTIONS,
   CITY_OPTIONS,
@@ -23,7 +24,7 @@ import React, { useEffect } from "react";
 export default function Page() {
   const { openModal, closeModal } = useModal();
   const { data, isLoading } = useGetCurrentUser();
-  const { mutate } = useUpdateSchool();
+  const { mutate } = useUpdateSchoolProfile();
   const school = data?.data;
   const form = useForm({
     defaultValues: {
@@ -38,21 +39,46 @@ export default function Page() {
       numberOfBranches: "",
     },
     onSubmit: async ({ value }) => {
-      const { name, city, district, accountName, email } = value;
-
-      const formData = {
+      const {
         name,
         city,
         district,
+        category,
+        schoolStage,
         accountName,
+        email,
+      } = value;
+
+      const gender = ["male", "female", "mixed"].includes(category)
+        ? (category as "male" | "female" | "mixed")
+        : undefined;
+
+      const allowedTypes = [
+        "kindergarten",
+        "elementary",
+        "middle_school",
+        "high_school",
+      ];
+      const type = allowedTypes.includes(schoolStage[0])
+        ? (schoolStage[0] as
+            | "kindergarten"
+            | "elementary"
+            | "middle_school"
+            | "high_school")
+        : undefined;
+
+      const payload = {
+        name,
+        city,
+        district,
+        gender,
+        type,
+        representative_name: accountName,
         email,
       };
 
-      console.log(formData);
-
-      mutate(formData, {
+      mutate(payload, {
         onSuccess: () => {
-          form.reset();
           openModal("CONFIRM", {
             title: "تم تعديل البيانات بنجاح",
             buttonText: "شكراً",
@@ -62,7 +88,7 @@ export default function Page() {
           });
         },
         onError: (error) => {
-          console.error("Error updating school:", error);
+          console.error("Error updating school profile:", error);
         },
       });
     },
