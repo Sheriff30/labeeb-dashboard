@@ -12,6 +12,7 @@ type SelectableCheckboxGroupProps = {
   onChange: (selected: string[]) => void;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   optional?: boolean;
+  single?: boolean; // If true, only one value can be selected
 };
 
 export default function SelectableCheckboxGroup({
@@ -20,13 +21,22 @@ export default function SelectableCheckboxGroup({
   value,
   onChange,
   optional,
+  single = false,
   ...props
 }: SelectableCheckboxGroupProps) {
   const handleCheckboxChange = (optionValue: string) => {
-    if (value.includes(optionValue)) {
-      onChange(value.filter((v) => v !== optionValue));
+    if (single) {
+      if (value.includes(optionValue)) {
+        onChange([]);
+      } else {
+        onChange([optionValue]);
+      }
     } else {
-      onChange([...value, optionValue]);
+      if (value.includes(optionValue)) {
+        onChange(value.filter((v) => v !== optionValue));
+      } else {
+        onChange([...value, optionValue]);
+      }
     }
   };
 

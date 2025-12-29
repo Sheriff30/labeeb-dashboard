@@ -83,6 +83,7 @@ export default function FormUpload() {
           return (
             <FormField field={field}>
               <SelectableCheckboxGroup
+                single={true}
                 label="المرحلة الدراسية"
                 value={field.state.value}
                 optional={true}

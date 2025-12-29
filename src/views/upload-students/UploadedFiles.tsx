@@ -1,15 +1,27 @@
 import { useModal } from "@/Context/ModalContext";
-import { useFiles } from "@/hooks/useFiles";
+// import { useFiles } from "@/hooks/useFiles";
 import { confirmModalProps, file } from "@/types";
 import Image from "next/image";
 import React from "react";
 
+const files: file[] = [
+  {
+    id: 1,
+    date: "2023-10-01",
+    levels: ["الابتدائية", "الإعدادية"],
+    gender: ["ذكور", "إناث"],
+    students: 150,
+    filePath: "/uploads/students1.csv",
+    name: "students1.csv",
+    students_count: 150,
+  },
+];
 export default function UploadedFiles() {
-  const { data: files, isLoading } = useFiles();
+  // const { data: files, isLoading } = useFiles();
   const { openModal, closeModal } = useModal();
-  if (isLoading) {
-    return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
+  // }
 
   const confirmAction = (options: confirmModalProps) => {
     return new Promise<boolean>((resolve) => {

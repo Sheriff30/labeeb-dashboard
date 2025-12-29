@@ -232,6 +232,7 @@ export default function Page() {
                   value={field.state.value}
                   onChange={(val) => field.handleChange(val)}
                   label="المرحلة الدراسية"
+                  single={true}
                 />
                 <FieldInfo field={field} />
               </div>

@@ -16,8 +16,8 @@ export default function Tabs({
   buttonText2: string;
 }) {
   return (
-    <div>
-      <div className="flex gap-4 lg:gap-10 lg:items-center mb-6 lg:flex-row flex-col">
+    <div className="mb-6">
+      <div className="flex gap-4 lg:gap-10 lg:items-center  lg:flex-row flex-col">
         <div className="text-3xl text-navy font-arabic-bold">{title}</div>
         <Button
           onClick={() => onTabChange(true)}

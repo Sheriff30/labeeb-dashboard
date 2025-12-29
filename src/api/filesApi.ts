@@ -19,3 +19,10 @@ export const getFileById = async (id: string) => {
     throw new Error("Error fetching file by ID");
   }
 };
+
+export const downloadStudentListTemplate = async (): Promise<Blob> => {
+  const response = await axiosInstance.get("/school/student-lists/template", {
+    responseType: "blob",
+  });
+  return response.data;
+};
