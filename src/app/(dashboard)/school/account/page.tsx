@@ -20,21 +20,24 @@ import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
 
 import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { openModal, closeModal } = useModal();
   const { data, isLoading } = useGetCurrentUser();
   const { mutate } = useUpdateSchoolProfile();
   const school = data?.data;
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
-      name: "",
-      city: "",
-      district: "",
-      category: "",
-      schoolStage: [] as string[],
-      accountName: "",
-      email: "",
+      name: school?.school.name || "",
+      city: school?.school.city || "",
+      district: school?.school.district || "",
+      category: school?.school.gender || "",
+      schoolStage: [school?.school.type || ""],
+      accountName: school?.user.name || "",
+      email: school?.school.email || "",
     },
     onSubmit: async ({ value }) => {
       const {
@@ -84,6 +87,7 @@ export default function Page() {
               closeModal();
             },
           });
+          router.push("/school");
         },
         onError: (error) => {
           console.error("Error updating school profile:", error);
