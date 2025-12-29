@@ -239,52 +239,7 @@ export default function Page() {
             );
           }}
         </form.Field>
-        {/* Number of students */}
-        <form.Field name="numberOfStudents" validators={validators.number()}>
-          {(field) => {
-            return (
-              <div className=" flex items-end gap-2 flex-wrap">
-                <div className="flex flex-col  gap-1 w-full max-w-[324px]">
-                  <FloatLabelInput
-                    label="عدد طلاب المدرسة "
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    type="number"
-                  />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
-                </div>
-                <div className="text-gray text-xl">( إختياري )</div>
-              </div>
-            );
-          }}
-        </form.Field>
-        {/* Number of branches */}
-        <form.Field name="numberOfBranches" validators={validators.number()}>
-          {(field) => {
-            return (
-              <div className=" flex items-end gap-2 flex-wrap">
-                <div className="flex flex-col gap-1 w-full max-w-[324px]">
-                  <FloatLabelInput
-                    label="عدد أفرع المدرسة "
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    type="number"
-                  />
-                  {field.state.meta.errors && (
-                    <span className="text-red-500 text-sm">
-                      {field.state.meta.errors}
-                    </span>
-                  )}
-                </div>{" "}
-                <div className="text-gray text-xl">( إختياري )</div>
-              </div>
-            );
-          }}
-        </form.Field>
+
         <Button
           type="submit"
           text="حفظ التعديلات"
