@@ -1,16 +1,6 @@
 "use client";
-import {
-  Button,
-  FloatLabelInput,
-  FormField,
-  Select,
-  SelectableCheckboxGroup,
-  Upload,
-} from "@/components";
-import {
-  CATEGORY_OPTIONS,
-  SCHOOL_STAGE_OPTIONS,
-} from "@/lib/constants/options";
+import { Button, FloatLabelInput, FormField, Upload } from "@/components";
+
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
 import { useUploadStudentList } from "@/hooks/useFiles";
@@ -71,37 +61,7 @@ export default function FormUpload() {
           );
         }}
       </form.Field>
-      <form.Field name="gender">
-        {(field) => {
-          return (
-            <FormField field={field} className="max-w-[186px]">
-              <Select
-                placeholder="الفئة"
-                optional={true}
-                value={field.state.value}
-                onChange={(val) => field.handleChange(val)}
-                options={CATEGORY_OPTIONS}
-              />
-            </FormField>
-          );
-        }}
-      </form.Field>
-      <form.Field name="schoolStage">
-        {(field) => {
-          return (
-            <FormField field={field}>
-              <SelectableCheckboxGroup
-                single={true}
-                label="المرحلة الدراسية"
-                value={field.state.value}
-                optional={true}
-                onChange={(val) => field.handleChange(val)}
-                options={SCHOOL_STAGE_OPTIONS}
-              />
-            </FormField>
-          );
-        }}
-      </form.Field>
+
       <form.Field name="file" validators={validators.file()}>
         {(field) => {
           return (

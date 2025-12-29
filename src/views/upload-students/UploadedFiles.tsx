@@ -1,27 +1,12 @@
 import { useModal } from "@/Context/ModalContext";
-// import { useFiles } from "@/hooks/useFiles";
-import { confirmModalProps, file } from "@/types";
+import { useFiles } from "@/hooks/useFiles";
+import { confirmModalProps } from "@/types";
 import Image from "next/image";
 import React from "react";
 
-const files: file[] = [
-  {
-    id: 1,
-    date: "2023-10-01",
-    levels: ["الابتدائية", "الإعدادية"],
-    gender: ["ذكور", "إناث"],
-    students: 150,
-    filePath: "/uploads/students1.csv",
-    name: "students1.csv",
-    students_count: 150,
-  },
-];
 export default function UploadedFiles() {
-  // const { data: files, isLoading } = useFiles();
+  const { data: files, isLoading } = useFiles();
   const { openModal, closeModal } = useModal();
-  // if (isLoading) {
-  //   return <div className="text-2xl text-center">جاري تحميل الرحلات...</div>;
-  // }
 
   const confirmAction = (options: confirmModalProps) => {
     return new Promise<boolean>((resolve) => {
@@ -54,38 +39,57 @@ export default function UploadedFiles() {
     }
   };
 
+  if (isLoading) {
+    return <div className="text-2xl text-center">جاري تحميل الملفات...</div>;
+  }
+  type FileListItem = {
+    id?: string | number;
+    name: string;
+    students_count?: number;
+    total_students?: number;
+    students?: unknown[];
+    created_at?: string;
+    file_path?: string;
+  };
+  const fileList: FileListItem[] = Array.isArray(files?.data)
+    ? files.data
+    : Array.isArray(files)
+    ? files
+    : [];
+  if (!fileList.length) {
+    return (
+      <div className="text-2xl text-center">لا توجد ملفات مرفوعة بعد.</div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1000px] w-full">
-      {files.map((file: file) => {
+      {fileList.map((file) => {
+        const key =
+          file.id ?? file.file_path ?? `${file.name}-${file.created_at ?? ""}`;
         return (
           <div
-            key={file.id}
+            key={key}
             className="p-[18px] border-2 rounded-xl border-gray grid gap-1 w-full "
           >
-            {/* <div className="text-2xl text-primary">{file.title}</div> */}
             <div className="flex gap-6 text-xl">
-              <div>تاريخ الإضافة</div>
-              <div className="font-roboto">{file.date}</div>
-            </div>
-            <div className="flex gap-6 text-xl items-center">
-              <div>المرحلة</div>
-              <div className="flex gap-2 flex-col">
-                {file.levels.map((level, index) => {
-                  return <div key={index}>{level}</div>;
-                })}
-              </div>
-            </div>
-            <div className="flex gap-6 text-xl items-center">
-              <div>الفئة</div>
-              <div className="flex gap-2 flex-col">
-                {file.gender.map((gender, index) => {
-                  return <div key={index}>{gender}</div>;
-                })}
-              </div>
+              <div>اسم الملف</div>
+              <div className="font-roboto">{file.name}</div>
             </div>
             <div className="flex gap-6 text-xl items-center">
               <div>عدد الطلاب</div>
-              <div className="font-roboto">{file.students}</div>
+              <div className="font-roboto">
+                {file.students_count ??
+                  file.total_students ??
+                  (file.students ? file.students.length : 0)}
+              </div>
+            </div>
+            <div className="flex gap-6 text-xl items-center">
+              <div>تاريخ الإضافة</div>
+              <div className="font-roboto">
+                {file.created_at
+                  ? new Date(file.created_at).toLocaleDateString()
+                  : "-"}
+              </div>
             </div>
 
             <div
