@@ -35,8 +35,6 @@ export default function Page() {
       schoolStage: [] as string[],
       accountName: "",
       email: "",
-      numberOfStudents: "",
-      numberOfBranches: "",
     },
     onSubmit: async ({ value }) => {
       const {
@@ -101,15 +99,13 @@ export default function Page() {
     const user = school.user;
 
     form.reset({
-      name: schoolData.name || "",
-      city: schoolData.city || "",
-      district: schoolData.district || "",
-      category: schoolData.gender || "",
+      name: schoolData.name,
+      city: schoolData.city,
+      district: schoolData.district,
+      category: schoolData.gender,
       schoolStage: [schoolData.type || ""],
-      accountName: user.name || "",
-      email: schoolData.email || "",
-      numberOfStudents: "",
-      numberOfBranches: "",
+      accountName: user.name,
+      email: schoolData.email,
     });
   }, [school, form]);
 
