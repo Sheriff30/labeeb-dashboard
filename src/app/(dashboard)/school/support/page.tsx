@@ -4,15 +4,28 @@ import { Button, FormField, Input } from "@/components";
 import { validators } from "@/lib/constants/validation";
 import { useForm } from "@tanstack/react-form";
 import React from "react";
+import { useCreateSupportTicket } from "@/hooks/support";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+  const { mutate, isPending } = useCreateSupportTicket();
   const form = useForm({
     defaultValues: {
       messageType: "",
       message: "",
     },
     onSubmit: ({ value }) => {
-      console.log(value);
+      const payload = {
+        category_id: "1",
+        subject: value.messageType,
+        message: value.message,
+      };
+      mutate(payload, {
+        onSuccess: () => {
+          router.push("/school");
+        },
+      });
     },
   });
 
@@ -125,7 +138,7 @@ export default function Page() {
         </form.Field>
 
         <Button
-          text="إرسال"
+          text={isPending ? "جاري الإرسال..." : "إرسال الرسالة"}
           className="!max-w-[336px] mb-8 !w-full"
           variant="primary"
           type="submit"
