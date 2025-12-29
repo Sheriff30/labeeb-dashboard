@@ -48,10 +48,17 @@ export default function DestinationCard({ data }: { data: any }) {
           text="احجز الان"
           type="button"
           variant="primary"
+          className="text-2xl!"
           href={`/school/destinations/${data?.id}`}
         />
-        <div className="flex items-center gap-1 text-3xl">
-          <div className="font-arabic-bold">{data?.pricePerStudent}</div>
+        <div className="flex items-center gap-1 text-2xl!">
+          <div className="font-arabic-bold">
+            {Array.isArray(data?.packages) && data.packages.length > 0
+              ? Math.min(
+                  ...data.packages.map((pkg: any) => parseFloat(pkg.price))
+                ).toFixed(2)
+              : data?.pricePerStudent}
+          </div>
           <Image
             src="/images/currency.svg"
             alt="currency"
